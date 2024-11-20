@@ -5,7 +5,7 @@ import { listArticle } from "@/api/board.js";
 //route
 import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
-const route = useRoute(); 
+const route = useRoute();
 
 //pinia
 import { useAuthStore } from '@/stores/auth';
@@ -29,7 +29,7 @@ const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
 const param = ref({
   pgno: currentPage.value,
   spp: VITE_ARTICLE_LIST_SIZE,
-  key: !!route.params.word ? "subject" : "",
+  key: route.params.word ? "subject" : "",
   word: route.params.word,
 });
 
