@@ -96,11 +96,9 @@ public class MemberController {
 		return new ResponseEntity<>(memberService.delete(id), HttpStatus.OK);
 	}
 	
-//	@PostMapping("/profile/img")
-//	public ResponseEntity<GetMemberResponse> setMemberImage(@RequestParam(value = "img", required = false) MultipartFile[] image, HttpSession httpSession) throws Exception {
-//		
-//	}
-//
-//		return new ResponseEntity<GetMemberResponse>(memberService.getMember(httpSession), HttpStatus.OK);
-//	}
+	@PostMapping("/profile/img")
+	public ResponseEntity<Void> setMemberImage(@RequestBody MultipartFile[] image, HttpSession httpSession) throws Exception {
+		memberService.setMemberImage(image);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

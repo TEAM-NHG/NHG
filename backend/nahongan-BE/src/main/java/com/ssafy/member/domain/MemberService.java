@@ -1,6 +1,7 @@
 package com.ssafy.member.domain;
 
 import com.ssafy.common.exception.BaseException;
+import com.ssafy.common.util.ImageUploader;
 import com.ssafy.member.persistent.entity.Member;
 import com.ssafy.member.persistent.repository.MemberRepository;
 import com.ssafy.member.web.dto.MemberDto;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
 
@@ -30,7 +32,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private final PasswordEncoder passwordEncoder;
-
+    
+    private final ImageUploader imageUploader;
+    
+    private String USER_IMAGE_PATH;
+    
     public void join(JoinRequest request) throws Exception {
         System.out.println(checkId(request.getId()));
         if (checkId(request.getId())) {
@@ -95,5 +101,10 @@ public class MemberService {
     public int delete(String id) {
     	return memberRepository.delete(id);
     }
+
+	public void setMemberImage(MultipartFile[] image) {
+		// TODO Auto-generated method stub
+		imageUploader.upload(image, null);
+	}
 
 }

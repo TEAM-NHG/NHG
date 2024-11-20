@@ -1,14 +1,17 @@
 package com.ssafy.common.util;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+@Component
 public class ImageUploader {
 
 	public String upload(MultipartFile[] files, String uploadPath) {
