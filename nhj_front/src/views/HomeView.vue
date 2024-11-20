@@ -1,7 +1,7 @@
 <!-- src/views/HomeView.vue -->
 <template>
   <div class="home-container">
-    <img src="@/assets/Main.png" alt="Main Background" class="w-100 main-image">
+    <img src="@/assets/Main/Main.png" alt="Main Background" class="w-100 main-image">
     <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
       <h1 v-if="!authStore.isLoggedIn" class="mb-3">나만의 속도, 나만의 여정</h1>
       <template v-else>
