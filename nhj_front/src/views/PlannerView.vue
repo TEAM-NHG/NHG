@@ -12,7 +12,7 @@
 
         <div class="emotion-button">
           <div class="d-flex align-items-center"
-               @click="selectedEmotion = emotion; displayText = ''"
+               @click="selectEmotion(emotion)"
                style="width: 200px; cursor: pointer;">
             <img :src="emotion.src" alt="" class="me-3">
 
@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-md-6 mb-4">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" :style="{ 'background-color': selectedEmotion.borderColor }">
             <div class="d-flex justify-content-between align-items-center mb-1">
               <h5 class="card-title">prompt 입력창</h5>
               <button class="btn btn-light mb-1" @click="handleEmotionClick(selectedEmotion)">생성</button>
@@ -45,7 +45,7 @@
 
       <div class="col-md-6 mb-4">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body outputText">
             <div class="d-flex justify-content-between align-items-center">
               <div>출력창</div>
               <img :src="selectedEmotion.src ? selectedEmotion.src : 'src/assets/insideout/characters.png'" alt="" style="width: 5%;">
@@ -72,20 +72,27 @@ import { localAxios } from "@/util/http-commons"
 const local = localAxios()
 
 // 반응형 상태 정의
-const selectedEmotion = ref({id: '', label: '', src: ''})
+const selectedEmotion = ref({
+  id: '',
+  label: '',
+  src: '',
+  selected: '',
+  borderColor: ''
+})
 const prompt = ref('')
 const response = ref('')
 const loading = ref(false)
 const displayText = ref('')
+const interval = ref(null)
 
 // 감정 데이터
-const emotions = [
-  { id: 'happy', label: '기쁨', src: "src/assets/insideout/기쁨.png" },
-  { id: 'strict', label: '까칠', src: "src/assets/insideout/까칠.png" },
-  { id: 'worry', label: '걱정', src: "src/assets/insideout/걱정.png" },
-  { id: 'angry', label: '분노', src: "src/assets/insideout/분노.png" },
-  { id: 'boring', label: '따분', src: "src/assets/insideout/따분.png" },
-]
+const emotions = ref([
+  { id: 'happy', label: '기쁨', src: "src/assets/insideout/기쁨.png", selected: false, borderColor: "#FDFD71"},
+  { id: 'strict', label: '까칠', src: "src/assets/insideout/까칠.png", selected: false, borderColor: "#85CA6E"},
+  { id: 'worry', label: '걱정', src: "src/assets/insideout/걱정.png", selected: false, borderColor: "#D3B3D4"},
+  { id: 'angry', label: '분노', src: "src/assets/insideout/분노.png", selected: false, borderColor: "#E62C2B"},
+  { id: 'boring', label: '따분', src: "src/assets/insideout/따분.png", selected: false, borderColor: "#5756A6"},
+])
 
 // 감정 선택 처리
 const handleEmotionClick = async (emotion) => {
@@ -110,6 +117,17 @@ const handleEmotionClick = async (emotion) => {
   } finally {
     loading.value = false
   }
+}
+
+const selectEmotion = (emotion) => {
+  //선택값 부여
+  emotions.value.forEach((e) => (e.selected = false));
+  selectedEmotion.value = emotion;
+  emotion.selected = true;
+
+  //출력창 초기화
+  displayText.value = ''; 
+  clearInterval(interval)
 }
 
 // 텍스트 애니메이션 효과
@@ -179,5 +197,18 @@ watch([response, loading], ([newResponse, isLoading]) => {
 
 .output-area::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.outputText{
+  background: linear-gradient(45deg, #FDFD71, rgba(255,0,0,0) 70.71%),
+            linear-gradient(0deg, #85CA6E, rgba(0,255,0,0) 70.71%),
+            linear-gradient(245deg, #5756A6, rgba(0,0,255,0) 70.71%),
+            linear-gradient(180deg, #E62C2B, rgba(0,0,255,0) 70.71%);
+  color: white; /* 텍스트 색상 */
+  border-radius: 5px;
+}
+
+.card {
+  border-radius: 5px;
 }
 </style>
