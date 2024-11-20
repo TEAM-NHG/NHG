@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="com.ssafy.companion_board.persistent.repository.CompanionBoardRepository">
+
+	<update id="updateHit" parameterType="int">
+		update companion_board
+		set hit = hit+1
+		where article_no = #{articleNo};
+	</update>
+ 
+    <select id="findArticle" parameterType="int" resultMap="CompanionBoardResultMap">
+        SELECT
+            article_no AS articleNo,
+            user_id AS userId,
+            subject,
+            content,
+            hit,
+            register_time AS registerTime
+        FROM companion_board
+        WHERE article_no = #{articleNo}
+    </select>
+  
+    <select id="findAllArticle" resultMap="CompanionBoardResultMap">
+        SELECT
+            article_no,
+            user_id,
+            subject,
+            content,
+            hit,
+            register_time
+        FROM companion_board
+        <where>
+			<include refid="search"/>
+		</where>
+        ORDER BY register_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+  
+    <insert id="createArticle" parameterType="com.ssafy.companion_board.persistent.entity.CompanionBoard">
+        INSERT INTO companion_board (user_id, subject, content, hit, register_time)
+        VALUES (#{userId}, #{subject}, #{content}, 0, now());
+    </insert>
+  
+    <delete id="deleteArticle" parameterType="int">
+        DELETE FROM companion_board
+        WHERE article_no = #{articleNo}
+    </delete>
+  
+    <select id="countArticle" resultType="int">
+        SELECT
+            article_no,
+            user_id,
+            subject,
+            content,
+            hit,
+            register_time
+        FROM companion_board
+        <where>
+			<include refid="search"/>
+		</where>
+        ORDER BY register_time DESC
+    </select>
+  
+    <update id="updateArticle" parameterType="com.ssafy.companion_board.persistent.entity.CompanionBoard">
+        UPDATE companion_board
+        SET
+            subject = #{subject},
+            content = #{content}
+        WHERE article_no = #{articleNo}
+    </update>
+    
+    <sql id="search">
+    	<if test="key == 'subject'">
+			AND subject LIKE CONCAT('%', #{word}, '%')
+    	</if>
+    	<if test="key == 'article_no'">
+			AND article_no LIKE CONCAT('%', #{word}, '%')
+    	</if>
+    	<if test="key == 'user_id'">
+			AND user_id LIKE CONCAT('%', #{word}, '%')
+    	</if>
+	</sql>
+    
+    <resultMap id="CompanionBoardResultMap" type="com.ssafy.companion_board.persistent.entity.CompanionBoard">
+        <result property="articleNo" column="article_no"/>
+        <result property="userId" column="user_id"/>
+        <result property="subject" column="subject"/>
+        <result property="content" column="content"/>
+        <result property="hit" column="hit"/>
+        <result property="registerTime" column="register_time"/>
+    </resultMap>
+</mapper>

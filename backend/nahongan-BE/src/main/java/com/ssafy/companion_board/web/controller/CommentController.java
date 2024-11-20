@@ -1,0 +1,69 @@
+package com.ssafy.companion_board.web.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ssafy.companion_board.domain.CommentService;
+import com.ssafy.companion_board.domain.CompanionBoardService;
+import com.ssafy.companion_board.web.dto.CommentDto;
+import com.ssafy.companion_board.web.dto.request.DeleteArticleRequest;
+import com.ssafy.companion_board.web.dto.request.GetArticleListRequest;
+import com.ssafy.companion_board.web.dto.request.UpdateArticleRequest;
+import com.ssafy.companion_board.web.dto.request.WriteArticleRequest;
+import com.ssafy.companion_board.web.dto.request.comment.CreateCommentRequest;
+import com.ssafy.companion_board.web.dto.request.comment.GetCommentRequest;
+import com.ssafy.companion_board.web.dto.request.comment.GetCommentsRequest;
+import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentRequest;
+import com.ssafy.companion_board.web.dto.response.GetArticleListResponse;
+import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
+import com.ssafy.companion_board.web.dto.response.UpdateArticleResponse;
+import com.ssafy.companion_board.web.dto.response.comment.GetCommentResponse;
+import com.ssafy.companion_board.web.dto.response.comment.GetCommentsResponse;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/companion-board")
+public class CommentController {
+
+	private final CommentService commentService;
+
+	@PostMapping("/comment")
+	public ResponseEntity<Void> createComment(@RequestBody CreateCommentRequest request, HttpSession session) throws Exception {
+		commentService.createComment(request);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/comment/{commentId}")
+	public ResponseEntity<Void> deleteComment(@PathVariable("commentId") int commentId, HttpSession session) throws Exception {
+		commentService.deleteComment(commentId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/comment/{commentId}")
+	public ResponseEntity<CommentDto> getComment(@PathVariable int commentId) throws Exception {
+		return new ResponseEntity<>(commentService.getComment(commentId), HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/{articleNo}/comment")
+	public ResponseEntity<GetCommentsResponse> getComments(@PathVariable int articleNo) throws Exception {
+		return new ResponseEntity<>(commentService.getComments(articleNo), HttpStatus.CREATED);
+	}
+
+	@PutMapping("/comment/{commentId}")
+	public ResponseEntity<Void> updateComment(@RequestBody UpdateCommentRequest request, HttpSession session) throws Exception {
+		commentService.updateComment(request);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+}

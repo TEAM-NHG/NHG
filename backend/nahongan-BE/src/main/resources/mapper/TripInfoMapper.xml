@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.tripinfo.persistent.repository.TripInfoRepository">
+    
+    <!-- 시 정보 쿼리: Sidos 테이블에 대한 결과를 Sidos 객체로 매핑 -->
+    <select id="findAllSido" resultMap="sidoResultMap">
+        SELECT *
+        FROM sidos;
+    </select>
+
+    <!-- 각 시에 맞는 구군정보 쿼리: Guguns 테이블에 대한 결과를 Guguns 객체로 매핑 -->
+    <select id="findGugunBySido" resultMap="gugunResultMap">
+        SELECT *
+        FROM guguns
+        WHERE sido_code = #{sidoCode};
+    </select>
+
+    <!-- 컨텐츠타입 쿼리: ContentTypes 테이블에 대한 결과를 ContentTypes 객체로 매핑 -->
+    <select id="findAllContentType" resultMap="contentTypeResultMap">
+        SELECT *
+        FROM contenttypes;
+    </select>
+	
+    <!-- 필터 어트랙션 검색 쿼리: Attractions, Sidos, Guguns, ContentTypes의 조인을 수행하여 해당 객체들로 매핑 -->
+    <select id="findAttractionByFilter" resultMap="attractionResultMap">
+        SELECT
+        a.*,
+        GROUP_CONCAT(ai.originimgurl) AS images -- 이미지 URL들을 쉼표로 결합
+        FROM attractions a
+        LEFT JOIN (
+        SELECT s.sido_code, g.gugun_code, s.sido_name, g.gugun_name
+        FROM sidos s
+        INNER JOIN guguns g ON s.sido_code = g.sido_code
+        ) sg ON sg.sido_code = a.area_code AND sg.gugun_code = a.si_gun_gu_code
+        JOIN contenttypes c ON a.content_type_id = c.content_type_id
+        LEFT JOIN attraction_image ai ON a.content_id = ai.content_id -- 이미지 테이블 조인
+        <where>
+            <include refid="search"/>
+        </where>
+        GROUP BY a.no -- GROUP BY로 이미지 중복 제거
+        LIMIT #{offset}, #{size};
+    </select>
+    
+    <!-- 필터 어트랙션 검색 쿼리: Attractions, Sidos, Guguns, ContentTypes의 조인을 수행하여 해당 객체들로 매핑 -->
+    <select id="countAttraction" resultType="int">
+        SELECT COUNT(*)
+        FROM attractions a
+        LEFT JOIN (
+            SELECT s.sido_code, g.gugun_code, s.sido_name, g.gugun_name
+            FROM sidos s 
+            INNER JOIN guguns g ON s.sido_code = g.sido_code
+        ) sg ON sg.sido_code = a.area_code AND sg.gugun_code = a.si_gun_gu_code
+        JOIN contenttypes c ON a.content_type_id = c.content_type_id
+        <where>
+			<include refid="search"/>
+		</where>
+    </select>
+
+    <select id="findAttractionByNo" resultMap="attractionResultMap2">
+        SELECT *
+        FROM attractions
+        WHERE no = #{no};
+    </select>
+
+    <insert id="saveImages">
+        INSERT INTO attraction_image (content_id, originimgurl)
+        VALUES
+        <foreach collection="images" item="image" separator=",">
+            (#{image.contentId}, #{image.originimgurl})
+        </foreach>
+    </insert>
+
+    <!-- saveDetails -->
+    <update id="modifyAttractions">
+        UPDATE attractions
+        SET
+            title = #{title},
+            content_type_id = #{contentTypeId},
+            area_code = #{areaCode},
+            si_gun_gu_code = #{sigunguCode},
+            map_level = #{mapLevel},
+            latitude = #{latitude},
+            longitude = #{longitude},
+            tel = #{tel},
+            addr1 = #{addr1},
+            addr2 = #{addr2},
+            homepage = #{homepage},
+            overview = #{overview},
+            parking = #{parking},
+            time = #{time},
+            is_image_saved = #{isImageSaved},
+            is_detail_saved = #{isDetailSaved}
+        WHERE content_id = #{contentId}
+    </update>
+
+    <!-- filter -->
+    <sql id="search">
+		<if test="sidoCode != null and sidoCode != ''"> AND sg.sido_code = #{sidoCode} </if>
+		<if test="gugunCode != null and gugunCode != ''"> AND sg.gugun_code = #{gugunCode} </if>
+		<if test="contentTypeId != null and contentTypeId != ''"> AND c.content_type_id = #{contentTypeId} </if>
+		<if test="keyword != null and keyword != ''"> AND a.title LIKE CONCAT('%', #{keyword}, '%') </if>
+	</sql>
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="sidoResultMap" type="com.ssafy.tripinfo.persistent.entity.Sidos">
+	    <result property="no" column="no"/>
+	    <result property="sidoCode" column="sido_code"/>
+	    <result property="sidoName" column="sido_name"/>
+	</resultMap>
+
+    <resultMap id="gugunResultMap" type="com.ssafy.tripinfo.persistent.entity.Guguns">
+        <result property="sidoCode" column="sido_code"/>
+        <result property="gugunCode" column="gugun_code"/>
+        <result property="gugunName" column="gugun_name"/>
+    </resultMap>
+    
+    <resultMap id="contentTypeResultMap" type="com.ssafy.tripinfo.persistent.entity.ContentTypes">
+        <result property="contentTypeId" column="content_type_id"/>
+        <result property="contentTypeName" column="content_type_name"/>
+    </resultMap>
+
+    <resultMap id="attractionResultMap" type="com.ssafy.tripinfo.persistent.entity.Attractions">
+        <id property="no" column="no" />
+        <result property="contentId" column="content_id" />
+        <result property="title" column="title" />
+        <result property="contentTypeId" column="content_type_id" />
+        <result property="areaCode" column="area_code" />
+        <result property="sigunguCode" column="si_gun_gu_code" />
+        <result property="mapLevel" column="map_level" />
+        <result property="latitude" column="latitude" />
+        <result property="longitude" column="longitude" />
+        <result property="tel" column="tel" />
+        <result property="addr1" column="addr1" />
+        <result property="addr2" column="addr2" />
+        <result property="homepage" column="homepage" />
+        <result property="overview" column="overview" />
+        <result property="parking" column="parking" />
+        <result property="time" column="time" />
+        <result property="isImageSaved" column="is_image_saved" />
+        <result property="isDetailSaved" column="is_detail_saved" />
+        <!-- images는 쉼표로 결합된 문자열을 List<String>으로 변환 -->
+        <collection property="images" ofType="java.lang.String" javaType="java.util.ArrayList">
+            <result column="images" />
+        </collection>
+    </resultMap>
+
+    <resultMap id="attractionResultMap2" type="com.ssafy.tripinfo.persistent.entity.Attractions">
+        <id property="no" column="no" />
+        <result property="contentId" column="content_id" />
+        <result property="title" column="title" />
+        <result property="contentTypeId" column="content_type_id" />
+        <result property="areaCode" column="area_code" />
+        <result property="sigunguCode" column="si_gun_gu_code" />
+        <result property="mapLevel" column="map_level" />
+        <result property="latitude" column="latitude" />
+        <result property="longitude" column="longitude" />
+        <result property="tel" column="tel" />
+        <result property="addr1" column="addr1" />
+        <result property="addr2" column="addr2" />
+        <result property="homepage" column="homepage" />
+        <result property="overview" column="overview" />
+        <result property="parking" column="parking" />
+        <result property="time" column="time" />
+        <result property="isImageSaved" column="is_image_saved" />
+        <result property="isDetailSaved" column="is_detail_saved" />
+    </resultMap>
+
+    
+    <!--  
+    <select id="findAllArticleType" resultMap="member">
+        select *
+        FROM article_types;
+    </select>
+    -->
+    <!-- 
+    <select id="findArticleByFilter" resultMap="member">
+    </select>
+     -->
+</mapper>

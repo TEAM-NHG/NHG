@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.ssafy.member.persistent.repository.MemberRepository">
+    <resultMap type="com.ssafy.member.persistent.entity.Member" id="member">
+        <result column="id" property="id"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="role" property="role"/>
+    </resultMap>
+    <insert id="create">
+        insert into members (id, password, nickname, email, phone, img)
+        values (#{id}, #{password}, #{nickname}, #{email}, #{phone}, #{img})
+    </insert>
+    <select id="existsById" resultType="Boolean">
+        SELECT CASE
+                   WHEN EXISTS (
+                       SELECT 1
+                       FROM members
+                       WHERE id = #{id}
+                   ) THEN TRUE
+                   ELSE FALSE
+                   END AS existsResult
+        FROM DUAL
+    </select>
+    <select id="findByIdAndPassword" resultMap="member">
+        select *
+        from members
+        where id = #{id} and password = #{password}
+    </select>
+    <select id="ExistsByIdAndEmail" resultType="boolean">
+        SELECT CASE
+                   WHEN EXISTS (
+                       SELECT 1
+                       FROM members
+                       WHERE id = #{id} AND email = #{email}
+                   ) THEN TRUE
+                   ELSE FALSE
+                   END AS existsResult
+        FROM DUAL
+    </select>
+    <select id="findById" resultMap="member">
+        select *
+        from members
+        where id = #{id}
+    </select>
+    <select id="findIdByEmail" resultType="String">
+        select id
+        from members
+        where email = #{email}
+    </select>
+    <update id="modify">
+    	update members
+		set nickname = #{nickname},
+		email = #{email},
+		phone = #{phone},
+		img = #{img}
+		where id = #{id};
+    </update>
+    <update id="modifyPassword">
+    	update members
+		set password = #{password}
+		where id = #{id};
+    </update>
+    <delete id="delete">
+    	delete from members
+    	where id = #{id}
+    </delete>
+</mapper>
