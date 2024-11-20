@@ -65,9 +65,9 @@ const onPageChange = (val) => {
 };
 
 const moveWrite = () => {
-  if(authStore.isLoggedIn) {
+  if (authStore.isLoggedIn) {
     router.push({ name: "article-write" });
-  }else{
+  } else {
     alert('로그인이 필요합니다.')
   }
 };
@@ -78,7 +78,9 @@ const moveWrite = () => {
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">글목록</mark>
+          <mark class="sky">같이 떠나볼까요?
+            <strong style="font-weight: bold;">우리</strong>
+            의 이야기를 만들어봐요.</mark>
         </h2>
       </div>
       <div class="col-lg-10">
@@ -92,12 +94,7 @@ const moveWrite = () => {
             <form class="d-flex">
               <VSelect :selectOption="selectOption" @onKeySelect="changeKey" />
               <div class="input-group input-group-sm ms-1">
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="param.word"
-                  placeholder="검색어..."
-                />
+                <input type="text" class="form-control" v-model="param.word" placeholder="검색어..." />
                 <button class="btn btn-dark" type="button" @click="getArticleList">검색</button>
               </div>
             </form>
@@ -114,19 +111,11 @@ const moveWrite = () => {
             </tr>
           </thead>
           <tbody>
-            <BoardListItem
-              v-for="article in articles"
-              :key="article.articleNo"
-              :article="article"
-            ></BoardListItem>
+            <BoardListItem v-for="article in articles" :key="article.articleNo" :article="article"></BoardListItem>
           </tbody>
         </table>
       </div>
-      <VPageNavigation
-        :current-page="currentPage"
-        :total-page="totalPage"
-        @pageChange="onPageChange"
-      ></VPageNavigation>
+      <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageChange="onPageChange"></VPageNavigation>
     </div>
   </div>
 </template>
