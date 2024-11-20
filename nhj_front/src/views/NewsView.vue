@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="margin-top: 5%; padding: 3%;">
+  <div class="container" style="margin-top: 5%; width: 45vw;">
 
     <div class="news-header">
 
