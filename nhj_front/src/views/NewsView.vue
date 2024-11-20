@@ -5,14 +5,13 @@
 
       <div>
         <h1 class="mb-3">블로그 여행 소식 모음집.</h1>
-        <p class="mb-4">카드를 누르면 해당 페이지로 이동합니다.</p>
+        <p class="mb-4" style="text-decoration: line-through;">카드를 누르면 해당 페이지로 이동합니다.</p>
       </div>
 
       <!-- 검색창 -->
       <div class="d-flex mb-4 search">
         <select class="form-select w-auto me-2" v-model="searchOption">
           <option value="title">제목</option>
-          <option value="blogger">작성자</option>
         </select>
         <input
           type="text"
@@ -20,7 +19,7 @@
           placeholder="검색어..."
           v-model="searchText"
         />
-        <button class="btn btn-primary" style="width: 80px;" @click="search">검색</button>
+        <button class="btn btn-primary" style="width: 80px;" @click="search" @keyup.enter="search">검색</button>
       </div>
 
     </div>
@@ -43,38 +42,31 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
 import NewsCard from "@/components/News/NewsCard.vue";
+import { ref, onMounted } from "vue";
+
+//route
+import { useRoute } from "vue-router";
+const route = useRoute();
+
+//axios
 import { localAxios } from "@/util/http-commons";
 const local = localAxios()
 
 const searchOption = ref("title");
-const searchText = ref("");
-// const filteredCards = ref([]);
+const searchText = ref(route.params.word ? route.params.word : "")
 
 // 데이터 불러오기
 onMounted(async () => {
-  // try {
-  //   const response = await fetch("/api/blogs"); // 백엔드 API 호출
-  //   cards.value = await response.json();
-  //   filteredCards.value = cards.value;
-  // } catch (error) {
-  //   console.error("데이터를 불러오는 중 오류 발생:", error);
-  // }
   fetchData(); // 초기 데이터 로드
   setupObserver(); // Intersection Observer 설정
 });
 
 // 검색 기능
-// const search = () => {
-//   if (!searchText.value) {
-//     filteredCards.value = cards.value;
-//     return;
-//   }
-//   filteredCards.value = cards.value.filter((card) =>
-//     card[searchOption.value].toLowerCase().includes(searchText.value.toLowerCase())
-//   );
-// };
+const search = async () => {
+  const response = await local.get('/trip-info/search/blog', {params : {keyword : searchText.value, pgno: 1}})
+  cards.value = response.data.blogList
+};
 
 //무한 스크롤
 const cards = ref([]); // 현재 로드된 아이템 목록
@@ -90,7 +82,7 @@ const fetchData = async () => {
 
   // 데이터를 가져오는 API 호출 (예제 API 사용)
   try {
-    const response = await local.get('/trip-info/search/blog', {params : {keyword : "", pgno: page.value * 5}})
+    const response = await local.get('/trip-info/search/blog', {params : {keyword : searchText.value, pgno: page.value * 5}})
     if (response.data) {
       cards.value.push(...response.data.blogList); // 기존 데이터에 추가
       console.log(cards.value)
