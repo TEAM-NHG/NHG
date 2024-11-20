@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg" style="background-color: #CBDCEB;">
     <div class="container-fluid">
       <router-link :to="{name: 'home'}" class="navbar-brand">
-        <img src="@/assets/나혼자간다.png" alt="Logo" height="50" class="d-inline-block align-top">
+        <img src="@/assets/나혼자간다.png" alt="Logo" style="height: 50px;" class="d-inline-block align-top">
       </router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
