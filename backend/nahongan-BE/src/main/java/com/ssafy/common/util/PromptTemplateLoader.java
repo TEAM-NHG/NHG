@@ -14,26 +14,36 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class PromptTemplateLoader {
 
-	@Value("classpath:prompts/annoying-system-prompt.st")
-    private Resource annoyingPromptResource;
-
-    @Value("classpath:prompts/anger-system-prompt.st")
-    private Resource angerPromptResource;
-    
-    @Value("classpath:prompts/complain-system-prompt.st")
-    private Resource complainPromptResource;
-    
-    @Value("classpath:prompts/happy-system-prompt.st")
+	@Value("classpath:prompts/happy-system-prompt.st")
     private Resource happyPromptResource;
+
+    @Value("classpath:prompts/angry-system-prompt.st")
+    private Resource angryPromptResource;
+    
+    @Value("classpath:prompts/worry-system-prompt.st")
+    private Resource worryPromptResource;
+    
+    @Value("classpath:prompts/strict-system-prompt.st")
+    private Resource strictPromptResource;
 
     public String loadSystemPrompt(String type) {
     	Resource resource;
     	switch (type) {
-    		case "strict": resource = complainPromptResource;
-    		case "worry": resource = annoyingPromptResource;
-    		case "angry": resource = angerPromptResource;
-    		case "happy": resource = happyPromptResource;
-    		default: resource = complainPromptResource;
+    		case "strict": 
+    			resource = strictPromptResource; 
+    			break;
+    		case "worry": 
+    			resource = worryPromptResource;
+    			break;
+    		case "angry": 
+    			resource = angryPromptResource;
+    			break;
+    		case "happy": 
+    			resource = happyPromptResource;
+    			break;
+    		default: 
+    			resource = happyPromptResource;
+    			break;
     	}
         try {
             return new String(FileCopyUtils.copyToByteArray(resource.getInputStream()), StandardCharsets.UTF_8);
