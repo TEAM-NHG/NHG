@@ -1,5 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from "@/stores/auth";
 import HomeView from '../views/HomeView.vue'
 import CurationView from '../views/CurationView.vue'
 import NewsView from '../views/NewsView.vue'
@@ -97,8 +98,19 @@ const router = createRouter({
 })
 
 // Global Router Guard
-// router.beforeEach((to, from) => {
-//   authStore.login(sessionStorage.getItem('user'))
-// });
+// 글로벌 네비게이션 가드
+router.beforeEach((to, from, next) => {
+  const publicPages = ['home', 'article-list', 'signup', 'login', 'news']; // 로그인 필요 없는 페이지
+  const authRequired = !publicPages.includes(to.name); // 로그인 필요한 경우
+  const authStore = useAuthStore(); // auth.js 상태 접근
+
+  if (authRequired && !authStore.isLoggedIn) {
+    // 로그인이 필요한 페이지인데 로그인 안 되어있으면
+    // next({ name: 'login' }); 로그인 페이지로 리다이렉트
+    alert('로그인이 필요한 페이지입니다!')
+  } else {
+    next(); // 접근 허용
+  }
+});
 
 export default router
