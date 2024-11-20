@@ -1,24 +1,47 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import Comment from "./item/comment.vue";
 import { detailArticle, deleteArticle } from "@/api/board";
+import { ref, onMounted } from "vue";
+
+//pinia
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
+
+//route
+import { useRoute, useRouter } from "vue-router";
+
+//axios
+import { localAxios } from "@/util/http-commons"
+const local = localAxios()
 
 const route = useRoute();
 const router = useRouter();
 
-// const articleno = ref(route.params.articleno);
-const { articleno } = route.params;
+// const articleNo = ref(route.params.articleNo);
+const { articleNo } = route.params;
 const article = ref({});
+const comments = ref([])
 
-onMounted(() => {
+onMounted(async() => {
   getArticle();
+
+  //댓글 불러오는 부분
+  try {
+    const articleResponse = await local.get(`/api/articles/${articleNo.value}`)
+    article.value = articleResponse.data
+
+    const commentsResponse = await local.get(`/api/comments/${articleNo.value}`)
+    comments.value = commentsResponse.data
+  } catch (error) {
+    console.error('게시글 또는 댓글 가져오기 실패:', error)
+  }
 });
 
 const getArticle = () => {
-  // const { articleno } = route.params;
-  console.log(articleno + "번글 얻으러 가자!!!");
+  // const { articleNo } = route.params;
+  console.log(articleNo + "번글 얻으러 가자!!!");
   detailArticle(
-    articleno,
+    articleNo,
     ({ data }) => {
       article.value = data;
     },
@@ -33,14 +56,14 @@ function moveList() {
 }
 
 function moveModify() {
-  router.push({ name: "article-modify", params: { articleno } });
+  router.push({ name: "article-modify", params: { articleNo } });
 }
 
 function onDeleteArticle() {
-  // const { articleno } = route.params;
-  console.log(articleno + "번글 삭제하러 가자!!!");
+  // const { articleNo } = route.params;
+  console.log(articleNo + "번글 삭제하러 가자!!!");
   deleteArticle(
-    articleno,
+    articleNo,
     (response) => {
       if (response.status == 200) moveList();
     },
@@ -88,17 +111,24 @@ function onDeleteArticle() {
             <button type="button" class="btn btn-outline-primary mb-3" @click="moveList">
               글목록
             </button>
-            <button type="button" class="btn btn-outline-success mb-3 ms-1" @click="moveModify">
+            <button type="button" class="btn btn-outline-success mb-3 ms-1" @click="moveModify" v-if="authStore.user.id === article.userId">
               글수정
             </button>
-            <button type="button" class="btn btn-outline-danger mb-3 ms-1" @click="onDeleteArticle">
+            <button type="button" class="btn btn-outline-danger mb-3 ms-1" @click="onDeleteArticle" v-if="authStore.user.id === article.userId">
               글삭제
             </button>
           </div>
         </div>
       </div>
+      <!-- 댓글 컴포넌트 -->
+      <div class="col-lg-10">
+        <Comment :articleNo="articleNo" :initialComments="comments"/>
+      </div>
     </div>
   </div>
+
+  
+
 </template>
 
 <style scoped></style>
