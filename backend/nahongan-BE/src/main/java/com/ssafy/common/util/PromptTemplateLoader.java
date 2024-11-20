@@ -26,13 +26,13 @@ public class PromptTemplateLoader {
     @Value("classpath:prompts/happy-system-prompt.st")
     private Resource happyPromptResource;
 
-    public String loadSystemPrompt(int type) {
+    public String loadSystemPrompt(String type) {
     	Resource resource;
     	switch (type) {
-    		case 1: resource = complainPromptResource;
-    		case 2: resource = annoyingPromptResource;
-    		case 3: resource = angerPromptResource;
-    		case 4: resource = happyPromptResource;
+    		case "strict": resource = complainPromptResource;
+    		case "worry": resource = annoyingPromptResource;
+    		case "angry": resource = angerPromptResource;
+    		case "happy": resource = happyPromptResource;
     		default: resource = complainPromptResource;
     	}
         try {

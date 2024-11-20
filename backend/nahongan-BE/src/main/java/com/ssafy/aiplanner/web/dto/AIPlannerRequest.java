@@ -11,5 +11,5 @@ import lombok.Getter;
 @Getter
 public class AIPlannerRequest {
 	private String userPlan;
-	private int aiType;
+	private String aiType;
 }
