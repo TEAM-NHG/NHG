@@ -68,7 +68,6 @@ const makeCards = async (filterInfo) => {
       onFinish: () => (isLoading.value = false),  // 로딩 종료
        })
 
-    console.log(response.data)
     CardInfos.value = response.data.attractionList
     currentPage.value = response.data.currentPage;
     totalPage.value = response.data.lastPage;
