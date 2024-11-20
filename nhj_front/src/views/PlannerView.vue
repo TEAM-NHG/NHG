@@ -3,7 +3,7 @@
     <h1 class="mb-4">AI 여행 플래너</h1>
 
     <div class="mb-4">
-      <p class="mb-2">● 나만의 여행코치는 생성형 AI를 활용한 서비스로 계획을 끝이 생성 혹은 평가 받을 수 있는 공간입니다.</p>
+      <p class="mb-2">● 나만의 여행코치는 생성형 AI를 활용한 서비스로 계획을 생성 혹은 평가 받을 수 있는 공간입니다.</p>
       <p>● 여행 일정에 대해 구체적으로 적을 수록 상세한 평가를 받을 수 있으며, 제시된 캐릭터 별로 같은 평가를 다르게 받아 보실 수 있습니다.</p>
     </div>
 
@@ -12,7 +12,7 @@
 
         <div class="emotion-button">
           <div class="d-flex align-items-center"
-               @click="selectedEmotion = emotion; response = ''"
+               @click="selectedEmotion = emotion; displayText = ''"
                style="width: 200px; cursor: pointer;">
             <img :src="emotion.src" alt="" class="me-3">
 
@@ -125,7 +125,7 @@ watch([response, loading], ([newResponse, isLoading]) => {
       } else {
         clearInterval(interval)
       }
-    }, 50)
+    }, 30)
 
     // 컴포넌트 언마운트 시 인터벌 정리
     return () => clearInterval(interval)
