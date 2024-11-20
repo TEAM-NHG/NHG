@@ -24,7 +24,7 @@ const router = createRouter({
       component: CurationView
     },
     {
-      path: '/news',
+      path: '/news/:word?',
       name: 'news',
       component: NewsView
     },
