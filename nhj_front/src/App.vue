@@ -6,6 +6,7 @@
       <component :is="Component" />
     </router-view>
   </div>
+
 </template>
 
 <script setup>

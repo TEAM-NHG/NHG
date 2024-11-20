@@ -17,9 +17,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* add fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
-
 import { fas } from '@fortawesome/free-solid-svg-icons'
 library.add(fas)
+
+//tailwind
+import './assets/css/tailwind.css' // Tailwind CSS 파일 추가
 
 const app = createApp(App)
 
