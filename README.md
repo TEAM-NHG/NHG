@@ -1,93 +1,45 @@
-# nahonjaganda
+# 나혼자간다
 
+혼행인들을 위한 서비스 나혼자간다입니다
 
+## Commit Convention
 
-## Getting started
+나혼자간다의 커밋컨벤션입니다.. >o< ~!!
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://lab.ssafy.com/jinus7949/nahonjaganda.git
-git branch -M master
-git push -uf origin master
-```
-
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://lab.ssafy.com/jinus7949/nahonjaganda/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+🎨
+| **이모지** | **태그**                | **설명**                                   | **영문 설명**                                |
+|------------|-------------------------|-------------------------------------------|---------------------------------------------|
+| 🎨         | `:art:`                | 코드의 구조/형태 개선                     | Improve structure / format of the code.    |
+| ⚡️         | `:zap:`                | 성능 개선                                 | Improve performance.                        |
+| 🔥         | `:fire:`               | 코드/파일 삭제                            | Remove code or files.                       |
+| 🐛         | `:bug:`                | 버그 수정                                 | Fix a bug.                                  |
+| 🚑         | `:ambulance:`          | 긴급 수정                                 | Critical hotfix.                            |
+| ✨         | `:sparkles:`           | 새 기능                                   | Introduce new features.                     |
+| 📝         | `:memo:`               | 문서 추가/수정                            | Add or update documentation.                |
+| 💄         | `:lipstick:`           | UI/스타일 파일 추가/수정                  | Add or update the UI and style files.       |
+| 🎉         | `:tada:`               | 프로젝트 시작                             | Begin a project.                            |
+| ✅         | `:white_check_mark:`   | 테스트 추가/수정                          | Add or update tests.                        |
+| 🔒         | `:lock:`               | 보안 이슈 수정                            | Fix security issues.                        |
+| 🔖         | `:bookmark:`           | 릴리즈/버전 태그                          | Release / Version tags.                     |
+| 💚         | `:green_heart:`        | CI 빌드 수정                              | Fix CI Build.                               |
+| 📌         | `:pushpin:`            | 특정 버전 의존성 고정                     | Pin dependencies to specific versions.      |
+| 👷         | `:construction_worker:`| CI 빌드 시스템 추가/수정                  | Add or update CI build system.              |
+| 📈         | `:chart_with_upwards_trend:` | 분석, 추적 코드 추가/수정              | Add or update analytics or track code.      |
+| ♻️         | `:recycle:`            | 코드 리팩토링                             | Refactor code.                              |
+| ➕         | `:heavy_plus_sign:`    | 의존성 추가                               | Add a dependency.                           |
+| ➖         | `:heavy_minus_sign:`   | 의존성 제거                               | Remove a dependency.                        |
+| 🔧         | `:wrench:`             | 구성 파일 추가/삭제                       | Add or update configuration files.          |
+| 🔨         | `:hammer:`             | 개발 스크립트 추가/수정                   | Add or update development scripts.          |
+| 🌐         | `:globe_with_meridians:` | 국제화/현지화                           | Internationalization and localization.      |
+| 💩         | `:poop:`               | 똥싼 코드                                 | Write bad code that needs to be improved.   |
+| ⏪         | `:rewind:`             | 변경 내용 되돌리기                        | Revert changes.                             |
+| 🔀         | `:twisted_rightwards_arrows:` | 브랜치 합병                             | Merge branches.                             |
+| 📦         | `:package:`            | 컴파일된 파일 추가/수정                   | Add or update compiled files or packages.   |
+| 👽         | `:alien:`              | 외부 API 변화로 인한 수정                 | Update code due to external API changes.    |
+| 🚚         | `:truck:`              | 리소스 이동, 이름 변경                    | Move or rename resources (e.g., files paths routes). |
+| 📄         | `:page_facing_up:`     | 라이센스 추가/수정                        | Add or update license.                      |
+| 💡         | `:bulb:`               | 주석 추가/수정                            | Add or update comments in source code.      |
+| 🍻         | `:beers:`              | 술 취해서 쓴 코드                         | Write code drunkenly.                       |
+| 🗃         | `:card_file_box:`      | 데이터베이스 관련 수정                    | Perform database related changes.           |
+| 🔊         | `:loud_sound:`         | 로그 추가/수정                            | Add or update logs.                         |
+| 🙈         | `:see_no_evil:`        | .gitignore 추가/수정                      | Add or update a .gitignore file.            |
