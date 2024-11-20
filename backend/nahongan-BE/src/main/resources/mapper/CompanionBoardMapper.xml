@@ -51,12 +51,7 @@
   
     <select id="countArticle" resultType="int">
         SELECT
-            article_no,
-            user_id,
-            subject,
-            content,
-            hit,
-            register_time
+            count(*)
         FROM companion_board
         <where>
 			<include refid="search"/>
