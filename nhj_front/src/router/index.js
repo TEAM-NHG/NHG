@@ -44,7 +44,7 @@ const router = createRouter({
           component: () => import("@/components/boards/BoardList.vue"),
         },
         {
-          path: "view/:articleno",
+          path: "view/:articleNo",
           name: "article-view",
           component: () => import("@/components/boards/BoardDetail.vue"),
         },
