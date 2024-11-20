@@ -65,6 +65,7 @@ public class TripInfoService {
 					continue;
 				}
 				tripInfoRepository.saveImages(images);
+				attractions = tripInfoRepository.findAttractionByFilter(request.getSidoCode(), request.getGugunCode(), request.getType(), request.getKeyword(), offset, ATTRACTION_LIST_SIZE);
 			}
 		}
         return SearchAttractionResponse.builder()
