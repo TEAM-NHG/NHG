@@ -23,6 +23,9 @@ library.add(fas)
 //tailwind
 import './assets/css/tailwind.css' // Tailwind CSS 파일 추가
 
+//main.css
+import './assets/css/main.css'
+
 const app = createApp(App)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
