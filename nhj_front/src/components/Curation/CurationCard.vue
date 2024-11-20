@@ -113,7 +113,7 @@ const closeModal = () => (showModal.value = false)
   cursor: pointer;
   transition: background-color 0.3s;
   border-radius:50%;
-  font-size: 0.7rem;
+  font-size: 0.5rem;
 }
 
 .slider-btn:hover {
