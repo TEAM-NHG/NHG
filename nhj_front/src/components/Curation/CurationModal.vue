@@ -21,7 +21,7 @@
             </div>
 
             <!-- 선택된 정보 -->
-            <p class="mx-4" style="text-align: center;" v-html="selectedInfo" ></p>
+            <p class="mx-4" style="text-align: center; text-decoration: line-through;" v-html="selectedInfo" ></p>
 
             <!-- 버튼 -->
             <div class="d-flex justify-content-center m-2">
