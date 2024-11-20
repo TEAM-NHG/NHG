@@ -67,8 +67,8 @@ public class CompanionBoardService {
 		System.out.println(request.getUserId());
 		CompanionBoard article = CompanionBoard.builder()
 			.userId(request.getUserId())
-			.subject(request.getContent())
-			.content(request.getSubject())
+			.subject(request.getSubject())
+			.content(request.getContent())
 			.build();
 		companionBoardRepository.createArticle(article);
 	}
