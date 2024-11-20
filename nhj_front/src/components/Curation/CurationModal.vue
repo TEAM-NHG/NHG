@@ -11,7 +11,7 @@
           <!-- 왼쪽: 정보 섹션 -->
           <div class="col-lg-6 d-flex flex-column justify-content-center">
             <h2 class="fw-bold my-3 mx-4" style="color: black;">{{ card.title }}</h2>
-            <p class="mb-2 mx-4" style="font-size: 90%;" v-html="card.detail.overview"></p>
+            <p class="mb-2 mx-4" style="font-size: 90%;" v-html="card.overview"></p>
 
             <!-- 아이콘 리스트 -->
             <div class="d-flex justify-content-center align-items-center m-3">
@@ -25,7 +25,7 @@
 
             <!-- 버튼 -->
             <div class="d-flex justify-content-center m-2">
-              <RouterLink :to="{ name: 'news' }"> <button class="btn">블로그</button> </RouterLink>
+              <RouterLink :to="{ name: 'news', params: { word: card.title } }"> <button class="btn">블로그</button> </RouterLink>
               <RouterLink :to="{ name: 'board', params: { word: card.title } }"> <button class="btn">동행글</button>
               </RouterLink>
             </div>
@@ -87,11 +87,11 @@ const makeModalInfo = async () => {
 // Data
 const selectedInfo = ref('이모티콘을 누르면 해당 정보를 확인하실 수 있습니다.')
 const images = computed(() => [
-  { src: "src/assets/adress.svg", text: card.value.detail.addr1 || "주소 정보가 없습니다." },
-  { src: 'src/assets/homepage.svg', text: card.value.detail.homepage || "홈페이지 주소가 없습니다." },
-  { src: 'src/assets/phone.svg', text: card.value.detail.tel || "번호 정보가 없습니다." },
-  { src: 'src/assets/time.svg', text: card.value.detail.time || "운영 시간 정보가 없습니다." },
-  { src: 'src/assets/parking.svg', text: card.value.detail.parking || "주차 정보가 없습니다." },
+  { src: "src/assets/adress.svg", text: card.value.addr1 || "주소 정보가 없습니다." },
+  { src: 'src/assets/homepage.svg', text: card.value.homepage || "홈페이지 주소가 없습니다." },
+  { src: 'src/assets/phone.svg', text: card.value.tel || "번호 정보가 없습니다." },
+  { src: 'src/assets/time.svg', text: card.value.time || "운영 시간 정보가 없습니다." },
+  { src: 'src/assets/parking.svg', text: card.value.parking || "주차 정보가 없습니다." },
 ]);
 
 </script>
