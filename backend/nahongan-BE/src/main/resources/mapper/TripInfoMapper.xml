@@ -95,6 +95,12 @@
         WHERE content_id = #{contentId}
     </update>
 
+    <select id="findImageByContentId" resultType="java.lang.String">
+        SELECT originimgurl
+        FROM attraction_image
+        WHERE content_id = #{contentId};
+    </select>
+
     <!-- filter -->
     <sql id="search">
 		<if test="sidoCode != null and sidoCode != ''"> AND sg.sido_code = #{sidoCode} </if>
@@ -141,9 +147,8 @@
         <result property="isImageSaved" column="is_image_saved" />
         <result property="isDetailSaved" column="is_detail_saved" />
         <!-- images는 쉼표로 결합된 문자열을 List<String>으로 변환 -->
-        <collection property="images" ofType="java.lang.String" javaType="java.util.ArrayList">
-            <result column="images" />
-        </collection>
+        <collection property="images" ofType="java.lang.String" javaType="java.util.ArrayList" 
+        		select="findImageByContentId" column="content_id"/>
     </resultMap>
 
     <resultMap id="attractionResultMap2" type="com.ssafy.tripinfo.persistent.entity.Attractions">

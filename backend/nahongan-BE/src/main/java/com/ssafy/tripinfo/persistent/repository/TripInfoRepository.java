@@ -43,4 +43,5 @@ public interface TripInfoRepository {
 
 	void modifyAttractions(Attractions attraction);
 
+	List<AttractionImage> findImageByContentId(int contentId);
 } 
