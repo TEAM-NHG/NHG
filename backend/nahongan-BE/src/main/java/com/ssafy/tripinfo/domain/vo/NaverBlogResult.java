@@ -1,18 +1,18 @@
 package com.ssafy.tripinfo.domain.vo;
 
-import com.ssafy.companion_board.web.dto.response.GetArticleListResponse;
-import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
-import com.ssafy.tripinfo.persistent.entity.BlogArticle;
-import lombok.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.ssafy.tripinfo.persistent.entity.BlogArticle;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @ToString
 @NoArgsConstructor

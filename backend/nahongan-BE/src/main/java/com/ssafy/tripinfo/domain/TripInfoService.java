@@ -3,27 +3,28 @@ package com.ssafy.tripinfo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ssafy.tripinfo.persistent.entity.AttractionImage;
+import com.ssafy.tripinfo.persistent.entity.Attractions;
+import com.ssafy.tripinfo.persistent.repository.TripInfoRepository;
 import com.ssafy.tripinfo.web.dto.detail.AttractionDetailDto;
-import com.ssafy.tripinfo.web.dto.detail.AttractionImageDtos;
 import com.ssafy.tripinfo.web.dto.detail.CommonDetailDto;
 import com.ssafy.tripinfo.web.dto.detail.EventDetailDto;
 import com.ssafy.tripinfo.web.dto.detail.FoodDetailDto;
 import com.ssafy.tripinfo.web.dto.detail.LeisureDetailDto;
 import com.ssafy.tripinfo.web.dto.detail.LodgingDetailDto;
 import com.ssafy.tripinfo.web.dto.detail.ShoppingDetailDto;
-import com.ssafy.tripinfo.web.dto.request.SearchBlogRequest;
-import com.ssafy.tripinfo.web.dto.response.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.ssafy.tripinfo.persistent.entity.Attractions;
-import com.ssafy.tripinfo.persistent.repository.TripInfoRepository;
 import com.ssafy.tripinfo.web.dto.request.GetGugunBySidoCodeRequest;
 import com.ssafy.tripinfo.web.dto.request.SearchAttractionRequest;
+import com.ssafy.tripinfo.web.dto.request.SearchBlogRequest;
+import com.ssafy.tripinfo.web.dto.response.GetFilterContentResponse;
+import com.ssafy.tripinfo.web.dto.response.GetGugunBySidoCodeResponse;
+import com.ssafy.tripinfo.web.dto.response.SearchAttractionResponse;
+import com.ssafy.tripinfo.web.dto.response.SearchBlogResponse;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 @RequiredArgsConstructor
