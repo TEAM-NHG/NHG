@@ -1,7 +1,7 @@
 <!-- src/views/CurationView.vue -->
 <template>
   <div class="innerBox">
-    <h2 class="mb-4" style="cursor: pointer; width: 15vw; font-size: 200%;" @click="filtersClear(filters)">여행 큐레이션</h2>
+    <h2 class="mb-4" style="cursor: pointer; width: 15vw; font-size: 230%;" @click="filtersClear(filters)">여행 큐레이션</h2>
 
     <!-- Search Component -->
     <CurationSearch @search="handleSearch" />
@@ -101,5 +101,9 @@ const onPageChange = (val) => {
 </script>
 
 <style scoped>
+.innerBox{
+  background-color: greenyellow;
+  padding: 5%;
+}
 
 </style>
