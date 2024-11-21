@@ -15,7 +15,7 @@ defineProps({ article: Object });
     </td>
     <td>{{ article.userId }}</td>
     <td>{{ article.hit }}</td>
-    <td>{{ new Date(article.registerTime).toISOString().split('T')[0] }}</td>
+    <td>{{ article.registerTime.replace(/T.*/, "") }}</td>
   </tr>
 </template>
 

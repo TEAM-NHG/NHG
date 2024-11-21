@@ -10,7 +10,7 @@
         <h6 class="mb-3 text-primary">{{ card.bloggername }}</h6>
         <h4 class="mb-2">{{ stripHtml(card.title) }}</h4>
         <p>{{ stripHtml(card.description) }}</p>
-          <small class="text-muted d-flex justify-content-end">{{ new Date(card.createdDate).toISOString().split('T')[0] }}</small>
+          <small class="text-muted d-flex justify-content-end">{{ card.createdDate.replace(/T.*/, "") }}</small>
       </div>
     </a>
   </div>
