@@ -20,7 +20,7 @@ public interface MemberRepository {
 
     String findIdByEmail(@Param("email") String email);
     
-    int modify(MemberDto member) throws SQLException;
+    int modify(Member member) throws SQLException;
     
 	int delete(String id);
 	

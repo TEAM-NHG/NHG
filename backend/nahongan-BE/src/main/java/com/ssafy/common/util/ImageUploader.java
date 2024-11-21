@@ -1,59 +1,72 @@
 package com.ssafy.common.util;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class ImageUploader {
+    @Value("${file.path.images}") // 실제 저장 경로 (예: "C:/NHG/upload/image")
+    private String imageFilePath;
 
-	public String upload(MultipartFile[] files, String uploadPath) {
+    @Value("${resource.images}") // 웹에서 접근할 수 있는 상대 경로 (예: "/upload/image")
+    private String imageResourcePath;
+
+    public String upload(List<MultipartFile> images, String uploadPath) {
         StringBuilder savedFilePaths = new StringBuilder();
 
         try {
-            if (files != null && files.length > 0) {
-                String today = new SimpleDateFormat("yyMMdd").format(new Date());
-                String saveFolder = uploadPath + File.separator + today;
-                File folder = new File(saveFolder);
+            if (images != null && images.size() > 0) {
+                // 오늘 날짜로 폴더 생성
+                String saveFolderRelative = (uploadPath != null ? uploadPath : "default");
 
-                // 폴더가 없으면 생성
-                if (!folder.exists()) {
-                    folder.mkdirs();
+                // 절대 경로와 상대 경로를 구분
+                String saveFolderAbsolute = imageFilePath + File.separator + saveFolderRelative;
+                File folder = new File(saveFolderAbsolute);
+
+                // 폴더 생성
+                if (!folder.exists() && !folder.mkdirs()) {
+                    throw new IOException("폴더 생성 실패: " + saveFolderAbsolute);
                 }
 
                 // 파일 처리
-                for (MultipartFile file : files) {
+                for (MultipartFile file : images) {
                     String originalFileName = file.getOriginalFilename();
                     if (originalFileName != null && !originalFileName.isEmpty()) {
                         // 확장자 추출
-                        String extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                        String extension = "";
+                        if (originalFileName.contains(".")) {
+                            extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                        }
                         String saveFileName = UUID.randomUUID().toString() + extension;
 
                         // 파일 저장
                         File destinationFile = new File(folder, saveFileName);
                         file.transferTo(destinationFile);
 
-                        // 경로 저장 (여러 개의 파일 경로를 반환하려면, 경로를 저장)
+                        // 상대 경로 저장
                         if (savedFilePaths.length() > 0) {
                             savedFilePaths.append(", ");
                         }
-                        savedFilePaths.append(saveFolder + File.separator + saveFileName);
+                        savedFilePaths.append(imageResourcePath + "/" + saveFolderRelative.replace(File.separator, "/") + "/" + saveFileName);
                     }
                 }
 
-                // 파일 경로 반환
+                // 파일 상대 경로 반환
                 return savedFilePaths.toString();
-            } 
+            }
         } catch (IOException e) {
-                e.printStackTrace(); // 로그 시스템을 사용하는 것이 좋습니다
+            // 예외 처리
+            e.printStackTrace(); // 로그 시스템 권장
         }
         return null;
     }
 }
+
+

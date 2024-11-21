@@ -24,7 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -99,16 +101,19 @@ public class MemberService {
     }    
     
     public int modify(MemberDto member) throws SQLException {
-    	return memberRepository.modify(member);
+    	return memberRepository.modify(member.toEntity());
     }
     
     public int delete(String id) {
     	return memberRepository.delete(id);
     }
 
-	public void setMemberImage(MultipartFile[] image) {
-		// TODO Auto-generated method stub
-		imageUploader.upload(image, null);
+	public void setMemberImage(List<MultipartFile> images, String userId) throws SQLException {
+		Member member = memberRepository.findById(userId);
+		String detailPath = "member" + File.separator + userId;
+		String imagePath = imageUploader.upload(images, detailPath);
+		member.updateImage(imagePath);
+		memberRepository.modify(member);
 	}
 	
 	public GetCommentHistoryResponse getCommentNotice(String userId) {

@@ -27,16 +27,16 @@ import org.springframework.web.servlet.resource.PathResourceResolver;
 @EnableAspectJAutoProxy
 @MapperScan(basePackages = { "com.ssafy.**.repository" })
 public class WebMvcConfiguration implements WebMvcConfigurer {
-	
-	private final List<String> patterns = Arrays.asList("/board/*", "/admin", "/user/list");
 
 //	@Autowired
 //	private ConfirmInterceptor confirmInterceptor;
+	@Value("${file.path.images}")
+	private String uploadFilePath;
 
-	private final String uploadFilePath;
-
-	public WebMvcConfiguration(@Value("${file.path.upload-files}") String uploadFilePath) {
-		this.uploadFilePath = uploadFilePath;
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/upload/image/**").addResourceLocations("file:///" + uploadFilePath + "/")
+		.setCachePeriod(3600).resourceChain(true).addResolver(new PathResourceResolver());
 	}
 
 	@Override
@@ -51,19 +51,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 				.maxAge(1800); // 1800초 동안 preflight 결과를 캐시에 저장
 	}
 
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		registry
-//				.addInterceptor(authInterceptor)
-//				.addPathPatterns("/**")
-//				.excludePathPatterns("/api/auth/**");
-//	}
-
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/upload/file/**").addResourceLocations("file:///" + uploadFilePath + "/")
-				.setCachePeriod(3600).resourceChain(true).addResolver(new PathResourceResolver());
-	}
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {

@@ -25,4 +25,8 @@ public class Member {
 	public boolean checkPassword(String plainPassword, PasswordEncoder passwordEncoder) {
 		return passwordEncoder.matches(plainPassword, this.password);
 	}
+
+	public void updateImage(String imagePath) {
+		this.img = imagePath;
+	}
 }

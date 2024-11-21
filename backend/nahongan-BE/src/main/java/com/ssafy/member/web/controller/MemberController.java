@@ -6,6 +6,7 @@ import com.ssafy.member.web.dto.request.FindPasswordRequest;
 import com.ssafy.member.web.dto.request.JoinRequest;
 import com.ssafy.member.web.dto.request.LoginRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
+import com.ssafy.member.web.dto.request.SetMemberImageRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.FindPasswordResponse;
 import com.ssafy.member.web.dto.response.GetCommentHistoryResponse;
@@ -19,10 +20,12 @@ import lombok.RequiredArgsConstructor;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,9 +41,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
 
 	private final MemberService memberService;
-	
-//	@Value("file.path.upload-images")
-//	private String uploadPath;
 
 	@PostMapping("/join/id-check")
 	public ResponseEntity<Boolean> checkDuplicatedId(@RequestBody Map<String, String> requestBody) throws Exception {
@@ -97,9 +97,9 @@ public class MemberController {
 		return new ResponseEntity<>(memberService.delete(id), HttpStatus.OK);
 	}
 	
-	@PostMapping("/profile/img")
-	public ResponseEntity<Void> setMemberImage(@RequestBody MultipartFile[] image, HttpSession httpSession) throws Exception {
-		memberService.setMemberImage(image);
+	@PostMapping(value = "/profile/img",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<Void> setMemberImage(@RequestPart SetMemberImageRequest request, @RequestPart(required = false) List<MultipartFile> images) throws SQLException {
+		memberService.setMemberImage(images, request.getUserId());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
