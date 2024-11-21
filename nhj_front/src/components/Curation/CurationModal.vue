@@ -11,7 +11,7 @@
           <!-- 왼쪽: 정보 섹션 -->
           <div class="col-lg-6 d-flex flex-column justify-content-center">
             <h2 class="fw-bold my-3 mx-4" style="color: black;">{{ card.title }}</h2>
-            <p class="mb-2 mx-4" style="font-size: 90%;" v-html="card.overview"></p>
+            <p class="mb-2 mx-4" style="font-size: 90%;" v-html="card.overview.replace(/\([^()]*\)/g, '').replace(/\([^)]*\)/g, '')"></p>
 
             <!-- 아이콘 리스트 -->
             <div class="d-flex justify-content-center align-items-center m-3">
@@ -97,6 +97,7 @@ const images = computed(() => [
 </script>
 
 <style scoped>
+
 .modal-content {
   background-color: #FFFFFF;
 }

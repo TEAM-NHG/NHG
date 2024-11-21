@@ -109,6 +109,10 @@ const MemberDelete = async () => {
 </script>
 
 <style scoped>
+* {
+  font-family: 'goorm-sans-bold';
+}
+
 .nav-link {
   color: #000000;
 }

@@ -17,8 +17,8 @@ import TheNavbar from '@/components/common/TheNavbar.vue';
 <style>
 /* Global styles if needed */
 body {
-  /* font-family: 'Jua', sans-serif; */
-  /* font-size: 120%; */
+  font-family: 'NanumSquare';
   font-weight: bold;
+  font-size: 110%;
 }
 </style>

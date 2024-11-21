@@ -126,7 +126,7 @@ const selectEmotion = (emotion) => {
   emotion.selected = true;
 
   //출력창 초기화
-  displayText.value = ''; 
+  displayText.value = '';
   clearInterval(interval)
 }
 
@@ -151,6 +151,9 @@ watch([response, loading], ([newResponse, isLoading]) => {
 })
 </script>
 <style scoped>
+* {
+  font-family: 'Bazzi', sans-serif;
+}
 
 .emotion-button img {
   width: 60px;
