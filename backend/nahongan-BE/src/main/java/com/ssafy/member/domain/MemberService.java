@@ -2,6 +2,7 @@ package com.ssafy.member.domain;
 
 import com.ssafy.common.exception.BaseException;
 import com.ssafy.common.util.ImageUploader;
+import com.ssafy.companion_board.persistent.repository.CommentRepository;
 import com.ssafy.member.persistent.entity.Member;
 import com.ssafy.member.persistent.repository.MemberRepository;
 import com.ssafy.member.web.dto.MemberDto;
@@ -12,6 +13,7 @@ import com.ssafy.member.web.dto.request.LoginRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.FindPasswordResponse;
+import com.ssafy.member.web.dto.response.GetCommentHistoryResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
 import jakarta.servlet.http.HttpSession;
@@ -30,6 +32,8 @@ import java.sql.SQLException;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    
+    private final CommentRepository commentRepository;
 
     private final PasswordEncoder passwordEncoder;
     
@@ -105,6 +109,13 @@ public class MemberService {
 	public void setMemberImage(MultipartFile[] image) {
 		// TODO Auto-generated method stub
 		imageUploader.upload(image, null);
+	}
+	
+	public GetCommentHistoryResponse getCommentNotice(String userId) {
+		return GetCommentHistoryResponse.builder()
+		.articleComments(commentRepository.findCommentByUserArticle(userId))
+		.childComments(commentRepository.findChildCommentByUserParentComment(userId))
+		.build();
 	}
 
 }

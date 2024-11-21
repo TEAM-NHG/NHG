@@ -19,6 +19,7 @@ import com.ssafy.companion_board.web.dto.request.DeleteArticleRequest;
 import com.ssafy.companion_board.web.dto.request.GetArticleListRequest;
 import com.ssafy.companion_board.web.dto.request.UpdateArticleRequest;
 import com.ssafy.companion_board.web.dto.request.WriteArticleRequest;
+import com.ssafy.companion_board.web.dto.request.comment.CreateChildCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.CreateCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.GetCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.GetCommentsRequest;
@@ -41,24 +42,29 @@ public class CommentController {
 
 	@PostMapping("/comment")
 	public ResponseEntity<Void> createComment(@RequestBody CreateCommentRequest request, HttpSession session) throws Exception {
-		commentService.createComment(request);
+		String userId = (String) session.getAttribute("user");
+		commentService.createComment(request, userId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/comment/{commentId}")
-	public ResponseEntity<Void> deleteComment(@PathVariable("commentId") int commentId, HttpSession session) throws Exception {
-		commentService.deleteComment(commentId);
+	@DeleteMapping("/comment/child")
+	public ResponseEntity<Void> createChildComment(@RequestBody CreateChildCommentRequest request, HttpSession session) throws Exception {
+		String userId = (String) session.getAttribute("user");
+		commentService.createComment(request, userId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/comment/{commentId}")
-	public ResponseEntity<CommentDto> getComment(@PathVariable int commentId) throws Exception {
-		return new ResponseEntity<>(commentService.getComment(commentId), HttpStatus.CREATED);
+	public ResponseEntity<CommentDto> getComment(@PathVariable int commentId, HttpSession session) throws Exception {
+		String userId = (String) session.getAttribute("user");
+		return new ResponseEntity<>(commentService.getComment(commentId, userId), HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{articleNo}/comment")
-	public ResponseEntity<GetCommentsResponse> getComments(@PathVariable int articleNo) throws Exception {
-		return new ResponseEntity<>(commentService.getComments(articleNo), HttpStatus.CREATED);
+	public ResponseEntity<GetCommentsResponse> getComments(@PathVariable int articleNo, HttpSession session) throws Exception {
+		String userId = "string";
+		System.out.println("userid : " + userId);
+		return new ResponseEntity<>(commentService.getComments(articleNo, userId), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/comment/{commentId}")

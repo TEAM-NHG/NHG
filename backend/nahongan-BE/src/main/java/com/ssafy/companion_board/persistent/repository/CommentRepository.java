@@ -30,4 +30,10 @@ public interface CommentRepository {
 	int updateComment(Comment comment);
 	
 	int countComment(@Param("articleNo") int articleNo);
+	
+	List<Comment> findCommentByUserArticle(String userId);
+	
+	List<Comment> findChildCommentByUserParentComment(String userId);
+	
+	
 } 

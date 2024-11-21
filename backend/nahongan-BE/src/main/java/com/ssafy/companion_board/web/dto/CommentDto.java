@@ -7,17 +7,20 @@ import com.ssafy.companion_board.persistent.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class CommentDto {
 
     private int id;            // 댓글 ID
     private int articleNo;     // 댓글이 달린 게시물 번호
-    private final Boolean isOwner;
+    private Boolean isOwner;
     private String userId;     // 댓글 작성자 ID
     private String content;    // 댓글 내용
     private LocalDateTime createdAt;  // 댓글 생성일
@@ -41,7 +44,7 @@ public class CommentDto {
      * Entity -> DTO 변환 메서드 (정적 메서드)
      * @param string 
      */
-    public static CommentDto from(Comment comment) {
+    public static CommentDto from(Comment comment, String userId) {
     	System.out.println(comment.getId());
     	System.out.println("----------");
         return CommentDto.builder()
@@ -49,7 +52,7 @@ public class CommentDto {
                 .articleNo(comment.getArticleNo())
                 .userId(comment.getUserId())
                 .content(comment.getContent())
-                .isOwner(comment.isOwner("asdf"))
+                .isOwner(comment.isOwner(userId))
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
                 .build();
