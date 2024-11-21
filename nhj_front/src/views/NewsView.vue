@@ -1,5 +1,5 @@
 <template>
-  <div class="innerBox p-4">
+  <div class="innerBox ">
 
     <div class="news-header">
 
@@ -12,25 +12,15 @@
         <select class="form-select w-auto me-2" v-model="searchOption">
           <option value="title">제목</option>
         </select>
-        <input
-          type="text"
-          class="form-control me-2"
-          placeholder="검색어..."
-          v-model="searchText"
-        />
+        <input type="text" class="form-control me-2" placeholder="검색어..." v-model="searchText" />
         <button class="btn btn-primary" style="width: 80px;" @click="search" @keyup.enter="search">검색</button>
       </div>
 
     </div>
 
-
     <!-- 카드 목록 -->
     <div class="row">
-      <NewsCard
-        v-for="card in cards"
-        :key="card.blogger"
-        :card="card"
-      />
+      <NewsCard v-for="card in cards" :key="card.blogger" :card="card" />
     </div>
 
     <!-- 무한스크롤 -->
@@ -38,11 +28,23 @@
       <p v-if="isLoading">Loading...</p>
     </div>
   </div>
+
+  <!-- 제일 위로 올라가는 버튼 -->
+  <button
+  v-if="showScrollButton"
+  @click="scrollToTop"
+  class="tw-fixed tw-bottom-10 tw-right-10 tw-bg-blue-600 tw-text-white tw-rounded-full tw-p-3 tw-shadow-lg hover:tw-bg-blue-700 tw-transition tw-flex tw-items-center tw-justify-center"
+  style="width: 60px; height: 45px;"
+>
+  <font-awesome-icon :icon="['fad', 'chevron-up']" />
+  <!-- <img src="@/assets/arrow-up.png" alt="위로" class="tw-w-6 tw-h-6" /> -->
+</button>
+
 </template>
 
 <script setup>
 import NewsCard from "@/components/News/NewsCard.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 //route
 import { useRoute } from "vue-router";
@@ -63,7 +65,7 @@ onMounted(async () => {
 
 // 검색 기능
 const search = async () => {
-  const response = await local.get('/trip-info/search/blog', {params : {keyword : searchText.value, pgno: 1}})
+  const response = await local.get('/trip-info/search/blog', { params: { keyword: searchText.value, pgno: 1 } })
   cards.value = response.data.blogList
 };
 
@@ -81,7 +83,7 @@ const fetchData = async () => {
 
   // 데이터를 가져오는 API 호출 (예제 API 사용)
   try {
-    const response = await local.get('/trip-info/search/blog', {params : {keyword : searchText.value, pgno: page.value * 5}})
+    const response = await local.get('/trip-info/search/blog', { params: { keyword: searchText.value, pgno: page.value * 5 } })
     if (response.data) {
       cards.value.push(...response.data.blogList); // 기존 데이터에 추가
       console.log(cards.value)
@@ -108,10 +110,38 @@ const setupObserver = () => {
   }
 };
 
+// "제일 위로" 버튼 상태
+const showScrollButton = ref(false);
+
+// 화면 맨 위로 스크롤
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// 스크롤 이벤트 핸들러
+const handleScroll = () => {
+  showScrollButton.value = window.scrollY > 200; // 200px 이상 스크롤 시 버튼 표시
+};
+
+// 컴포넌트가 마운트/언마운트될 때 이벤트 리스너 추가/제거
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <style scoped>
-.news-header{
+.innerBox {
+  background-color: greenyellow;
+  border-radius: 5px;
+  padding: 5%;
+}
+
+
+.news-header {
   display: flex;
   justify-content: space-between;
   align-items: end;
@@ -128,11 +158,6 @@ const setupObserver = () => {
   max-width: 600px;
   margin: auto;
   padding: 1rem;
-}
-
-.item {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
 }
 
 .loading-trigger {
