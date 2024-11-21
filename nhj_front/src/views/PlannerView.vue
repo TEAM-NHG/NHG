@@ -7,18 +7,18 @@
       <p>● 여행 일정에 대해 구체적으로 적을 수록 상세한 평가를 받을 수 있으며, 제시된 캐릭터 별로 같은 평가를 다르게 받아 보실 수 있습니다.</p>
     </div>
 
-    <div class="emotion-buttons d-flex mb-4">
+    <div class="emotion-buttons d-flex justify-content-center mb-4">
       <template  v-for="emotion in emotions" :key="emotion.id">
 
         <div class="emotion-button">
-          <div class="d-flex align-items-center"
+          <div class="d-flex row justify-content-center mx-4"
                @click="selectEmotion(emotion)"
-               style="width: 200px; cursor: pointer;">
-            <img :src="emotion.src" alt="" class="me-3">
+               style="cursor: pointer;">
+            <img :src="emotion.selected ? emotion.src2 : emotion.src" alt="" class="" style="width: 90px;">
 
-            <div class="me-3">
+            <p class="" style="text-align: center;">
               {{ emotion.label }}
-            </div>
+            </p>
           </div>
         </div>
 
@@ -87,11 +87,11 @@ const interval = ref(null)
 
 // 감정 데이터
 const emotions = ref([
-  { id: 'happy', label: '기쁨', src: "src/assets/insideout/기쁨.png", selected: false, borderColor: "#FDFD71"},
-  { id: 'strict', label: '까칠', src: "src/assets/insideout/까칠.png", selected: false, borderColor: "#85CA6E"},
-  { id: 'worry', label: '걱정', src: "src/assets/insideout/걱정.png", selected: false, borderColor: "#D3B3D4"},
-  { id: 'angry', label: '분노', src: "src/assets/insideout/분노.png", selected: false, borderColor: "#E62C2B"},
-  { id: 'boring', label: '따분', src: "src/assets/insideout/따분.png", selected: false, borderColor: "#5756A6"},
+  { id: 'happy', label: '기쁨', src: "src/assets/insideout/기쁨.png", src2: "src/assets/insideout/기쁨2.png", selected: false, borderColor: "#FDFD71"},
+  { id: 'strict', label: '까칠', src: "src/assets/insideout/까칠.png", src2: "src/assets/insideout/까칠2.png", selected: false, borderColor: "#85CA6E"},
+  { id: 'worry', label: '걱정', src: "src/assets/insideout/걱정.png", src2: "src/assets/insideout/걱정2.png", selected: false, borderColor: "#D3B3D4"},
+  { id: 'angry', label: '분노', src: "src/assets/insideout/분노.png", src2: "src/assets/insideout/분노2.png", selected: false, borderColor: "#E62C2B"},
+  { id: 'boring', label: '따분', src: "src/assets/insideout/따분.png", src2: "src/assets/insideout/따분2.png", selected: false, borderColor: "#5756A6"},
 ])
 
 // 감정 선택 처리
