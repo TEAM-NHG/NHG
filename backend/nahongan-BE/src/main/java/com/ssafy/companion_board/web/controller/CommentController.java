@@ -47,7 +47,7 @@ public class CommentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/comment/child")
+	@PostMapping("/comment/child")
 	public ResponseEntity<Void> createChildComment(@RequestBody CreateChildCommentRequest request, HttpSession session) throws Exception {
 		String userId = (String) session.getAttribute("user");
 		commentService.createComment(request, userId);

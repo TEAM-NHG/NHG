@@ -40,14 +40,7 @@ public class CommentService {
 
 	public void createComment(CreateCommentRequest request, String userId) {
 		Comment comment;
-		if (request instanceof CreateCommentRequest) {
-			comment = Comment.builder()
-							.articleNo(request.getArticleNo())
-							.content(request.getContent())
-							.userId(request.getUserId())
-							.build();
-			commentRepository.createComment(comment);
-		} if (request instanceof CreateChildCommentRequest childRequest) {
+		if (request instanceof CreateChildCommentRequest childRequest) {
 			comment = Comment.builder()
 					.articleNo(childRequest.getArticleNo())
 					.parentId(childRequest.getParentCommentId())
