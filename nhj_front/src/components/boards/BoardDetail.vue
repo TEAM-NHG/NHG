@@ -1,6 +1,6 @@
 <script setup>
 import Comment from "./item/comment.vue";
-import { detailArticle, deleteArticle } from "@/api/board";
+import { detailArticle, detailComments, deleteArticle } from "@/api/board";
 import { ref, onMounted } from "vue";
 
 //pinia
@@ -10,35 +10,18 @@ const authStore = useAuthStore();
 //route
 import { useRoute, useRouter } from "vue-router";
 
-//axios
-import { localAxios } from "@/util/http-commons"
-const local = localAxios()
-
 const route = useRoute();
 const router = useRouter();
 
 // const articleNo = ref(route.params.articleNo);
 const { articleNo } = route.params;
 const article = ref({});
-const comments = ref([])
 
-onMounted(async() => {
+onMounted(() => {
   getArticle();
-
-  //댓글 불러오는 부분
-  try {
-    const articleResponse = await local.get(`/api/articles/${articleNo.value}`)
-    article.value = articleResponse.data
-
-    const commentsResponse = await local.get(`/api/comments/${articleNo.value}`)
-    comments.value = commentsResponse.data
-  } catch (error) {
-    console.error('게시글 또는 댓글 가져오기 실패:', error)
-  }
 });
 
-const getArticle = () => {
-  // const { articleNo } = route.params;
+const getArticle = async() => {
   console.log(articleNo + "번글 얻으러 가자!!!");
   detailArticle(
     articleNo,
@@ -60,7 +43,6 @@ function moveModify() {
 }
 
 function onDeleteArticle() {
-  // const { articleNo } = route.params;
   console.log(articleNo + "번글 삭제하러 가자!!!");
   deleteArticle(
     articleNo,
@@ -75,7 +57,7 @@ function onDeleteArticle() {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" style="margin-top: 10%;">
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
@@ -94,10 +76,10 @@ function onDeleteArticle() {
                 src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
               />
               <p>
-                <span class="fw-bold">{{article.userId}}</span> <br />
+                <!-- <span class="fw-bold">{{article.userId}}</span> <br />
                 <span class="text-secondary fw-light">
                   {{ article.registerTime }}1 조회 : {{ article.hit }}
-                </span>
+                </span> -->
               </p>
             </div>
           </div>
@@ -120,14 +102,16 @@ function onDeleteArticle() {
           </div>
         </div>
       </div>
+
       <!-- 댓글 컴포넌트 -->
       <div class="col-lg-10">
-        <Comment :articleNo="articleNo" :initialComments="comments"/>
+        <Comment :articleNo="articleNo" :userId="article.userId"/>
       </div>
+
     </div>
   </div>
 
-  
+
 
 </template>
 
