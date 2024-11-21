@@ -2,7 +2,8 @@
   <nav class="navbar navbar-expand-lg" style="background-color: #CBDCEB;">
     <div class="container-fluid">
       <router-link :to="{name: 'home'}" class="navbar-brand">
-        <img src="@/assets/나혼자간다.png" alt="Logo" style="height: 50px;" class="d-inline-block align-top">
+        <!-- <img src="@/assets/나혼자간다.png" alt="Logo" style="height: 50px;" class="d-inline-block align-top"> -->
+         <div>나혼자간다</div>
       </router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -46,14 +47,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-const isLoggedIn = ref(false);
-const userImg = ref('');
 
 onMounted(() => {
   //mount 될 때마다 세션에서 확인
@@ -68,6 +67,10 @@ const logout = () => {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Gyeonggi_Title_Medium';
+}
+
 .navbar-nav .nav-link {
   color: #000000;
   font-weight: 500;
