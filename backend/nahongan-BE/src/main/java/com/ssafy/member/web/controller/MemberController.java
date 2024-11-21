@@ -8,6 +8,7 @@ import com.ssafy.member.web.dto.request.LoginRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.FindPasswordResponse;
+import com.ssafy.member.web.dto.response.GetCommentHistoryResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
 
@@ -100,5 +101,11 @@ public class MemberController {
 	public ResponseEntity<Void> setMemberImage(@RequestBody MultipartFile[] image, HttpSession httpSession) throws Exception {
 		memberService.setMemberImage(image);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/profile/notice")
+	public ResponseEntity<GetCommentHistoryResponse> getCommentNotice(@RequestParam("userId") String userId, HttpSession httpSession) throws Exception {
+//		String userId = (String) httpSession.getAttribute("user");
+		return new ResponseEntity<>(memberService.getCommentNotice(userId), HttpStatus.OK);
 	}
 }

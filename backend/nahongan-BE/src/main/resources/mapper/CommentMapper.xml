@@ -9,6 +9,7 @@
 	    <result property="articleNo" column="article_no" /> <!-- 게시물 번호 -->
 	    <result property="userId" column="user_id" /> <!-- 사용자 ID -->
 	    <result property="content" column="content" /> <!-- 댓글 내용 -->
+	    <result property="parentId" column="parent_id" />
 	    <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/> <!-- 생성일 -->
 	    <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -24,14 +25,42 @@
     </select>
     <select id="findCommentByUserId" resultMap="CommentResultMap">
         SELECT 
-            id,
-            article_no,
-            user_id,
-            content
+            *
         FROM 
             comments
         WHERE 
-            user_id = #{userId}
+            user_id = #{userId} 
+    </select>
+    
+    <select id="findCommentByUserArticle" resultMap="CommentResultMap">
+        SELECT 
+            *
+        FROM comments
+	    WHERE 
+	        article_no IN (
+	            SELECT 
+	                article_no 
+	            FROM 
+	                companion_board
+	            WHERE 
+	                user_id = #{userId}
+	        )
+    </select>
+    
+    <select id="findChildCommentByUserParentComment" resultMap="CommentResultMap">
+        SELECT 
+            *
+        FROM 
+        comments
+	    WHERE 
+	        parent_id IN (
+	            SELECT 
+	                id 
+	            FROM 
+	                comments 
+	            WHERE 
+	                user_id = #{userId} and parent_id is not null;
+	        )
     </select>
 
     <!-- 댓글 갯수 조회 (게시물 번호로 댓글 갯수 찾기) -->
@@ -43,8 +72,14 @@
 
     <!-- 댓글 생성 -->
     <insert id="createComment">
-        INSERT INTO comments (article_no, user_id, content)
-        VALUES (#{articleNo}, #{userId}, #{content})
+    	<if test="parentId == null">
+			INSERT INTO comments (article_no, user_id, content)
+        	VALUES (#{articleNo}, #{userId}, #{content})
+    	</if>
+    	<if test="parentId != null">
+			INSERT INTO comments (article_no, user_id, content, parent_id)
+        	VALUES (#{articleNo}, #{userId}, #{content}, #{parentId})
+    	</if>
     </insert>
 
     <!-- 댓글 삭제 -->
