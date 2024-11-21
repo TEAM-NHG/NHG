@@ -21,7 +21,7 @@
             </div>
 
             <!-- 선택된 정보 -->
-            <p class="mx-4" style="text-align: center; text-decoration: line-through;" v-html="selectedInfo" ></p>
+            <p class="m-4" style="text-align: center;" v-html="selectedInfo" ></p>
 
             <!-- 버튼 -->
             <div class="d-flex justify-content-center m-2">
@@ -85,13 +85,13 @@ const makeModalInfo = async () => {
 }
 
 // Data
-const selectedInfo = ref('이모티콘을 누르면 해당 정보를 확인하실 수 있습니다.')
+const selectedInfo = ref('')
 const images = computed(() => [
-  { src: "src/assets/adress.svg", text: card.value.addr1 || "주소 정보가 없습니다." },
-  { src: 'src/assets/homepage.svg', text: card.value.homepage || "홈페이지 주소가 없습니다." },
-  { src: 'src/assets/phone.svg', text: card.value.tel || "번호 정보가 없습니다." },
-  { src: 'src/assets/time.svg', text: card.value.time || "운영 시간 정보가 없습니다." },
-  { src: 'src/assets/parking.svg', text: card.value.parking || "주차 정보가 없습니다." },
+  { src: "src/assets/modal-icon/adress.svg", text: card.value.addr1 || "주소 정보가 없습니다." },
+  { src: 'src/assets/modal-icon/homepage.svg', text: card.value.homepage || "홈페이지 주소가 없습니다." },
+  { src: 'src/assets/modal-icon/phone.svg', text: card.value.tel || "번호 정보가 없습니다." },
+  { src: 'src/assets/modal-icon/time.svg', text: card.value.time || "운영 시간 정보가 없습니다." },
+  { src: 'src/assets/modal-icon/parking.svg', text: card.value.parking || "주차 정보가 없습니다." },
 ]);
 
 </script>
