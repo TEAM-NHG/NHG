@@ -1,5 +1,5 @@
 <template>
-  <div class="container py-5" style="margin-top: 3%; padding: 0%;">
+  <div class="innerBox">
     <h1 class="mb-4">AI 여행 플래너</h1>
 
     <div class="mb-4">
