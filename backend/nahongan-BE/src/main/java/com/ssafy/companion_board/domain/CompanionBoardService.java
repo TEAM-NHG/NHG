@@ -47,7 +47,7 @@ public class CompanionBoardService {
 		// TODO Auto-generated method stub
     	int offset = LIST_SIZE*(pgno-1);
     	List<CompanionBoard> articles = companionBoardRepository.findAllArticle(request.getKey(), request.getWord(), offset, LIST_SIZE);
-		int count = companionBoardRepository.countArticle();
+    	int count = companionBoardRepository.countArticle(request.getKey(), request.getWord());
 
 		return GetArticleListResponse.from(articles, pgno, count/LIST_SIZE+1);
 	}

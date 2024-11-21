@@ -31,7 +31,7 @@ public interface CompanionBoardRepository {
 	
 	int deleteArticle(@Param("articleNo") int articleNo);
 	
-	int countArticle();
+	int countArticle(@Param("key") String key, @Param("word") String word);
 	
 	int updateArticle(CompanionBoard companionBoard);
 } 

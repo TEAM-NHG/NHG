@@ -72,7 +72,7 @@
 			AND subject LIKE CONCAT('%', #{word}, '%')
     	</if>
     	<if test="key == 'article_no'">
-			AND article_no LIKE CONCAT('%', #{word}, '%')
+			AND article_no = #{word}
     	</if>
     	<if test="key == 'user_id'">
 			AND user_id LIKE CONCAT('%', #{word}, '%')
