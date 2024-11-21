@@ -3,8 +3,6 @@ package com.ssafy.companion_board.web.dto;
 import java.time.LocalDateTime;
 
 import com.ssafy.companion_board.persistent.entity.CompanionBoard;
-import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
-import com.ssafy.member.web.dto.MemberDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
