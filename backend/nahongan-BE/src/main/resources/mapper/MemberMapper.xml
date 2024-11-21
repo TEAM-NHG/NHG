@@ -68,4 +68,12 @@
     	delete from members
     	where id = #{id}
     </delete>
+    <select id="findAllMember" resultMap="member">
+        select *
+        from members
+    </select>
+    <select id="countMember" resultMap="int">
+        select count(*)
+        from members
+    </select>
 </mapper>
