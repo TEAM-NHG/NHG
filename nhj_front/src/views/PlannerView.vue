@@ -14,7 +14,7 @@
           <div class="d-flex row justify-content-center mx-4"
                @click="selectEmotion(emotion)"
                style="cursor: pointer;">
-            <img :src="emotion.selected ? emotion.src2 : emotion.src" alt="" class="" style="width: 90px;">
+            <img :src="emotion.selected ? emotion.src2 : emotion.src" alt="" class="" style="width: 100px; height: 150px;">
 
             <p class="" style="text-align: center;">
               {{ emotion.label }}
@@ -28,9 +28,9 @@
     <div class="row">
       <div class="col-md-6 mb-4">
         <div class="card">
-          <div class="card-body" :style="{ 'background-color': selectedEmotion.borderColor }">
+          <div class="card-body inputText">
             <div class="d-flex justify-content-between align-items-center mb-1">
-              <h5 class="card-title">prompt 입력창</h5>
+              <div>prompt 입력창</div>
               <button class="btn btn-light mb-1" @click="handleEmotionClick(selectedEmotion)">생성</button>
             </div>
             <textarea
@@ -38,6 +38,7 @@
               class="form-control"
               rows="8"
               placeholder="여행 계획을 입력해주세요..."
+              style="height: 20vh;"
               />
           </div>
         </div>
@@ -45,12 +46,18 @@
 
       <div class="col-md-6 mb-4">
         <div class="card">
-          <div class="card-body outputText">
-            <div class="d-flex justify-content-between align-items-center">
+          <div class="card-body outputText" 
+               style="height: 280px;"
+               :style="{ 'background-color': selectedEmotion.borderColor }">
+            <div class="d-flex justify-content-between align-items-center" style="height: 42px;">
               <div>출력창</div>
-              <img :src="selectedEmotion.src ? selectedEmotion.src : 'src/assets/insideout/characters.png'" alt="" style="width: 5%;">
             </div>
-            <div class="output-area p-3 bg-light rounded">
+            <div class="output-area p-3 bg-light rounded mt-2 position-relative">
+                <img 
+                class="position-absolute top-0 end-0"
+                :src="selectedEmotion.src ? 
+                selectedEmotion.src : 'src/assets/insideout/characters.png'" 
+                style="height: 50px;">
               <div v-if="loading" class="loading-spinner">
                 <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse/>
               </div>
@@ -151,8 +158,14 @@ watch([response, loading], ([newResponse, isLoading]) => {
 })
 </script>
 <style scoped>
+.innerBox{
+  background-color: greenyellow;
+  padding: 3%;
+}
+
 * {
   font-family: 'Bazzi', sans-serif;
+  border-radius: 10px;
 }
 
 .emotion-button img {
@@ -202,16 +215,27 @@ watch([response, loading], ([newResponse, isLoading]) => {
   background: #555;
 }
 
+.inputText{
+  background: linear-gradient(45deg, #ffff17, rgba(255,0,0,0) 70.71%),
+            linear-gradient(0deg, #72dc4f, rgba(0,255,0,0) 70.71%),
+            linear-gradient(245deg, #5756A6, rgba(0,0,255,0) 70.71%),
+            linear-gradient(180deg, #E62C2B, rgba(0,0,255,0) 70.71%);
+  color: black; /* 텍스트 색상 */
+  border-radius: 10px;
+}
+
 .outputText{
-  background: linear-gradient(45deg, #FDFD71, rgba(255,0,0,0) 70.71%),
+  background-color: antiquewhite;
+  /* background: linear-gradient(45deg, #FDFD71, rgba(255,0,0,0) 70.71%),
             linear-gradient(0deg, #85CA6E, rgba(0,255,0,0) 70.71%),
             linear-gradient(245deg, #5756A6, rgba(0,0,255,0) 70.71%),
             linear-gradient(180deg, #E62C2B, rgba(0,0,255,0) 70.71%);
-  color: white; /* 텍스트 색상 */
-  border-radius: 5px;
+  color: black; 
+  border-radius: 10px; */
 }
 
 .card {
-  border-radius: 5px;
+  border-radius: 10px;
+  height: 280px;
 }
 </style>
