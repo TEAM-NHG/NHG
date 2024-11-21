@@ -2,14 +2,14 @@
   <div class="col-md-12 mb-3">
     <a :href="card.link" target="_blank">
       <div
-        class="card p-3 shadow-sm"
+        class="card shadow-sm"
         :style="cardStyle"
         @mouseenter="hover = true"
         @mouseleave="hover = false"
       >
-        <h6 class="mb-3 text-primary">{{ card.bloggername }}</h6>
-        <h4 class="mb-2">{{ stripHtml(card.title) }}</h4>
-        <p>{{ stripHtml(card.description) }}</p>
+        <div class="mb-2">/ {{ card.bloggername }} /</div>
+        <h4 class="mb-2" style="font-size: 180%;">{{ stripHtml(card.title) }}</h4>
+        <p style="font-size: 120%;">{{ stripHtml(card.description) }}</p>
           <small class="text-muted d-flex justify-content-end">{{ card.createdDate.replace(/T.*/, "") }}</small>
       </div>
     </a>
@@ -44,9 +44,10 @@ const stripHtml = (htmlString) => {
 
 <style scoped>
 .card {
-  background-color: #fffbe6;
-  border: 1px solid #f5f5dc;
+  background-color: white;
+  border: 1px solid white;
   transition: transform 0.2s;
+  padding: 3%;
 }
 
 a{

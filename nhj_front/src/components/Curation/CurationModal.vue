@@ -2,7 +2,7 @@
 <template>
   <div class="modal " tabindex="-1" @click="$emit('showModal')">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-      <div class="modal-content p-4" style="border-radius: 15px; color: #133E87;" v-if="!isLoading">
+      <div class="modal-content p-4" style="border-radius: 15px;" v-if="!isLoading">
         <!-- 닫기 버튼 -->
         <button type="button" class="btn-close" @click="$emit('closeModal')"
           style="position: absolute; top: 15px; right: 15px;"></button>
@@ -10,8 +10,11 @@
         <div class="row ">
           <!-- 왼쪽: 정보 섹션 -->
           <div class="col-lg-6 d-flex flex-column justify-content-center">
-            <h2 class="fw-bold my-3 mx-4" style="color: black;">{{ card.title }}</h2>
-            <p class="mb-2 mx-4" style="font-size: 90%;" v-html="card.overview.replace(/\([^()]*\)/g, '').replace(/\([^)]*\)/g, '')"></p>
+            <div class="fw-bold my-3 mx-4" style="font-size: 150%;">[ {{ card.title }} ]</div>
+            <div class="mb-2 mx-4 scroll"
+                 style="overflow:auto; height: 300px;" 
+                 v-html="card.overview.replace(/\([^()]*\)/g, '').replace(/\([^)]*\)/g, '')">
+            </div>
 
             <!-- 아이콘 리스트 -->
             <div class="d-flex justify-content-center align-items-center m-3">
@@ -21,7 +24,8 @@
             </div>
 
             <!-- 선택된 정보 -->
-            <p class="m-4" style="text-align: center;" v-html="selectedInfo" ></p>
+            <p v-show="!selectedInfo" style="color: white;">text</p>
+            <p class="mb-4" style="text-align: center;" v-html="selectedInfo" ></p>
 
             <!-- 버튼 -->
             <div class="d-flex justify-content-center m-2">
@@ -33,7 +37,7 @@
 
           <!-- 오른쪽: 지도 섹션 -->
           <div class="col-lg-6 d-flex justify-content-center align-items-center">
-            <KakaoMap :lat="card.latitude" :lng="card.longitude" :draggable="true" width="92%">
+            <KakaoMap :lat="card.latitude" :lng="card.longitude" :draggable="true" width="95%">
               <KakaoMapMarker :lat="card.latitude" :lng="card.longitude"></KakaoMapMarker>
             </KakaoMap>
           </div>
@@ -97,7 +101,6 @@ const images = computed(() => [
 </script>
 
 <style scoped>
-
 .modal-content {
   background-color: #FFFFFF;
 }
@@ -108,4 +111,22 @@ const images = computed(() => [
   color: #133E87;
 }
 
+/* 스크롤바 스타일링 */
+.scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 </style>

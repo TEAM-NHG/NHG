@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-transparent">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <router-link :to="{ name: 'home' }" class="navbar-brand">
-        <div>나혼자간다</div>
+        <div style="font-size: 150%;">나혼자간다</div>
       </router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -38,7 +38,7 @@
             <router-link :to="{ name: 'signup' }" class="nav-link px-3">회원가입</router-link>
           </div>
           <div class="nav-item">
-            <router-link :to="{ name: 'login' }" class="btn btn-primary">로그인</router-link>
+            <router-link :to="{ name: 'login' }" class="nav-link px-3">로그인</router-link>
           </div>
         </template>
     </div>
@@ -68,15 +68,22 @@ const logout = () => {
 <style scoped>
 * {
   font-family: 'Gyeonggi_Title_Medium';
+  font-size: 102%;
 }
 
 .navbar-nav .nav-link {
+  background-color: skyblue;
   color: #000000;
   font-weight: 300;
 }
 
 .navbar {
   height: 70px;
+}
+
+.nav-item:hover {
+  transform: scale(1.1);
+  transition: all 0.3s ease;
 }
 
 .user-icon {
@@ -86,7 +93,7 @@ const logout = () => {
 }
 
 .router-link-active {
-  color: #0056b3 !important;
+  /* color: #0056b3 !important; */
   font-weight: 600;
 }
 

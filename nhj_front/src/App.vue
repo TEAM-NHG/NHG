@@ -24,7 +24,7 @@ body {
 }
 
 .innerBox {
-  margin-top: 10%;
+  margin-top: 5%;
   margin-left: 15%;
   margin-right: 15%
 }

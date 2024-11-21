@@ -67,12 +67,12 @@ const sidoList = ref([
   { "no": 7, "sidoCode": 7, "sidoName": "울산" },
   { "no": 8, "sidoCode": 8, "sidoName": "세종특별자치시" },
   { "no": 9, "sidoCode": 31, "sidoName": "경기도" },
-  { "no": 10, "sidoCode": 32, "sidoName": "강원특별자치도" },
+  { "no": 10, "sidoCode": 32, "sidoName": "강원도" },
   { "no": 11, "sidoCode": 33, "sidoName": "충청북도" },
   { "no": 12, "sidoCode": 34, "sidoName": "충청남도" },
   { "no": 13, "sidoCode": 35, "sidoName": "경상북도" },
   { "no": 14, "sidoCode": 36, "sidoName": "경상남도" },
-  { "no": 15, "sidoCode": 37, "sidoName": "전북특별자치도" },
+  { "no": 15, "sidoCode": 37, "sidoName": "전라북도" },
   { "no": 16, "sidoCode": 38, "sidoName": "전라남도" },
   { "no": 17, "sidoCode": 39, "sidoName": "제주도" }])
 
@@ -82,5 +82,9 @@ const sidoList = ref([
 /* 기존 스타일 유지 */
 .form-select {
   width: 100px;
+}
+
+.form-select {
+  width: 8vw;
 }
 </style>

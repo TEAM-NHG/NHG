@@ -74,19 +74,19 @@ const moveWrite = () => {
 </script>
 
 <template>
-  <div class="container" style="margin-top: 10%;">
+  <div class="container" style="margin-top: 7%;">
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
           <mark class="sky">같이 떠나볼까요?
-            <strong style="font-weight: bold;">우리</strong>
+            <strong>우리</strong>
             의 이야기를 만들어봐요.</mark>
         </h2>
       </div>
       <div class="col-lg-10">
         <div class="row align-self-center mb-2">
           <div class="col-md-2 text-start">
-            <button type="button" class="btn btn-outline-primary btn-sm" @click="moveWrite">
+            <button type="button" class="btn btn-primary btn-sm" @click="moveWrite">
               글쓰기
             </button>
           </div>
@@ -121,4 +121,8 @@ const moveWrite = () => {
 </template>
 
 <style scoped>
+.container{
+  background-color: greenyellow;
+  height: 80vh;
+}
 </style>
