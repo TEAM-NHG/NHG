@@ -1,12 +1,9 @@
 <!-- App.vue -->
 <template>
   <div class="app-container">
-    <TheNavbar/>
-    <router-view v-slot="{ Component }">
-      <component :is="Component" />
-    </router-view>
+    <TheNavbar />
+    <router-view></router-view>
   </div>
-
 </template>
 
 <script setup>
@@ -15,10 +12,20 @@ import TheNavbar from '@/components/common/TheNavbar.vue';
 </script>
 
 <style>
-/* Global styles if needed */
 body {
   font-family: 'NanumSquare';
   font-weight: bold;
-  font-size: 110%;
+  font-size: 105%;
+  background-color: pink;
+}
+
+.app-container {
+  position: relative;
+}
+
+.innerBox {
+  margin-top: 10%;
+  margin-left: 15%;
+  margin-right: 15%
 }
 </style>
