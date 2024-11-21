@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container py-4">
+    <div class="innerBox">
       <!-- Profile Section -->
       <div class="card mb-4">
         <div class="card-body">
