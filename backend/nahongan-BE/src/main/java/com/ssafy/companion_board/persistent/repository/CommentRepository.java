@@ -35,5 +35,4 @@ public interface CommentRepository {
 	
 	List<Comment> findChildCommentByUserParentComment(String userId);
 	
-	
 } 

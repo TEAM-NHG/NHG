@@ -15,10 +15,10 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ParentCommentDto extends CommentDto {
 
-	List<CommentDto> reply;
+	List<CommentDto> replies;
 
 	public void addReply(CommentDto commentDto) {
-		this.reply.add(commentDto);
+		this.replies.add(commentDto);
 	}
 	
 	public static ParentCommentDto from(Comment comment, String userId) {
@@ -32,7 +32,7 @@ public class ParentCommentDto extends CommentDto {
                 .isOwner(comment.isOwner(userId))
                 .createdAt(comment.getCreatedAt())
                 .updatedAt(comment.getUpdatedAt())
-                .reply(new ArrayList<CommentDto>())
+                .replies(new ArrayList<CommentDto>())
                 .build();
     }
 }
