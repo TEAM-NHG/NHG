@@ -1,7 +1,7 @@
 <!-- src/views/CurationView.vue -->
 <template>
-  <div class="curation-container p-4">
-    <h2 class="mb-4" style="cursor: pointer; width: 12rem;" @click="filtersClear(filters)">여행 큐레이션</h2>
+  <div class="innerBox">
+    <h2 class="mb-4" style="cursor: pointer; width: 15vw; font-size: 200%;" @click="filtersClear(filters)">여행 큐레이션</h2>
 
     <!-- Search Component -->
     <CurationSearch @search="handleSearch" />
@@ -101,10 +101,5 @@ const onPageChange = (val) => {
 </script>
 
 <style scoped>
-.curation-container {
-  margin-left: 15%;
-  margin-right: 15%;
-  margin-top: 5%;
-}
 
 </style>
