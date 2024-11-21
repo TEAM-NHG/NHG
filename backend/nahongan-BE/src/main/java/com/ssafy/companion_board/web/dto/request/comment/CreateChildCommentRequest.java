@@ -1,9 +1,6 @@
 package com.ssafy.companion_board.web.dto.request.comment;
 
-import com.ssafy.companion_board.web.dto.request.WriteArticleRequest;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +13,10 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @ToString
-public class CreateCommentRequest {
-	private String userId;
-	private int articleNo;
-	private String content;
+public class CreateChildCommentRequest extends CreateCommentRequest {
+	private Integer parentCommentId;
+	public Integer getParentCommentId() {
+		// TODO Auto-generated method stub
+		return this.parentCommentId;
+	} 
 }
