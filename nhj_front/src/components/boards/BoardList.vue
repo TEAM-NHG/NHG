@@ -49,7 +49,7 @@ const getArticleList = () => {
     ({ data }) => {
       articles.value = data.articles;
       currentPage.value = data.currentPage;
-      totalPage.value = data.totalPageCount;
+      totalPage.value = data.lastPage;
     },
     (error) => {
       console.log(error);
@@ -74,7 +74,7 @@ const moveWrite = () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" style="margin-top: 10%;">
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
@@ -120,4 +120,5 @@ const moveWrite = () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
