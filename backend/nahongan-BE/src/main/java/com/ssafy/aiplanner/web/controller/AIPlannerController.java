@@ -34,5 +34,10 @@ public class AIPlannerController {
     public ResponseEntity<AIPlannerResponse> getEvaluation(@RequestBody AIPlannerRequest request) {
 		return new ResponseEntity<>(aiPlannerService.getEvaluation(request), HttpStatus.OK);
     }
+	
+	@PostMapping("/dev")
+    public ResponseEntity<AIPlannerResponse> getAnswer(@RequestBody AIPlannerRequest request) {
+		return new ResponseEntity<>(aiPlannerService.getAnswer(request), HttpStatus.OK);
+    }
 
 }
