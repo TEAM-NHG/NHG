@@ -23,4 +23,9 @@ defineProps({ article: Object });
 a {
   text-decoration: none;
 }
+
+.text-center{
+  height: 42px;
+  line-height: 42px;
+}
 </style>
