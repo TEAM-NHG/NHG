@@ -72,4 +72,11 @@ public class CommentController {
 		commentService.updateComment(request);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	@DeleteMapping("/comment/{commentId}")
+	public ResponseEntity<Void> deleteComment(@PathVariable("commentId") int commentId, HttpSession session) throws Exception {
+		String userId = (String) session.getAttribute("user");
+		commentService.deleteComment(commentId);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
