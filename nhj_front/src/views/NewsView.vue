@@ -1,15 +1,14 @@
 <template>
-  <div class="container" style="margin-top: 5%; width: 45vw;">
+  <div class="innerBox p-4">
 
     <div class="news-header">
 
       <div>
-        <h1 class="mb-3">블로그 여행 소식 모음집.</h1>
-        <p class="mb-4" style="text-decoration: line-through;">카드를 누르면 해당 페이지로 이동합니다.</p>
+        <div class="mb-5" style="font-size: 200%;">블로그 여행 소식 모음집</div>
       </div>
 
       <!-- 검색창 -->
-      <div class="d-flex mb-4 search">
+      <div class="d-flex search">
         <select class="form-select w-auto me-2" v-model="searchOption">
           <option value="title">제목</option>
         </select>
@@ -112,13 +111,6 @@ const setupObserver = () => {
 </script>
 
 <style scoped>
-/* 기본 마진 및 스타일 조정 */
-/* .container {
-  background-color: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-} */
-
 .news-header{
   display: flex;
   justify-content: space-between;
