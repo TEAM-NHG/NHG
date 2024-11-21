@@ -35,4 +35,5 @@ public class Attractions {
 	boolean isImageSaved;
 	boolean isDetailSaved;
 	List<String> images;
+
 }

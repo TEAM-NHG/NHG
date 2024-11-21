@@ -29,4 +29,7 @@ public class Member {
 	public void updateImage(String imagePath) {
 		this.img = imagePath;
 	}
+
+    public void setId(String id) {
+    }
 }

@@ -23,4 +23,7 @@ public class CompanionBoard {
 		this.subject = subject;
 		this.content = content;
 	}
+
+    public void setArticleNo(int articleNo) {
+    }
 }
