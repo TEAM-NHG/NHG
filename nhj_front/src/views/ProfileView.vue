@@ -3,7 +3,7 @@
     <div class="innerBox">
       <!-- Profile Section -->
       <div class="card mb-4">
-        <div class="card-body">
+        <div class="user-profile">
           <div class="row align-items-center">
             <div class="col-auto">
               <img v-if="authStore.user.img" :src="authStore.user.img" :alt="authStore.user.nickname"
@@ -113,6 +113,11 @@ const MemberDelete = async () => {
   font-family: 'goorm-sans-bold';
 }
 
+.innerBox {
+  margin-top: 5%;
+  padding: 2%;
+}
+
 .nav-link {
   color: #000000;
 }
@@ -126,5 +131,10 @@ const MemberDelete = async () => {
   width: 120px;
   height: 120px;
   object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-profile{
+  background-color: aquamarine;
 }
 </style>

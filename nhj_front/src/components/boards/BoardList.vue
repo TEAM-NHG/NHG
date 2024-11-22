@@ -74,17 +74,17 @@ const moveWrite = () => {
 </script>
 
 <template>
-  <div class="container" style="margin-top: 7%;">
+  <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+        <h2 class="my-3 py-3 shadow-sm bg-light text-center" style="border-radius: 5px;">
           <mark class="sky">같이 떠나볼까요?
             <strong>우리</strong>
             의 이야기를 만들어봐요.</mark>
         </h2>
       </div>
       <div class="col-lg-10">
-        <div class="row align-self-center mb-2">
+        <div class="row align-self-center mb-2" >
           <div class="col-md-2 text-start">
             <button type="button" class="btn btn-primary btn-sm" @click="moveWrite">
               글쓰기
@@ -100,20 +100,20 @@ const moveWrite = () => {
             </form>
           </div>
         </div>
-        <table class="table table-hover">
-          <thead>
-            <tr class="text-center">
-              <th scope="col">글번호</th>
-              <th scope="col">제목</th>
-              <th scope="col">작성자</th>
-              <th scope="col">조회수</th>
-              <th scope="col">작성일</th>
-            </tr>
-          </thead>
-          <tbody>
-            <BoardListItem v-for="article in articles" :key="article.articleNo" :article="article"></BoardListItem>
-          </tbody>
-        </table>
+          <table class="table table-hover">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">글번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">조회수</th>
+                <th scope="col">작성일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <BoardListItem v-for="article in articles" :key="article.articleNo" :article="article"></BoardListItem>
+            </tbody>
+          </table>
       </div>
       <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageChange="onPageChange"></VPageNavigation>
     </div>
@@ -124,5 +124,6 @@ const moveWrite = () => {
 .container{
   background-color: greenyellow;
   height: 80vh;
+  margin-top: 13vh;
 }
 </style>

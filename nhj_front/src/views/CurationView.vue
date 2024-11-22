@@ -11,7 +11,7 @@
     </div>
 
     <!-- Cards Grid -->
-    <div class="row g-4" v-else>
+    <div class="row g-4" v-else style="background-color: coral;">
       <CurationCard
         v-for="card in CardInfos"
         :key="card.no"
@@ -103,7 +103,9 @@ const onPageChange = (val) => {
 <style scoped>
 .innerBox{
   background-color: greenyellow;
+  margin-top: 4vh;
   padding: 5%;
+  width: 60vw;
 }
 
 </style>

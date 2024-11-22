@@ -1,6 +1,7 @@
 <template>
   <div class="comments-section">
-    <h3>댓글</h3>
+    <hr class="my-4">
+    <div style="font-size: 150%;">댓글</div>
 
     <!-- 댓글 리스트 -->
     <div class="comment-list">
@@ -8,7 +9,7 @@
         <div class="comment-header d-flex justify-content-between align-items-center">
           <div>
             <p></p><strong>{{comment.id}} {{ comment.userId }}</strong>
-            <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T.*/, "") }}</small>
+            <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
           </div>
         </div>
         <p>{{ comment.content }}</p>
@@ -19,7 +20,7 @@
           <div v-for="reply in comment.replies" :key="reply.replyId" class="reply-item">
             <div class="d-flex justify-content-between">
               <strong>{{ reply.userId }}</strong>
-              <small class="text-muted">{{ reply.createdAt.replace(/T.*/, "") }}</small>
+              <small class="text-muted">{{ reply.createdAt.replace(/T/, " ") }}</small>
             </div>
             <p>{{ reply.content }}</p>
           </div>
@@ -27,16 +28,17 @@
 
         <!-- 대댓글 작성 -->
         <div class="reply-section ms-4">
-          <textarea v-model="replyContent[comment.id]" placeholder="대댓글을 입력하세요..." rows="2"
-            class="form-control"></textarea>
-          <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)">대댓글 작성</button>
+          <textarea v-model="replyContent[comment.id]" placeholder="같이 가볼까요?" rows="2"
+            class="form-control" @keyup.enter="submitReply(comment.id)"></textarea>
+          <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)">댓글 작성</button>
         </div>
       </div>
     </div>
 
     <!-- 댓글 입력 -->
     <div class="comment-input mb-3">
-      <textarea v-model="newComment" placeholder="댓글을 입력하세요..." rows="3" class="form-control"></textarea>
+      <textarea v-model="newComment" placeholder="댓글을 입력하세요..." rows="3" class="form-control"
+      @keyup.enter="submitComment"></textarea>
       <button class="btn btn-primary mt-2" @click="submitComment">작성</button>
     </div>
   </div>
@@ -69,9 +71,6 @@ const getComments = async () => {
     props.articleNo,
     ({ data }) => {
       comments.value = data.comments;
-      console.log('**************************')
-      console.log(comments.value)
-      console.log('**************************')
     },
     (error) => {
       console.log(error);
@@ -104,7 +103,7 @@ const submitReply = async (commentId) => {
   if (!replyContent.value[commentId]?.trim()) return alert('대댓글을 입력하세요.')
 
   const replyData = {
-    userId: props.userId, // 실제 유저 ID는 백엔드 세션으로 관리
+    userId: props.userId,
     articleNo: props.articleNo,
     content: replyContent.value[commentId],
     parentCommentId: commentId,
@@ -112,8 +111,6 @@ const submitReply = async (commentId) => {
 
   try {
     await local.post('/companion-board/comment/child', replyData)
-    // const parentComment = comments.value.find(comment => comment.commentId === commentId)
-    // parentComment.replies.push(response.data) // DB 저장 후 대댓글 추가
     getComments();
     replyContent.value[commentId] = ''
   } catch (error) {
@@ -136,8 +133,11 @@ const submitReply = async (commentId) => {
   border-bottom: 1px solid #ddd;
 }
 
-.reply-section {
+.reply-section, .comment-input {
   margin-top: 10px;
+  display: flex;
+  align-items: end;
+  flex-direction: column;
 }
 
 .replies .reply-item {

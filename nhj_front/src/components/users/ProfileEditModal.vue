@@ -63,6 +63,7 @@
               </button>
             </div>
           </form>
+
         </div>
       </div>
     </div>
@@ -81,7 +82,7 @@ const formData = ref({
   nickname: '',
   phone: '',
   email: '',
-  img: null
+  // img: null
 });
 
 const errors = ref({
@@ -99,14 +100,31 @@ onMounted(() => {
     nickname: authStore.user.nickname,
     phone: authStore.user.phone,
     email: authStore.user.email,
-    img: null
+    // img: null
   };
 });
 
+const userFormData = new FormData();
 const handleImageChange = (event) => {
   const file = event.target.files[0];
   if (file) {
-    formData.value.img = file;
+    userFormData.append("images", file);
+  }
+};
+
+const handleSubmit = async () => {
+  if (!validateForm()) return;
+  isSubmitting.value = true;
+  try {
+    // 여기에 실제 API 호출 로직 추가
+    userFormData.append("member", JSON.stringify(formData.value));
+    await authStore.updateProfile(userFormData);
+    emit('update');
+    alert('수정이 완료되었습니다')
+  } catch (error) {
+    console.error('프로필 업데이트 실패:', error);
+  } finally {
+    isSubmitting.value = false;
   }
 };
 
@@ -140,25 +158,5 @@ const validateForm = () => {
   }
 
   return isValid;
-};
-
-const handleSubmit = async () => {
-  if (!validateForm()) return;
-
-  isSubmitting.value = true;
-  try {
-    // 여기에 실제 API 호출 로직 추가
-    await authStore.updateProfile(formData.value);
-    emit('update');
-    alert('수정이 완료되었습니다')
-    // 모달 닫기
-    // const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
-    // modal.hide();
-  } catch (error) {
-    console.error('프로필 업데이트 실패:', error);
-    // 에러 처리
-  } finally {
-    isSubmitting.value = false;
-  }
 };
 </script>

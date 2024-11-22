@@ -78,9 +78,7 @@ function writeArticle() {
   registArticle(
     article.value,
     (response) => {
-      let msg = "글등록 처리시 문제 발생했습니다.";
-      if (response.status == 201) msg = "글등록이 완료되었습니다.";
-      alert(msg);
+      if (response.status == 201)
       moveList();
     },
     (error) => console.log(error)
@@ -92,12 +90,8 @@ function updateArticle() {
   modifyArticle(
     article.value,
     (response) => {
-      let msg = "글수정 처리시 문제 발생했습니다.";
-      if (response.status == 200) msg = "글정보 수정이 완료되었습니다.";
-      alert(msg);
+      if (response.status == 200)
       moveList();
-      // router.push({ name: "article-view" });
-      // router.push(`/board/view/${article.value.articleNo}`);
     },
     (error) => console.log(error)
   );
@@ -116,7 +110,6 @@ function moveList() {
         type="text"
         class="form-control"
         v-model="article.userId"
-        :disabled="isUseId"
         placeholder="작성자ID..."
         readonly
       />
