@@ -27,6 +27,7 @@
                 class="form-control"
                 id="phone"
                 v-model="formData.phone"
+                placeholder="-을 빼고 입력해주세요"
                 :class="{ 'is-invalid': errors.phone }"
               >
               <div class="invalid-feedback">{{ errors.phone }}</div>
@@ -82,7 +83,6 @@ const formData = ref({
   nickname: '',
   phone: '',
   email: '',
-  // img: null
 });
 
 const errors = ref({
@@ -100,7 +100,6 @@ onMounted(() => {
     nickname: authStore.user.nickname,
     phone: authStore.user.phone,
     email: authStore.user.email,
-    // img: null
   };
 });
 
@@ -145,7 +144,7 @@ const validateForm = () => {
     errors.value.phone = '핸드폰 번호를 입력해주세요.';
     isValid = false;
   } else if (!/^01[0-9]{8,9}$/.test(formData.value.phone)) {
-    errors.value.phone = '올바른 핸드폰 번호 형식이 아닙니다. (예: 010-1234-5678)';
+    errors.value.phone = '올바른 핸드폰 번호 형식이 아닙니다. (예: 01012345678)';
     isValid = false;
   }
 
