@@ -1,5 +1,5 @@
 <script setup>
-import Comment from "./item/BoardComment.vue";
+import BoardComment from "./item/BoardComment.vue";
 import { detailArticle, deleteArticle } from "@/api/board";
 import { ref, onMounted } from "vue";
 
@@ -109,7 +109,7 @@ function onDeleteArticle() {
 
       <!-- 댓글 컴포넌트 -->
       <div class="col-lg-10">
-        <Comment :articleNo="articleNo" :userId="article.userId"/>
+        <BoardComment :articleNo="articleNo" :userId="article.userId"/>
       </div>
 
     </div>
