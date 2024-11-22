@@ -1,6 +1,7 @@
 <template>
   <div class="comments-section">
-    <h3>댓글</h3>
+    <hr class="my-4">
+    <div style="font-size: 150%;">댓글</div>
 
     <!-- 댓글 리스트 -->
     <div class="comment-list">
@@ -29,7 +30,7 @@
         <div class="reply-section ms-4">
           <textarea v-model="replyContent[comment.id]" placeholder="대댓글을 입력하세요..." rows="2"
             class="form-control"></textarea>
-          <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)">대댓글 작성</button>
+          <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)" >대댓글 작성</button>
         </div>
       </div>
     </div>
@@ -69,9 +70,6 @@ const getComments = async () => {
     props.articleNo,
     ({ data }) => {
       comments.value = data.comments;
-      console.log('**************************')
-      console.log(comments.value)
-      console.log('**************************')
     },
     (error) => {
       console.log(error);
@@ -136,8 +134,11 @@ const submitReply = async (commentId) => {
   border-bottom: 1px solid #ddd;
 }
 
-.reply-section {
+.reply-section, .comment-input {
   margin-top: 10px;
+  display: flex;
+  align-items: end;
+  flex-direction: column;
 }
 
 .replies .reply-item {
