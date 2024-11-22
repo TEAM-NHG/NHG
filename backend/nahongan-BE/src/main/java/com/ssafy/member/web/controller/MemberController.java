@@ -12,6 +12,8 @@ import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
@@ -31,40 +33,65 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "멤버 API", description = "유저 관련 API")
 @RequestMapping("/api/member")
 public class MemberController {
 
 	private final MemberService memberService;
 
+	@Operation(
+			summary = "회원가입 아이디 체크 API", // 요약
+			description = "true or false 반환" // 상세 설명
+	)
 	@PostMapping("/join/id-check")
 	public ResponseEntity<Boolean> checkDuplicatedId(@RequestBody Map<String, String> requestBody) throws Exception {
 		String id = requestBody.get("id");
 		return new ResponseEntity<>(memberService.checkId(id), HttpStatus.OK);
 	}
 
+	@Operation(
+			summary = "회원가입 API", // 요약
+			description = "회원가입 성공 or 오류 방출" // 상세 설명
+	)
 	@PostMapping("/join")
 	public ResponseEntity<Void> join(@RequestBody JoinRequest request) throws Exception {
 		memberService.join(request);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
+
+	@Operation(
+			summary = "로그인 API", // 요약
+			description = "로그인 후 정보 반환" // 상세 설명
+	)
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request, HttpSession httpSession) throws Exception {
 		return new ResponseEntity<LoginResponse>(memberService.login(request, httpSession), HttpStatus.OK);
 	}
-	
+
+	@Operation(
+			summary = "로그아웃 API", // 요약
+			description = "로그아웃 세션해제" // 상세 설명
+	)
 	@PostMapping("/logout")
 	public ResponseEntity<Void> logout(HttpSession httpSession) throws Exception {
 		memberService.logout(httpSession);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	@Operation(
+			summary = "프로필 정보 호출 API", // 요약
+			description = "비밀번호를 제외한 모든 유저의 정보 반환" // 상세 설명
+	)
 	@GetMapping("/profile")
 	public ResponseEntity<GetMemberResponse> getMemberProfile(HttpSession httpSession) throws Exception {
 		System.out.println((String) httpSession.getAttribute("user"));
 		return new ResponseEntity<GetMemberResponse>(memberService.getMember(httpSession), HttpStatus.OK);
 	}
-	
+
+	@Operation(
+			summary = "프로필 이미지 조회 API", // 요약
+			description = "프로필 이미지만 반환. 본인이 아니어도 요청 가능" // 상세 설명
+	)
 	@GetMapping("/profile/image")
 	public ResponseEntity<GetMemberImageResponse> getMemberProfileImage(String userId) throws Exception {
 		return new ResponseEntity<GetMemberImageResponse>(memberService.getMemberImage(userId), HttpStatus.OK);
