@@ -34,7 +34,22 @@ public class SwaggerConfiguration {
 	public GroupedOpenApi memberApi() {
 		return GroupedOpenApi.builder().group("ssafy-user").pathsToMatch("/api/member/**").build();
 	}
-	
+
+	@Bean
+	public GroupedOpenApi companionBoardApi() {
+		return GroupedOpenApi.builder().group("ssafy-board-comment").pathsToMatch("/api/companion-board/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi tripApi() {
+		return GroupedOpenApi.builder().group("ssafy-trip").pathsToMatch("/api/tripinfo/**").build();
+	}
+
+	@Bean
+	public GroupedOpenApi aiPlannerApi() {
+		return GroupedOpenApi.builder().group("ssafy-ai").pathsToMatch("/api/plan/**").build();
+	}
+
 	@Bean
 	public GroupedOpenApi adminApi() {
 		return GroupedOpenApi.builder().group("ssafy-admin").pathsToMatch("/api/admin/**").build();

@@ -4,10 +4,7 @@ import java.time.LocalDateTime;
 
 import com.ssafy.companion_board.persistent.entity.Comment;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
@@ -16,12 +13,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class CommentDto {
 
     private int id;            // 댓글 ID
     private int articleNo;     // 댓글이 달린 게시물 번호
     private Boolean isOwner;
     private String userId;     // 댓글 작성자 ID
+    private int parentId;
     private String content;    // 댓글 내용
     private LocalDateTime createdAt;  // 댓글 생성일
     private LocalDateTime updatedAt;  // 댓글 수정일
@@ -45,10 +44,6 @@ public class CommentDto {
                 .build();
     }
 
-    /**
-     * Entity -> DTO 변환 메서드 (정적 메서드)
-     * @param string 
-     */
     public static CommentDto from(Comment comment, String userId) {
     	System.out.println(comment.getId());
     	System.out.println("----------");

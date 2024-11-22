@@ -10,10 +10,12 @@ import com.ssafy.member.web.dto.response.LoginResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
 @Getter
+@Setter
 public class GetArticleResponse {
 	private int articleNo; // 게시글 번호
     private String userId; // 사용자 ID
@@ -23,12 +25,11 @@ public class GetArticleResponse {
     private int hit; // 조회수
     private LocalDateTime registerTime; // 등록 시간
     
-    public static GetArticleResponse from(CompanionBoard article, Member member) {
+    public static GetArticleResponse from(CompanionBoard article) {
         return GetArticleResponse
                 .builder()
                 .articleNo(article.getArticleNo())
                 .userId(article.getUserId())
-                .image(member.getImg())
                 .subject(article.getSubject())
                 .content(article.getContent())
                 .hit(article.getHit())

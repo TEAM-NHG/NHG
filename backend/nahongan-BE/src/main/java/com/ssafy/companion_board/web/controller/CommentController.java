@@ -1,5 +1,7 @@
 package com.ssafy.companion_board.web.controller;
 
+import com.ssafy.companion_board.web.dto.response.comment.GetCommentNoticeResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "동행게시판 댓글 API", description = "동행게시판 댓글 관련 API")
 @RequestMapping("/api/companion-board")
 public class CommentController {
 
@@ -86,5 +89,10 @@ public class CommentController {
 		commentService.deleteComment(commentId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/comment/notice")
+	public ResponseEntity<GetCommentNoticeResponse> getCommentNotice(@RequestParam("userId") String userId, HttpSession httpSession) throws Exception {
+//		String userId = (String) httpSession.getAttribute("user");
+		return new ResponseEntity<>(commentService.getCommentNotice(userId), HttpStatus.OK);
+	}
 }

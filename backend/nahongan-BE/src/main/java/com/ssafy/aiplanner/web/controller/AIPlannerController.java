@@ -1,5 +1,6 @@
 package com.ssafy.aiplanner.web.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin("*")
+@Tag(name = "인사이드아웃 훈수충 API", description = "인사이드아웃 훈수충 관련 API")
 @RequestMapping("/api/plan/ai")
 public class AIPlannerController {
 

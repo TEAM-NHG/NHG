@@ -3,20 +3,15 @@ package com.ssafy.member.domain;
 import com.ssafy.common.exception.BaseException;
 import com.ssafy.common.util.ImageUploader;
 import com.ssafy.companion_board.persistent.repository.CommentRepository;
-import com.ssafy.companion_board.web.dto.ParentCommentDto;
 import com.ssafy.member.persistent.entity.Member;
 import com.ssafy.member.persistent.repository.MemberRepository;
-import com.ssafy.member.web.dto.MemberDto;
 import com.ssafy.member.web.dto.request.FindIdRequest;
 import com.ssafy.member.web.dto.request.FindPasswordRequest;
 import com.ssafy.member.web.dto.request.JoinRequest;
 import com.ssafy.member.web.dto.request.LoginRequest;
 import com.ssafy.member.web.dto.request.ModifyMemberRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
-import com.ssafy.member.web.dto.response.CommentNotice;
 import com.ssafy.member.web.dto.response.FindIdResponse;
-import com.ssafy.member.web.dto.response.FindPasswordResponse;
-import com.ssafy.member.web.dto.response.GetCommentNoticeResponse;
 import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
@@ -30,10 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -123,21 +114,6 @@ public class MemberService {
 		String detailPath = "member" + File.separator + userId;
 		String imagePath = imageUploader.upload(images, detailPath);
 		return imagePath;
-	}
-	
-	public GetCommentNoticeResponse getCommentNotice(String userId) {
-		List<CommentNotice> notices = Stream.concat(
-			    commentRepository.findCommentByUserArticle(userId)
-			                     .stream()
-			                     .map(comment -> CommentNotice.from(comment, "article")),
-			    commentRepository.findChildCommentByUserParentComment(userId)
-			                     .stream()
-			                     .map(comment -> CommentNotice.from(comment, "comment"))
-			)
-			.sorted(Comparator.comparing(CommentNotice::getCreatedAt)) // createdAt 필드 기준 정렬
-			.collect(Collectors.toList());
-		
-		return GetCommentNoticeResponse.builder().comments(notices).build();
 	}
 
 	public GetMemberImageResponse getMemberImage(String userId) {

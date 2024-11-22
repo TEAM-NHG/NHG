@@ -1,4 +1,4 @@
-package com.ssafy.member.web.dto.response;
+package com.ssafy.companion_board.web.dto;
 
 import java.time.LocalDateTime;
 
