@@ -15,6 +15,7 @@ public class CommentNotice {
 	private int id;            // 댓글 ID
     private int articleNo;  
     private String userId; 
+    private String content;
     private LocalDateTime createdAt;  // 댓글 생성일
     private String type;
     
@@ -23,6 +24,7 @@ public class CommentNotice {
     			.id(comment.getId())
     			.articleNo(comment.getArticleNo())
     			.userId(comment.getUserId())
+    			.content(comment.getContent())
     			.createdAt(comment.getCreatedAt())
     			.type(type)
     			.build();
