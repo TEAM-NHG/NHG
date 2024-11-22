@@ -105,7 +105,7 @@ public class MemberController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping("/profile/notice")
+	@GetMapping("/profile/notice")
 	public ResponseEntity<GetCommentNoticeResponse> getCommentNotice(@RequestParam("userId") String userId, HttpSession httpSession) throws Exception {
 //		String userId = (String) httpSession.getAttribute("user");
 		return new ResponseEntity<>(memberService.getCommentNotice(userId), HttpStatus.OK);
