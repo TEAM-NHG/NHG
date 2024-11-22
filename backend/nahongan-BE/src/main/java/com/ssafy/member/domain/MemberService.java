@@ -17,6 +17,7 @@ import com.ssafy.member.web.dto.response.CommentNotice;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.FindPasswordResponse;
 import com.ssafy.member.web.dto.response.GetCommentNoticeResponse;
+import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
 import jakarta.servlet.http.HttpSession;
@@ -137,6 +138,11 @@ public class MemberService {
 			.collect(Collectors.toList());
 		
 		return GetCommentNoticeResponse.builder().comments(notices).build();
+	}
+
+	public GetMemberImageResponse getMemberImage(String userId) {
+		Member member = memberRepository.findById(userId);
+		return GetMemberImageResponse.builder().image(member.getImg()).build();
 	}
 
 }

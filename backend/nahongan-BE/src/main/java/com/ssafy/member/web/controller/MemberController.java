@@ -11,6 +11,7 @@ import com.ssafy.member.web.dto.request.SetMemberImageRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.FindPasswordResponse;
 import com.ssafy.member.web.dto.response.GetCommentNoticeResponse;
+import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
 
@@ -68,7 +69,13 @@ public class MemberController {
 
 	@GetMapping("/profile")
 	public ResponseEntity<GetMemberResponse> getMemberProfile(HttpSession httpSession) throws Exception {
+		System.out.println((String) httpSession.getAttribute("user"));
 		return new ResponseEntity<GetMemberResponse>(memberService.getMember(httpSession), HttpStatus.OK);
+	}
+	
+	@GetMapping("/profile/image")
+	public ResponseEntity<GetMemberImageResponse> getMemberProfileImage(String userId) throws Exception {
+		return new ResponseEntity<GetMemberImageResponse>(memberService.getMemberImage(userId), HttpStatus.OK);
 	}
 	
 	@PostMapping("/find-id")
