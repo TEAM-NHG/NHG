@@ -116,6 +116,7 @@ const MemberDelete = async () => {
 .innerBox {
   margin-top: 5%;
   padding: 2%;
+  width: 60vw;
 }
 
 .nav-link {
