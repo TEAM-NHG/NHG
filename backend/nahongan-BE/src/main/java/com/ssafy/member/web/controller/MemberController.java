@@ -89,7 +89,7 @@ public class MemberController {
 	}
 	
 	@PostMapping(value="/modify",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<?> modify(@RequestPart ModifyMemberRequest member, @RequestPart(required = false) MultipartFile images) throws SQLException {
+	public ResponseEntity<?> modify(@RequestPart(value="member") ModifyMemberRequest member, @RequestPart(required = false, value="images") MultipartFile images) throws SQLException {
 		return new ResponseEntity<>(memberService.modify(images, member), HttpStatus.OK);
 	}
 	
