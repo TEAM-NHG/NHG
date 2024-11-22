@@ -28,16 +28,17 @@
 
         <!-- 대댓글 작성 -->
         <div class="reply-section ms-4">
-          <textarea v-model="replyContent[comment.id]" placeholder="대댓글을 입력하세요..." rows="2"
-            class="form-control"></textarea>
-          <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)" >대댓글 작성</button>
+          <textarea v-model="replyContent[comment.id]" placeholder="같이 가볼까요?" rows="2"
+            class="form-control" @keyup.enter="submitReply(comment.id)"></textarea>
+          <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)">댓글 작성</button>
         </div>
       </div>
     </div>
 
     <!-- 댓글 입력 -->
     <div class="comment-input mb-3">
-      <textarea v-model="newComment" placeholder="댓글을 입력하세요..." rows="3" class="form-control"></textarea>
+      <textarea v-model="newComment" placeholder="댓글을 입력하세요..." rows="3" class="form-control"
+      @keyup.enter="submitComment"></textarea>
       <button class="btn btn-primary mt-2" @click="submitComment">작성</button>
     </div>
   </div>
