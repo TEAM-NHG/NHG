@@ -19,6 +19,7 @@ import com.ssafy.companion_board.web.dto.request.comment.CreateChildCommentReque
 import com.ssafy.companion_board.web.dto.request.comment.CreateCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.GetCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.GetCommentsRequest;
+import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentReadRequest;
 import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentRequest;
 import com.ssafy.companion_board.web.dto.response.GetArticleListResponse;
 import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
@@ -77,6 +78,12 @@ public class CommentService {
 		commentRepository.updateComment(comment);
 	}
 	
+	public void updateCommentRead(UpdateCommentReadRequest request) throws SQLException {
+		commentRepository.updateArticleOwnerRead(request.getCommentId(), request.getUserId());
+		commentRepository.updateParentCommentOwnerRead(request.getCommentId(), request.getUserId());
+	}
+	
+	
 	private List<ParentCommentDto> commentDtosConverter(List<Comment> comments, String userId) {
 		
 		Map<Boolean, List<Comment>> partitionedEntities =
@@ -102,5 +109,7 @@ public class CommentService {
 		}
 		return parentCommentDtos;
 	}
+	
+	
 }
 
