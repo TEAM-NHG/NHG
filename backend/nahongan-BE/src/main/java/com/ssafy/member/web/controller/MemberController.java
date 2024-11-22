@@ -99,8 +99,9 @@ public class MemberController {
 	}
 	
 	@PostMapping(value = "/profile/img",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<Void> setMemberImage(@RequestPart SetMemberImageRequest request, @RequestPart(required = false) List<MultipartFile> images) throws SQLException {
-		memberService.setMemberImage(images, request.getUserId());
+	public ResponseEntity<Void> setMemberImage(@RequestPart(required = false) List<MultipartFile> images, HttpSession session) throws SQLException {
+		String userId = (String) session.getAttribute("user");
+		memberService.setMemberImage(images, userId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
