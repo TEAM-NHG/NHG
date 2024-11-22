@@ -10,7 +10,7 @@ import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.request.SetMemberImageRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.FindPasswordResponse;
-import com.ssafy.member.web.dto.response.GetCommentHistoryResponse;
+import com.ssafy.member.web.dto.response.GetCommentNoticeResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
 
@@ -106,7 +106,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/profile/notice")
-	public ResponseEntity<GetCommentHistoryResponse> getCommentNotice(@RequestParam("userId") String userId, HttpSession httpSession) throws Exception {
+	public ResponseEntity<GetCommentNoticeResponse> getCommentNotice(@RequestParam("userId") String userId, HttpSession httpSession) throws Exception {
 //		String userId = (String) httpSession.getAttribute("user");
 		return new ResponseEntity<>(memberService.getCommentNotice(userId), HttpStatus.OK);
 	}

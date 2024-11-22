@@ -34,7 +34,5 @@ public interface MemberRepository {
     List<Member> findAllMember();
     int countMember();
 
-
-
 }
 
