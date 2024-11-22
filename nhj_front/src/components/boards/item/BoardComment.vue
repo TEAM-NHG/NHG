@@ -9,7 +9,7 @@
         <div class="comment-header d-flex justify-content-between align-items-center">
           <div>
             <p></p><strong>{{comment.id}} {{ comment.userId }}</strong>
-            <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T.*/, "") }}</small>
+            <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
           </div>
         </div>
         <p>{{ comment.content }}</p>
@@ -20,7 +20,7 @@
           <div v-for="reply in comment.replies" :key="reply.replyId" class="reply-item">
             <div class="d-flex justify-content-between">
               <strong>{{ reply.userId }}</strong>
-              <small class="text-muted">{{ reply.createdAt.replace(/T.*/, "") }}</small>
+              <small class="text-muted">{{ reply.createdAt.replace(/T/, " ") }}</small>
             </div>
             <p>{{ reply.content }}</p>
           </div>
@@ -103,7 +103,7 @@ const submitReply = async (commentId) => {
   if (!replyContent.value[commentId]?.trim()) return alert('대댓글을 입력하세요.')
 
   const replyData = {
-    userId: props.userId, // 실제 유저 ID는 백엔드 세션으로 관리
+    userId: props.userId,
     articleNo: props.articleNo,
     content: replyContent.value[commentId],
     parentCommentId: commentId,
@@ -111,8 +111,6 @@ const submitReply = async (commentId) => {
 
   try {
     await local.post('/companion-board/comment/child', replyData)
-    // const parentComment = comments.value.find(comment => comment.commentId === commentId)
-    // parentComment.replies.push(response.data) // DB 저장 후 대댓글 추가
     getComments();
     replyContent.value[commentId] = ''
   } catch (error) {
