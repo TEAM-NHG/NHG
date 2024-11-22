@@ -1,10 +1,10 @@
 <template>
   <div class="list-group">
-    <div v-for="notification in notifications" :key="notification.id" 
+    <div v-for="notification in notifications" :key="notification.id"
       class="list-group-item list-group-item-action">
       <div class="d-flex w-100 align-items-center">
-        <img 
-          :src="notification.userImage" 
+        <img
+          :src="notification.userImage ? notification.userImage : 'src/assets/userIcon.png'"
           :alt="notification.userName"
           class="rounded-circle me-3"
           style="width: 48px; height: 48px; object-fit: cover;"
@@ -12,13 +12,13 @@
         <div class="flex-grow-1">
           <div class="d-flex justify-content-between align-items-center">
             <p class="mb-1">
-              <strong>{{ notification.userName }}</strong>
+              <strong>{{ notification.userId }}</strong>
               님이 회원님의 게시글에 댓글을 남겼습니다
             </p>
-            <button type="button" class="btn-close" aria-label="Close"></button>
+            <button type="button" class="btn-close" @click="deleteNotification(notification.id, authStore.user.id)"></button>
           </div>
           <p class="mb-1 text-muted">{{ notification.comment }}</p>
-          <small class="text-muted">{{ notification.time }}</small>
+          <small class="text-muted">{{ notification.createdAt.replace(/\T/, ' ') }}</small>
         </div>
       </div>
     </div>
@@ -26,18 +26,47 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+
+//axios
+import { localAxios } from '@/util/http-commons';
+const local = localAxios()
+
+//pinia
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
 
 const notifications = ref([
   {
-    id: 1,
-    userName: '여행러버',
-    userImage: '/placeholder-user-1.jpg',
-    comment: '정말 좋은 여행 코스네요!',
-    time: '10분 전'
+    id: 1,  //댓글 id
+    articleNo: '1', //댓글 달린 글
+    userId: "string", //댓글 단 사람 id
+    userImage: null,
+    createdAt: '정말 좋은 여행 코스네요!',  //댓글이 달린 시간
+    type: ''  //댓글인지 대댓글이지
   },
-  // 더미 데이터 추가 가능
 ]);
+
+onMounted(async() => {
+  try {
+    const response = await local.get('/member/profile/notice', {params: {'userId': authStore.user.id}})
+    notifications.value = (response.data.comments)
+  } catch(error) {
+    console.log('댓글알림 가져오는 중에 오류 발생', error)
+  }
+
+})
+
+
+const deleteNotification = async (commentId, userId) => {
+  try{
+    const response = await local.delete('', {'commentId': commentId, 'userId' : userId})
+    notifications.value = (response.data.comments)
+  }catch(error) {
+    console.log('댓글 알림 삭제 중 오류 발생', error)
+  }
+}
+
 </script>
 
 <style scoped>
