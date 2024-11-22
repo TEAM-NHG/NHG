@@ -1,6 +1,6 @@
 <script setup>
-import Comment from "./item/comment.vue";
-import { detailArticle, detailComments, deleteArticle } from "@/api/board";
+import Comment from "./item/BoardComment.vue";
+import { detailArticle, deleteArticle } from "@/api/board";
 import { ref, onMounted } from "vue";
 
 //pinia
@@ -39,20 +39,26 @@ function moveList() {
 }
 
 function moveModify() {
-  router.push({ name: "article-modify", params: { articleNo } });
+  router.push({ name: "article-modify", params: { "articleno": article.value.articleNo } });
 }
 
 function onDeleteArticle() {
   console.log(articleNo + "번글 삭제하러 가자!!!");
-  deleteArticle(
-    articleNo,
-    (response) => {
-      if (response.status == 200) moveList();
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+
+  if(confirm('정말 삭제하시겠습니까?\n등록된 댓글도 모두 삭제됩니다.')) {
+    deleteArticle(
+      articleNo,
+      (response) => {
+        if (response.status == 200) {
+          alert('삭제가 완료되었습니다. 목록으로 이동합니다.')
+          moveList();
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
 }
 </script>
 
@@ -71,21 +77,19 @@ function onDeleteArticle() {
         <div class="row">
           <div class="col-md-8">
             <div class="clearfix align-content-center">
-              <img
-                class="avatar me-2 float-md-start bg-light p-2"
-                src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
-              />
+              <img class="user-icon" v-if="authStore.user.img && authStore.user.id === article.userId" :src=authStore.user.img alt="">
+              <img class="user-icon" v-else src="@/assets/userIcon.png" alt="">
               <p>
-                <!-- <span class="fw-bold">{{article.userId}}</span> <br />
+                <span class="fw-bold">{{article.userId}}</span> <br />
                 <span class="text-secondary fw-light">
-                  {{ article.registerTime }}1 조회 : {{ article.hit }}
-                </span> -->
+                  {{ article.registerTime?.replace(/T/, " ") || "등록 시간 없음" }} | 조회 : {{ article.hit }}
+                </span>
               </p>
             </div>
           </div>
           <div class="col-md-4 align-self-center text-end">댓글 : 17</div>
           <div class="divider mb-3"></div>
-          <div class="text-secondary">
+          <div class="">
             {{ article.content }}
           </div>
           <div class="divider mt-3 mb-3"></div>
@@ -115,4 +119,9 @@ function onDeleteArticle() {
 
 </template>
 
-<style scoped></style>
+<style scoped>
+.user-icon{
+  width: 40px;
+  border-radius: 50%;
+}
+</style>
