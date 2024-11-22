@@ -23,6 +23,7 @@ import com.ssafy.companion_board.web.dto.request.comment.CreateChildCommentReque
 import com.ssafy.companion_board.web.dto.request.comment.CreateCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.GetCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.GetCommentsRequest;
+import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentReadRequest;
 import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentRequest;
 import com.ssafy.companion_board.web.dto.response.GetArticleListResponse;
 import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
@@ -73,10 +74,17 @@ public class CommentController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@PutMapping("/comment/{commentId}/read")
+	public ResponseEntity<Void> updateCommentRead(@RequestBody UpdateCommentReadRequest request, HttpSession session) throws Exception {
+		commentService.updateCommentRead(request);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
 	@DeleteMapping("/comment/{commentId}")
 	public ResponseEntity<Void> deleteComment(@PathVariable("commentId") int commentId, HttpSession session) throws Exception {
 		String userId = (String) session.getAttribute("user");
 		commentService.deleteComment(commentId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
 }

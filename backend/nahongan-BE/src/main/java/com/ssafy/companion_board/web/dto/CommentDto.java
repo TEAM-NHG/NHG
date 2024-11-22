@@ -25,6 +25,8 @@ public class CommentDto {
     private String content;    // 댓글 내용
     private LocalDateTime createdAt;  // 댓글 생성일
     private LocalDateTime updatedAt;  // 댓글 수정일
+    private boolean isArticleOwnerRead; 
+    private boolean isCommentOwnerRead;
 
     /**
      * Entity로 변환하는 메서드
@@ -37,6 +39,8 @@ public class CommentDto {
                 .content(this.content)
                 .createdAt(this.createdAt)
                 .updatedAt(this.updatedAt)
+                .isArticleOwnerRead(this.isArticleOwnerRead)
+                .isCommentOwnerRead(this.isCommentOwnerRead)
                 .build();
     }
 

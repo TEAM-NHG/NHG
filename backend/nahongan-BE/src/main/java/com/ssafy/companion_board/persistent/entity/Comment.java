@@ -19,6 +19,8 @@ public class Comment {
     private Integer parentId;
     private LocalDateTime createdAt;  // 댓글 생성일
     private LocalDateTime updatedAt;  // 댓글 수정일
+    private boolean isArticleOwnerRead; 
+    private boolean isCommentOwnerRead;
 
 	public void updateContent(String content) {
 		this.content = content;
