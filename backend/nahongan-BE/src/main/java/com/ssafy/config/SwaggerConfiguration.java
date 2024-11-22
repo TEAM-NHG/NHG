@@ -27,12 +27,17 @@ public class SwaggerConfiguration {
 
 	@Bean
 	public GroupedOpenApi publicApi() {
-		return GroupedOpenApi.builder().group("ssafy-public").pathsToMatch("/api/**").build();
+		return GroupedOpenApi.builder().group("ssafy-public").pathsToMatch("/api/**").pathsToExclude("/api/admin/**").build();
 	}
 	
 	@Bean
 	public GroupedOpenApi memberApi() {
 		return GroupedOpenApi.builder().group("ssafy-user").pathsToMatch("/api/member/**").build();
+	}
+	
+	@Bean
+	public GroupedOpenApi adminApi() {
+		return GroupedOpenApi.builder().group("ssafy-admin").pathsToMatch("/api/admin/**").build();
 	}
 
 }
