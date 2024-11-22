@@ -17,16 +17,18 @@ import lombok.Getter;
 public class GetArticleResponse {
 	private int articleNo; // 게시글 번호
     private String userId; // 사용자 ID
+    private String image;
     private String subject; // 제목
     private String content; // 내용
     private int hit; // 조회수
     private LocalDateTime registerTime; // 등록 시간
     
-    public static GetArticleResponse from(CompanionBoard article) {
+    public static GetArticleResponse from(CompanionBoard article, Member member) {
         return GetArticleResponse
                 .builder()
                 .articleNo(article.getArticleNo())
                 .userId(article.getUserId())
+                .image(member.getImg())
                 .subject(article.getSubject())
                 .content(article.getContent())
                 .hit(article.getHit())

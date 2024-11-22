@@ -17,6 +17,7 @@ public class CompanionBoardDto {
     private String subject; // 제목
     private String content; // 내용
     private int hit; // 조회수
+    private String image;
     private LocalDateTime registerTime; // 등록 시간
     
     public static CompanionBoardDto from(CompanionBoard article) {

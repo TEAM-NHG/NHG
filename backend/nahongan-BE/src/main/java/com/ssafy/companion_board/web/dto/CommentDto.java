@@ -27,6 +27,7 @@ public class CommentDto {
     private LocalDateTime updatedAt;  // 댓글 수정일
     private boolean isArticleOwnerRead; 
     private boolean isCommentOwnerRead;
+    private String image;
 
     /**
      * Entity로 변환하는 메서드

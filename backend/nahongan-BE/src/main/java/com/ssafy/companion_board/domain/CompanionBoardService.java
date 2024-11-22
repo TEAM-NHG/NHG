@@ -17,6 +17,8 @@ import com.ssafy.companion_board.web.dto.response.GetArticleListResponse;
 import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
 import com.ssafy.companion_board.web.dto.response.UpdateArticleResponse;
 import com.ssafy.companion_board.web.dto.response.WriteArticleResponse;
+import com.ssafy.member.persistent.entity.Member;
+import com.ssafy.member.persistent.repository.MemberRepository;
 import com.ssafy.tripinfo.persistent.entity.Attractions;
 import com.ssafy.tripinfo.persistent.repository.TripInfoRepository;
 import com.ssafy.tripinfo.web.dto.request.GetGugunBySidoCodeRequest;
@@ -33,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class CompanionBoardService {
 
     private final CompanionBoardRepository companionBoardRepository;
+    private final MemberRepository memberRepository;
     
     int LIST_SIZE = 10;
 
@@ -40,7 +43,8 @@ public class CompanionBoardService {
 	public GetArticleResponse getArticle(int articleNo) throws Exception {
 		companionBoardRepository.updateHit(articleNo);
 		CompanionBoard article = companionBoardRepository.findArticle(articleNo);
-		return GetArticleResponse.from(article);
+		Member member = memberRepository.findById(article.getUserId());
+		return GetArticleResponse.from(article, member);
 	}
 
 	public GetArticleListResponse getArticles(GetArticleListRequest request, int pgno) {

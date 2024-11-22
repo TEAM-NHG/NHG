@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ssafy.companion_board.persistent.entity.CompanionBoard;
+import com.ssafy.member.persistent.entity.Member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,10 +17,10 @@ public class GetArticleListResponse {
 	List<GetArticleResponse> articles;
 	int currentPage;
 	int lastPage;
-	public static GetArticleListResponse from(List<CompanionBoard> articles, int currentPage, int lastPage) {
+	public static GetArticleListResponse from(List<CompanionBoard> articles, Member member, int currentPage, int lastPage) {
 		return GetArticleListResponse.builder()
 				.articles(articles.stream()
-						.map(GetArticleResponse::from)
+						.map((article) -> GetArticleResponse.from(article, member))
 						.collect(Collectors.toList()))
 				.currentPage(currentPage)
 				.lastPage(lastPage)
