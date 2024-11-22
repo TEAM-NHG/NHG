@@ -24,9 +24,6 @@ function range(start, end) {
   const list = [];
   for (let i = start; i <= end; i++) list.push(i);
   return list;
-  //   return Array(end - start + 1)
-  //     .fill()
-  //     .map((val, i) => start + i);
 }
 
 function onPageChange(pg) {
@@ -60,5 +57,7 @@ function onPageChange(pg) {
 <style scoped>
 a {
   cursor: pointer;
+  color: black;
 }
+
 </style>

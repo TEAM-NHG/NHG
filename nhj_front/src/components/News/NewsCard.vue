@@ -8,8 +8,8 @@
         @mouseleave="hover = false"
       >
         <div class="mb-2">/ {{ card.bloggername }} /</div>
-        <h4 class="mb-2" style="font-size: 180%;">{{ stripHtml(card.title) }}</h4>
-        <p style="font-size: 120%;">{{ stripHtml(card.description) }}</p>
+        <h4 class="mb-2" style="font-size: 150%;">{{ stripHtml(card.title) }}</h4>
+        <p style="font-size: 105%;">{{ stripHtml(card.description) }}</p>
           <small class="text-muted d-flex justify-content-end">{{ card.createdDate.replace(/T.*/, "") }}</small>
       </div>
     </a>

@@ -75,10 +75,11 @@ const logout = () => {
   background-color: skyblue;
   color: #000000;
   font-weight: 300;
+  font-size: 105%;
 }
 
 .navbar {
-  height: 70px;
+  height: 80px;
 }
 
 .nav-item:hover {
@@ -90,6 +91,7 @@ const logout = () => {
   width: 40px;
   height: 40px;
   object-fit: cover;
+  border-radius: 50%;
 }
 
 .router-link-active {

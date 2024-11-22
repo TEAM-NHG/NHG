@@ -136,8 +136,9 @@ onUnmounted(() => {
 <style scoped>
 .innerBox {
   background-color: greenyellow;
-  border-radius: 5px;
+  margin-top: 5vh;
   padding: 5%;
+  width: 60vw;
 }
 
 
