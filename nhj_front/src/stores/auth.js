@@ -21,10 +21,11 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     login(user) {
-      // 로그인 처리: 세션 스토리지에 저장하고 상태 업데이트
-      sessionStorage.setItem('user', user);
+      // 로그인 처리: 세션 스토리지에 저장하고 상태 업데이트\
       this.isLoggedIn = true;
       this.user = JSON.parse(user)
+      this.user.img = "http://localhost" + this.user.img
+      sessionStorage.setItem('user', JSON.stringify(this.user));
     },
     logout() {
       // 로그아웃 처리: 세션 스토리지에서 제거하고 상태 업데이트
@@ -34,8 +35,10 @@ export const useAuthStore = defineStore('auth', {
     },
     updateProfile(user) {
       try {
-        local.post('/member/modify', user)
-        sessionStorage.setItem('user',JSON.stringify(user))
+        local.post('/member/modify', user, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        sessionStorage.setItem('user', JSON.stringify(JSON.parse(user.get('member'))));
         this.user = JSON.parse(sessionStorage.getItem('user'))
       }catch{
         console.log('error 발생')
