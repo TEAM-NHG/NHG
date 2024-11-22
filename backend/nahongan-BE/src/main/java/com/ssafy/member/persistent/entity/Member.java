@@ -17,6 +17,7 @@ public class Member {
 	String email;
 	String password;
 	String img;
+	String role;
 
 	public void hashPassword(PasswordEncoder passwordEncoder) {
 		this.password = passwordEncoder.encode(this.password);
@@ -30,6 +31,4 @@ public class Member {
 		this.img = imagePath;
 	}
 
-    public void setId(String id) {
-    }
 }

@@ -17,7 +17,7 @@ public interface MemberRepository {
     void create(Member member) throws SQLException;
     Member findByIdAndPassword(@Param("id") String id, @Param("password") String password) throws SQLException;
 
-    Member findById(String id);
+    Member findById(@Param("id") String id);
 
     String findIdByEmail(@Param("email") String email);
     

@@ -55,6 +55,7 @@ public class MemberService {
 
     public LoginResponse login(LoginRequest request, HttpSession httpSession) throws Exception {
         Member member = memberRepository.findById(request.getId());
+        System.out.println(member.getId());
         //아이디 검사
         if (member == null) {
             throw new BaseException("없는 아이디인디요", HttpStatus.BAD_REQUEST);
