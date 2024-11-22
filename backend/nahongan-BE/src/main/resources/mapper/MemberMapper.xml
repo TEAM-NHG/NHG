@@ -4,9 +4,9 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="com.ssafy.member.persistent.repository.MemberRepository">
     <resultMap type="com.ssafy.member.persistent.entity.Member" id="member">
-        <result column="id" property="id"/>
+        <id column="id" property="id"/>
         <result column="password" property="password"/>
-        <result column="name" property="name"/>
+        <result column="nickname" property="nickname"/>
         <result column="email" property="email"/>
         <result column="role" property="role"/>
     </resultMap>
@@ -72,7 +72,7 @@
         select *
         from members
     </select>
-    <select id="countMember" resultMap="int">
+    <select id="countMember" resultType="int">
         select count(*)
         from members
     </select>
