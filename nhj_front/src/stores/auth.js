@@ -33,13 +33,19 @@ export const useAuthStore = defineStore('auth', {
       this.isLoggedIn = false;
       this.user = null
     },
-    updateProfile(user) {
+    async updateProfile(user) {
       try {
-        local.post('/member/modify', user, {
+        await local.post('/member/modify', user, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        sessionStorage.setItem('user', JSON.stringify(JSON.parse(user.get('member'))));
-        this.user = JSON.parse(user.get('member'))
+
+        const response = await local.get('/member/profile', {
+          withCredentials: true, // 쿠키를 포함한 요청을 보냄
+        })
+
+        this.user = response.data
+        this.user.img = this.user.img ? "http://localhost" + this.user.img : ''
+        sessionStorage.setItem('user', JSON.stringify(response.data))
       }catch{
         console.log('error 발생')
       }
