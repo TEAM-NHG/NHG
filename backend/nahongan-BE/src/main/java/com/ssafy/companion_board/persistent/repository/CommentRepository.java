@@ -35,4 +35,6 @@ public interface CommentRepository {
 	
 	List<Comment> findChildCommentByUserParentComment(String userId);
 	
+	void updateArticleOwnerRead(int commentId, String userId);
+	void updateParentCommentOwnerRead(int commentId, String userId);
 } 

@@ -12,6 +12,8 @@
 	    <result property="parentId" column="parent_id" />
 	    <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/> <!-- 생성일 -->
 	    <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+	    <result property="isArticleOwnerRead" column="is_article_owner_read" />
+	    <result property="isCommentOwnerRead" column="is_comment_owner_read" />
     </resultMap>
 
     <!-- 댓글 조회 (단건) -->
@@ -34,33 +36,41 @@
     
     <select id="findCommentByUserArticle" resultMap="CommentResultMap">
         SELECT 
-            *
-        FROM comments
-	    WHERE 
-	        article_no IN (
-	            SELECT 
-	                article_no 
-	            FROM 
-	                companion_board
-	            WHERE 
-	                user_id = #{userId}
-	        )
+		    *
+		FROM comments
+		WHERE 
+		    article_no IN (
+		        SELECT 
+		            article_no 
+		        FROM 
+		            companion_board
+		        WHERE 
+		            user_id = #{userId}
+		    ) 
+		    AND user_id != #{userId} 
+		    AND is_article_owner_read = false
+		ORDER BY created_at;
+
     </select>
     
     <select id="findChildCommentByUserParentComment" resultMap="CommentResultMap">
         SELECT 
-            *
-        FROM 
-        comments
-	    WHERE 
-	        parent_id IN (
-	            SELECT 
-	                id 
-	            FROM 
-	                comments 
-	            WHERE 
-	                user_id = #{userId} and parent_id is not null;
-	        )
+		    *
+		FROM 
+		    comments
+		WHERE 
+		    parent_id IN (
+		        SELECT 
+		            id 
+		        FROM 
+		            comments 
+		        WHERE 
+		            user_id = #{userId} 
+		            AND parent_id IS NOT NULL 
+		            AND is_comment_owner_read = false
+		    )
+		ORDER BY created_at;
+
     </select>
 
     <!-- 댓글 갯수 조회 (게시물 번호로 댓글 갯수 찾기) -->
@@ -94,7 +104,22 @@
         SET content = #{content}, article_no =#{articleNo}, user_id=#{userId}, content = #{content};     // 댓글이 달린 게시물 번호
         WHERE id = #{id}
     </update>
-
+    
+    <update id="updateArticleOwnerRead">
+	    UPDATE comments c
+	    JOIN companion_board cb ON c.article_no = cb.article_no
+	    SET c.is_article_owner_read = true
+	    WHERE c.id = #{commentId}
+	    AND cb.user_id = #{userId};
+	</update>
+	<update id="updateParentCommentOwnerRead">
+		    UPDATE comments c
+		    JOIN comments p ON c.parent_id = p.id
+		    SET c.is_comment_owner_read = true
+		    WHERE c.id = #{commentId}
+		      AND p.user_id = #{userId};
+	</update>
+	
     <!-- 게시물에 대한 모든 댓글 갯수 조회 -->
     <select id="findComments" resultMap="CommentResultMap">
         SELECT *
