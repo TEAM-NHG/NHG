@@ -1,31 +1,23 @@
 package com.ssafy.member.web.controller;
 
-import com.ssafy.member.web.dto.MemberDto;
 import com.ssafy.member.web.dto.request.FindIdRequest;
 import com.ssafy.member.web.dto.request.FindPasswordRequest;
 import com.ssafy.member.web.dto.request.JoinRequest;
 import com.ssafy.member.web.dto.request.LoginRequest;
 import com.ssafy.member.web.dto.request.ModifyMemberRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
-import com.ssafy.member.web.dto.request.SetMemberImageRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
-import com.ssafy.member.web.dto.response.FindPasswordResponse;
-import com.ssafy.member.web.dto.response.GetCommentNoticeResponse;
+import com.ssafy.companion_board.web.dto.response.comment.GetCommentNoticeResponse;
 import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 import com.ssafy.member.web.dto.response.LoginResponse;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
-import java.io.File;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -110,11 +102,5 @@ public class MemberController {
 		String userId = (String) session.getAttribute("user");
 		memberService.setMemberImage(images, userId);
 		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@GetMapping("/profile/notice")
-	public ResponseEntity<GetCommentNoticeResponse> getCommentNotice(@RequestParam("userId") String userId, HttpSession httpSession) throws Exception {
-//		String userId = (String) httpSession.getAttribute("user");
-		return new ResponseEntity<>(memberService.getCommentNotice(userId), HttpStatus.OK);
 	}
 }

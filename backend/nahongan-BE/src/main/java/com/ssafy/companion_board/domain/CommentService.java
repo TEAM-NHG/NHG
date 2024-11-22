@@ -1,33 +1,24 @@
 package com.ssafy.companion_board.domain;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.ssafy.member.persistent.entity.Member;
-import com.ssafy.member.persistent.repository.MemberRepository;
+import com.ssafy.companion_board.web.dto.CommentNotice;
+import com.ssafy.companion_board.web.dto.response.comment.GetCommentNoticeResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.companion_board.persistent.entity.Comment;
-import com.ssafy.companion_board.persistent.entity.CompanionBoard;
 import com.ssafy.companion_board.persistent.repository.CommentRepository;
-import com.ssafy.companion_board.persistent.repository.CompanionBoardRepository;
 import com.ssafy.companion_board.web.dto.CommentDto;
 import com.ssafy.companion_board.web.dto.ParentCommentDto;
 import com.ssafy.companion_board.web.dto.request.comment.CreateChildCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.CreateCommentRequest;
-import com.ssafy.companion_board.web.dto.request.comment.GetCommentRequest;
-import com.ssafy.companion_board.web.dto.request.comment.GetCommentsRequest;
 import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentReadRequest;
 import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentRequest;
-import com.ssafy.companion_board.web.dto.response.GetArticleListResponse;
-import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
 import com.ssafy.companion_board.web.dto.response.comment.GetCommentsResponse;
-import com.ssafy.tripinfo.web.dto.detail.EventDetailDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -116,7 +107,6 @@ public class CommentService {
 		return parentCommentDtos;
 	}
 
-	// 자식 댓글을 부모 댓글에 매핑하는 메서드
 	private void mapChildrenToParents(List<ParentCommentDto> parentCommentDtos, List<CommentDto> children) {
 		for (CommentDto child : children) {
 			parentCommentDtos.stream()
@@ -126,7 +116,20 @@ public class CommentService {
 		}
 	}
 
+	public GetCommentNoticeResponse getCommentNotice(String userId) {
+		List<CommentNotice> notices = Stream.concat(
+						commentRepository.findCommentByUserArticle(userId)
+								.stream()
+								.map(comment -> CommentNotice.from(comment, "article")),
+						commentRepository.findChildCommentByUserParentComment(userId)
+								.stream()
+								.map(comment -> CommentNotice.from(comment, "comment"))
+				)
+				.sorted(Comparator.comparing(CommentNotice::getCreatedAt)) // createdAt 필드 기준 정렬
+				.collect(Collectors.toList());
 
+		return GetCommentNoticeResponse.builder().comments(notices).build();
+	}
 
 
 }
