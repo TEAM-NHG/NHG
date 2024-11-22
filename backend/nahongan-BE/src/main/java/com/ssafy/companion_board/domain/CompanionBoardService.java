@@ -44,7 +44,9 @@ public class CompanionBoardService {
 		companionBoardRepository.updateHit(articleNo);
 		CompanionBoard article = companionBoardRepository.findArticle(articleNo);
 		Member member = memberRepository.findById(article.getUserId());
-		return GetArticleResponse.from(article, member);
+		GetArticleResponse response = GetArticleResponse.from(article);
+		response.setImage(member.getImg());
+		return response;
 	}
 
 	public GetArticleListResponse getArticles(GetArticleListRequest request, int pgno) {
