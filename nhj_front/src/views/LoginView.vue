@@ -105,11 +105,7 @@ const togglePassword = () => {
 // 로그인 처리
 const handleLogin = async () => {
   try {
-    const response = await local.post(`/member/login`, loginForm.value, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await local.post(`/member/login`, loginForm.value);
     authStore.login(response.data)
     router.replace({ name: 'home' });
   }catch(error){
