@@ -10,6 +10,7 @@ import com.ssafy.member.web.dto.request.FindIdRequest;
 import com.ssafy.member.web.dto.request.FindPasswordRequest;
 import com.ssafy.member.web.dto.request.JoinRequest;
 import com.ssafy.member.web.dto.request.LoginRequest;
+import com.ssafy.member.web.dto.request.ModifyMemberRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.FindPasswordResponse;
@@ -101,20 +102,21 @@ public class MemberService {
     	memberRepository.modifyPassword(request.getId(), passwordEncoder.encode(request.getPassword()));
     }    
     
-    public int modify(MemberDto member) throws SQLException {
-    	return memberRepository.modify(member.toEntity());
+    public int modify(List<MultipartFile> images, ModifyMemberRequest member) throws SQLException {
+    	Member memberEntity = member.toEntity();
+    	memberEntity.updateImage(setMemberImage(images, member.getId()));
+    	return memberRepository.modify(memberEntity);
     }
     
     public int delete(String id) {
     	return memberRepository.delete(id);
     }
 
-	public void setMemberImage(List<MultipartFile> images, String userId) throws SQLException {
+	public String setMemberImage(List<MultipartFile> images, String userId) throws SQLException {
 		Member member = memberRepository.findById(userId);
 		String detailPath = "member" + File.separator + userId;
 		String imagePath = imageUploader.upload(images, detailPath);
-		member.updateImage(imagePath);
-		memberRepository.modify(member);
+		return imagePath;
 	}
 	
 	public GetCommentHistoryResponse getCommentNotice(String userId) {

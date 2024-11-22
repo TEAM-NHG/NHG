@@ -5,6 +5,7 @@ import com.ssafy.member.web.dto.request.FindIdRequest;
 import com.ssafy.member.web.dto.request.FindPasswordRequest;
 import com.ssafy.member.web.dto.request.JoinRequest;
 import com.ssafy.member.web.dto.request.LoginRequest;
+import com.ssafy.member.web.dto.request.ModifyMemberRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.request.SetMemberImageRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
@@ -87,9 +88,9 @@ public class MemberController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@PostMapping("/modify")
-	public ResponseEntity<?> modify(@RequestBody MemberDto member) throws SQLException {
-		return new ResponseEntity<>(memberService.modify(member), HttpStatus.OK);
+	@PostMapping(value="/modify",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<?> modify(@RequestPart ModifyMemberRequest member, @RequestPart(required = false) List<MultipartFile> images) throws SQLException {
+		return new ResponseEntity<>(memberService.modify(images, member), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{userId}")
