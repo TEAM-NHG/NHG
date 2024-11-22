@@ -1,11 +1,14 @@
 package com.ssafy.companion_board.domain;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.ssafy.member.persistent.entity.Member;
+import com.ssafy.member.persistent.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,7 +53,7 @@ public class CommentService {
 					.build();
 			System.out.println(comment.toString());
 			commentRepository.createComment(comment);
-		} else if (request instanceof CreateCommentRequest) {
+		} else if (request != null) {
 			comment = Comment.builder()
 					.articleNo(request.getArticleNo())
 					.content(request.getContent())
@@ -61,15 +64,7 @@ public class CommentService {
 	}
 
 	public CommentDto getComment(int commentId, String userId) throws SQLException {
-		return CommentDto.from(commentRepository.findComment(commentId), userId);		
-	}
-
-	public GetCommentsResponse getComments(int articleNo, String userId) throws SQLException {
-		List<ParentCommentDto> commentDtos = commentDtosConverter(commentRepository.findComments(articleNo), userId);
-		System.out.println("asdfasdfasdfasdfasdfasdfadsasdfasdfasdfasf");
-		
-		return GetCommentsResponse.from(commentDtos, commentRepository.countComment(articleNo));
-		
+		return CommentDto.from(commentRepository.findComment(commentId), userId);
 	}
 
 	public void updateComment(UpdateCommentRequest request) throws SQLException {
@@ -82,34 +77,57 @@ public class CommentService {
 		commentRepository.updateArticleOwnerRead(request.getCommentId(), request.getUserId());
 		commentRepository.updateParentCommentOwnerRead(request.getCommentId(), request.getUserId());
 	}
-	
-	
-	private List<ParentCommentDto> commentDtosConverter(List<Comment> comments, String userId) {
-		
-		Map<Boolean, List<Comment>> partitionedEntities =
-				comments.stream().collect(Collectors.partitioningBy(Comment::isParent));
-		System.out.println("여기옴");
-		List<Comment> parents = partitionedEntities.get(true);
-		List<Comment> children = partitionedEntities.get(false);
-		
-		List<ParentCommentDto> parentCommentDtos =
-				parents.stream()
-				.map(parent -> ParentCommentDto.from(parent, userId))
+
+	public GetCommentsResponse getComments(int articleNo, String userId) throws SQLException {
+		List<ParentCommentDto> commentDtos = commentDtosConverter(commentRepository.findComments(articleNo));
+		return GetCommentsResponse.from(commentDtos, commentRepository.countComment(articleNo));
+
+	}
+
+	private List<ParentCommentDto> commentDtosConverter(List<CommentDto> commentDtos) {
+		// 부모 댓글과 자식 댓글로 분리
+		Map<Boolean, List<CommentDto>> partitionedDtos = commentDtos.stream()
+				.collect(Collectors.partitioningBy(comment -> comment.getParentId() == 0));
+
+		List<CommentDto> parents = partitionedDtos.get(true);  // 부모 댓글
+		List<CommentDto> children = partitionedDtos.get(false); // 자식 댓글
+
+		// 부모 댓글 DTO로 변환
+		List<ParentCommentDto> parentCommentDtos = parents.stream()
+				.map(parent -> ParentCommentDto.builder()
+						.id(parent.getId())
+						.articleNo(parent.getArticleNo())
+						.isOwner(parent.getIsOwner())
+						.userId(parent.getUserId())
+						.parentId(parent.getParentId())
+						.content(parent.getContent())
+						.createdAt(parent.getCreatedAt())
+						.updatedAt(parent.getUpdatedAt())
+						.isArticleOwnerRead(parent.isArticleOwnerRead())
+						.isCommentOwnerRead(parent.isCommentOwnerRead())
+						.image(parent.getImage())
+						.replies(new ArrayList<>()) // 초기 대댓글 리스트
+						.build())
 				.collect(Collectors.toList());
-		
-		for (Comment child : children) {
-			parentCommentDtos.stream()
-			.filter(
-					parentCommentDto ->
-					Objects.equals(parentCommentDto.getId(), child.getParentId()))
-			.findFirst()
-			.ifPresent(
-					parentCommentDto ->
-					parentCommentDto.addReply(CommentDto.from(child, userId)));
-		}
+
+		// 자식 댓글을 부모 댓글에 매핑
+		mapChildrenToParents(parentCommentDtos, children);
+
 		return parentCommentDtos;
 	}
-	
-	
+
+	// 자식 댓글을 부모 댓글에 매핑하는 메서드
+	private void mapChildrenToParents(List<ParentCommentDto> parentCommentDtos, List<CommentDto> children) {
+		for (CommentDto child : children) {
+			parentCommentDtos.stream()
+					.filter(parentCommentDto -> Objects.equals(parentCommentDto.getId(), child.getParentId()))
+					.findFirst()
+					.ifPresent(parentCommentDto -> parentCommentDto.getReplies().add(child));
+		}
+	}
+
+
+
+
 }
 

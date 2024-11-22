@@ -16,6 +16,19 @@
 	    <result property="isCommentOwnerRead" column="is_comment_owner_read" />
     </resultMap>
 
+	<resultMap id="CommentDtoResultMap" type="com.ssafy.companion_board.web.dto.CommentDto">
+		<id property="id" column="id" /> <!-- 댓글 ID -->
+		<result property="articleNo" column="article_no" /> <!-- 게시물 번호 -->
+		<result property="userId" column="user_id" /> <!-- 사용자 ID -->
+		<result property="content" column="content" /> <!-- 댓글 내용 -->
+		<result property="parentId" column="parent_id" />
+		<result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/> <!-- 생성일 -->
+		<result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+		<result property="isArticleOwnerRead" column="is_article_owner_read" />
+		<result property="isCommentOwnerRead" column="is_comment_owner_read" />
+		<result property="image" column="image"/>
+	</resultMap>
+
     <!-- 댓글 조회 (단건) -->
     <select id="findComment" resultMap="CommentResultMap">
         SELECT 
@@ -121,9 +134,11 @@
 	</update>
 	
     <!-- 게시물에 대한 모든 댓글 갯수 조회 -->
-    <select id="findComments" resultMap="CommentResultMap">
-        SELECT *
+    <select id="findComments" resultMap="CommentDtoResultMap">
+        SELECT *, members.img as image
         FROM comments
+		LEFT JOIN members
+        ON members.id = comments.user_id
         WHERE article_no = #{articleNo}
     </select>
 
