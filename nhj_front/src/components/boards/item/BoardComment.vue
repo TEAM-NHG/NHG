@@ -52,6 +52,10 @@ import { detailComments } from "@/api/board";
 import { localAxios } from "@/util/http-commons"
 const local = localAxios()
 
+//pinia
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
+
 // props로 댓글 데이터 받기
 const props = defineProps({
   articleNo: Number,       // 게시글 번호
@@ -84,7 +88,7 @@ const submitComment = async () => {
 
   const commentData = {
     articleNo: props.articleNo,
-    userId: props.userId, // 실제 유저 ID는 백엔드 세션으로 관리
+    userId: authStore.user.id, // 실제 유저 ID는 백엔드 세션으로 관리
     content: newComment.value
   }
 
