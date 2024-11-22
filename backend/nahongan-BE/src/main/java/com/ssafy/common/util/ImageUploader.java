@@ -18,11 +18,11 @@ public class ImageUploader {
     @Value("${resource.images}") // 웹에서 접근할 수 있는 상대 경로 (예: "/upload/image")
     private String imageResourcePath;
 
-    public String upload(List<MultipartFile> images, String uploadPath) {
+    public String upload(MultipartFile file, String uploadPath) {
         StringBuilder savedFilePaths = new StringBuilder();
 
         try {
-            if (images != null && images.size() > 0) {
+            if (file != null) {
                 // 오늘 날짜로 폴더 생성
                 String saveFolderRelative = (uploadPath != null ? uploadPath : "default");
 
@@ -36,26 +36,24 @@ public class ImageUploader {
                 }
 
                 // 파일 처리
-                for (MultipartFile file : images) {
-                    String originalFileName = file.getOriginalFilename();
-                    if (originalFileName != null && !originalFileName.isEmpty()) {
-                        // 확장자 추출
-                        String extension = "";
-                        if (originalFileName.contains(".")) {
-                            extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-                        }
-                        String saveFileName = UUID.randomUUID().toString() + extension;
-
-                        // 파일 저장
-                        File destinationFile = new File(folder, saveFileName);
-                        file.transferTo(destinationFile);
-
-                        // 상대 경로 저장
-                        if (savedFilePaths.length() > 0) {
-                            savedFilePaths.append(", ");
-                        }
-                        savedFilePaths.append(imageResourcePath + "/" + saveFolderRelative.replace(File.separator, "/") + "/" + saveFileName);
+                String originalFileName = file.getOriginalFilename();
+                if (originalFileName != null && !originalFileName.isEmpty()) {
+                    // 확장자 추출
+                    String extension = "";
+                    if (originalFileName.contains(".")) {
+                        extension = originalFileName.substring(originalFileName.lastIndexOf('.'));
                     }
+                    String saveFileName = UUID.randomUUID().toString() + extension;
+
+                    // 파일 저장
+                    File destinationFile = new File(folder, saveFileName);
+                    file.transferTo(destinationFile);
+
+                    // 상대 경로 저장
+                    if (savedFilePaths.length() > 0) {
+                        savedFilePaths.append(", ");
+                    }
+                    savedFilePaths.append(imageResourcePath + "/" + saveFolderRelative.replace(File.separator, "/") + "/" + saveFileName);
                 }
 
                 // 파일 상대 경로 반환

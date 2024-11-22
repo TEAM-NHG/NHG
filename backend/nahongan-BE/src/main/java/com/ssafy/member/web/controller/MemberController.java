@@ -89,7 +89,7 @@ public class MemberController {
 	}
 	
 	@PostMapping(value="/modify",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<?> modify(@RequestPart ModifyMemberRequest member, @RequestPart(required = false) List<MultipartFile> images) throws SQLException {
+	public ResponseEntity<?> modify(@RequestPart ModifyMemberRequest member, @RequestPart(required = false) MultipartFile images) throws SQLException {
 		return new ResponseEntity<>(memberService.modify(images, member), HttpStatus.OK);
 	}
 	
@@ -99,7 +99,7 @@ public class MemberController {
 	}
 	
 	@PostMapping(value = "/profile/img",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<Void> setMemberImage(@RequestPart(required = false) List<MultipartFile> images, HttpSession session) throws SQLException {
+	public ResponseEntity<Void> setMemberImage(@RequestPart(required = false) MultipartFile images, HttpSession session) throws SQLException {
 		String userId = (String) session.getAttribute("user");
 		memberService.setMemberImage(images, userId);
 		return new ResponseEntity<>(HttpStatus.OK);

@@ -102,7 +102,7 @@ public class MemberService {
     	memberRepository.modifyPassword(request.getId(), passwordEncoder.encode(request.getPassword()));
     }    
     
-    public int modify(List<MultipartFile> images, ModifyMemberRequest member) throws SQLException {
+    public int modify(MultipartFile images, ModifyMemberRequest member) throws SQLException {
     	Member memberEntity = member.toEntity();
     	memberEntity.updateImage(setMemberImage(images, member.getId()));
     	return memberRepository.modify(memberEntity);
@@ -112,7 +112,7 @@ public class MemberService {
     	return memberRepository.delete(id);
     }
 
-	public String setMemberImage(List<MultipartFile> images, String userId) throws SQLException {
+	public String setMemberImage(MultipartFile images, String userId) throws SQLException {
 		Member member = memberRepository.findById(userId);
 		String detailPath = "member" + File.separator + userId;
 		String imagePath = imageUploader.upload(images, detailPath);
