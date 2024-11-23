@@ -62,6 +62,7 @@
 		    ) 
 		    AND user_id != #{userId} 
 		    AND is_article_owner_read = false
+			AND parent_id is null
 		ORDER BY created_at;
 
     </select>
@@ -79,9 +80,10 @@
 		            comments 
 		        WHERE 
 		            user_id = #{userId} 
-		            AND parent_id IS NOT NULL 
-		            AND is_comment_owner_read = false
+		            AND parent_id IS NULL
 		    )
+		  AND is_comment_owner_read = false
+		  AND user_id != #{userId}
 		ORDER BY created_at;
 
     </select>
@@ -108,7 +110,7 @@
     <!-- 댓글 삭제 -->
     <delete id="deleteComment">
         DELETE FROM comments
-        WHERE id = #{commentId}
+        WHERE id = #{commentId} and parent_id = #{commentId}
     </delete>
 
     <!-- 댓글 수정 -->
