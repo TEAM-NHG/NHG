@@ -1,5 +1,6 @@
 package com.ssafy.member.web.controller;
 
+import com.ssafy.member.persistent.entity.Member;
 import com.ssafy.member.web.dto.request.FindIdRequest;
 import com.ssafy.member.web.dto.request.FindPasswordRequest;
 import com.ssafy.member.web.dto.request.JoinRequest;
@@ -11,6 +12,8 @@ import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.member.domain.MemberService;
@@ -57,13 +61,15 @@ public class MemberController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
-	@Operation(
-			summary = "로그인 API", // 요약
-			description = "로그인 후 정보 반환" // 상세 설명
-	)
+	@Operation(summary = "현재 사용자 정보 조회", description = "현재 인증된 사용자의 정보를 반환합니다.")
+	@ApiResponses({
+			@ApiResponse(responseCode = "200", description = "현재 사용자 정보 조회 성공"),
+			@ApiResponse(responseCode = "401", description = "인증되지 않은 사용자")
+	})
+
 	@PostMapping("/login")
-	public ResponseEntity<GetMemberResponse> login(@RequestBody LoginRequest request, HttpSession httpSession) throws Exception {
-		return new ResponseEntity<>(memberService.login(request, httpSession), HttpStatus.OK);
+	public ResponseEntity<Void> login(@RequestBody LoginRequest request) throws Exception {
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Operation(
