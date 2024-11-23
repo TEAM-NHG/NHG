@@ -6,8 +6,8 @@ function listArticle(param, success, fail) {
   local.get(`/companion-board`, { params: param }).then(success).catch(fail);
 }
 
-function detailArticle(articleno, success, fail) {
-  local.get(`/companion-board/${articleno}`).then(success).catch(fail);
+async function detailArticle(articleno, success, fail) {
+  await local.get(`/companion-board/${articleno}`).then(success).catch(fail);
 }
 
 async function detailComments(articleno, success, fail) {
