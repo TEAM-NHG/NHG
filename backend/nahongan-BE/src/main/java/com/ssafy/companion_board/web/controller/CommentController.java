@@ -4,6 +4,8 @@ import com.ssafy.companion_board.web.dto.response.comment.GetCommentNoticeRespon
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +47,9 @@ public class CommentController {
 	private final CommentService commentService;
 
 	@PostMapping("/comment")
-	public ResponseEntity<Void> createComment(@RequestBody CreateCommentRequest request, HttpSession session) throws Exception {
-		String userId = (String) session.getAttribute("user");
-		commentService.createComment(request, userId);
+	public ResponseEntity<Void> createComment(@RequestBody CreateCommentRequest request, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		System.out.println(userDetails.getUsername());
+		commentService.createComment(request, userDetails.getUsername());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
