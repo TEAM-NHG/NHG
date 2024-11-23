@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
