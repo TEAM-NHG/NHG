@@ -10,13 +10,20 @@
           <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'"
             style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
           <strong class="pt-2">{{ comment.userId }}</strong>
+          <div class="btn text-muted btn-sm ms-2" @click="comment.isEditing = true">수정</div>
+          <div class="btn text-muted btn-sm" @click="deleteComment(comment.id)">삭제</div>
         </div>
         <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
       </div>
 
       <div class="d-flex justify-content-between align-items-center">
-        <div style="margin-left: 40px;">{{ comment.content }}</div>
-  
+        <!-- 댓글 내용: 수정 상태에 따라 표시 -->
+        <div v-if="!comment.isEditing" style="margin-left: 40px;">
+          {{ comment.content }}
+        </div>
+        <input v-else v-model="comment.content" class="form-control" style="margin-left: 40px; width: 80%;"
+          @keyup.enter="modifyComment(comment.id, comment.content)" />
+
         <!-- 아코디언 토글 버튼 -->
         <button @click="toggleReplies(comment.id)">
           {{ expandedComments[comment.id] ? '댓글 숨기기' : '댓글 보기' }}
@@ -40,8 +47,7 @@
         </div>
         <!-- 대댓글 작성 -->
         <div class="reply-section ms-4">
-          <textarea v-model="replyContent[comment.id]" 
-          placeholder="같이 가볼까요?" rows="2" class="form-control mt-2"
+          <textarea v-model="replyContent[comment.id]" placeholder="같이 가볼까요?" rows="2" class="form-control mt-2"
             @keyup.enter="submitReply(comment.id)">
       </textarea>
           <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)">댓글 작성</button>
@@ -95,7 +101,7 @@ const getComments = () => {
       comments.value.forEach(async (comment) => {
         const response = await local.get(`/member/profile/image?userId=${comment.userId}`)
         comment.img = "http://localhost" + response.data.image
-        return comment
+        comment.isEditing = false;
       });
     },
     (error) => {
@@ -152,6 +158,43 @@ const toggleReplies = (commentId) => {
   expandedComments.value[commentId] = !expandedComments.value[commentId];
 };
 
+//수정 매서드
+const modifyComment = async (commentId, content) => {
+  // 댓글이 수정 상태라면 수정 내용 저장 요청
+  const modifiedComment = comments.value.find(c => c.id === commentId);
+  console.log(modifiedComment)
+  if (!modifiedComment.content.trim()) {
+    alert('내용을 입력해주세요.');
+    return;
+  }
+
+  try {
+    await local.put(`/companion-board/comment/${commentId}`, {
+      "commentId" : commentId,
+      "content" : content
+    });
+    alert('댓글이 수정되었습니다.');
+    modifiedComment.isEditing = false; // 수정 상태 종료
+  } catch (error) {
+    console.error('댓글 수정 실패:', error);
+    alert('댓글 수정 중 문제가 발생했습니다.');
+  }
+};
+
+
+//댓글 삭제 매서드
+const deleteComment = (commentId) => {
+  if(!confirm('정말 삭제하시겠습니까?')) {
+    return;
+  }
+  try{
+    local.delete(`/companion-board/comment/${commentId}`)
+    comments.value.filter(c => c.id !== commentId);
+  }catch(error) {
+    console.log('댓글 삭제 실패: ', error)
+    alert('댓글 삭제 중 문제가 발생했습니다.');
+  }
+}
 </script>
 
 <style scoped>
