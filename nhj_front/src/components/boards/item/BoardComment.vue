@@ -4,45 +4,57 @@
     <div style="font-size: 150%;">댓글</div>
 
     <!-- 댓글 리스트 -->
-    <div class="comment-list">
-      <div v-for="comment in comments" :key="comment.id" class="comment-item">
-        <div class="comment-header d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-            <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'" style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
-            <strong>{{ comment.userId }}</strong>
-          </div>
-          <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
+    <div v-for="comment in comments" :key="comment.id" class="comment-item">
+      <div class="comment-header d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'"
+            style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
+          <strong class="pt-2">{{ comment.userId }}</strong>
         </div>
-        <div>{{ comment.content }}</div>
+        <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
+      </div>
 
+      <div class="d-flex justify-content-between align-items-center">
+        <div style="margin-left: 40px;">{{ comment.content }}</div>
+  
+        <!-- 아코디언 토글 버튼 -->
+        <button @click="toggleReplies(comment.id)">
+          {{ expandedComments[comment.id] ? '댓글 숨기기' : '댓글 보기' }}
+        </button>
+      </div>
 
-        <!-- 대댓글 리스트 -->
-        <div v-if="comment.replies.length" class="replies ms-4 mt-2">
-          <div v-for="reply in comment.replies" :key="reply.replyId" class="reply-item">
-            <div class="d-flex d-flex justify-content-between">
-              <div class="d-flex align-items-center" >
-                <img :src="reply.image ? 'http://localhost' + reply.image : 'src/assets/userIcon.png'" style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
-                <strong>{{ reply.userId }}</strong>
-              </div>
-              <small class="text-muted">{{ reply.createdAt.replace(/T/, " ") }}</small>
+      <!-- 대댓글 리스트 -->
+      <div v-if="expandedComments[comment.id]" class="replies ms-4 mt-2">
+        <div v-for="reply in comment.replies" :key="reply.replyId" class="reply-item">
+          <div class="d-flex justify-content-between mb-2">
+            <div class="d-flex align-items-center">
+              <img :src="reply.image ? 'http://localhost' + reply.image : 'src/assets/userIcon.png'"
+                style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
+              <strong class="pt-2">{{ reply.userId }}</strong>
             </div>
-            <p>{{ reply.content }}</p>
+          </div>
+          <div class="d-flex justify-content-between align-items-end">
+            <div>{{ reply.content }}</div>
+            <small class="text-muted">{{ reply.createdAt.replace(/T/, " ") }}</small>
           </div>
         </div>
-
         <!-- 대댓글 작성 -->
         <div class="reply-section ms-4">
-          <textarea v-model="replyContent[comment.id]" placeholder="같이 가볼까요?" rows="2"
-            class="form-control" @keyup.enter="submitReply(comment.id)"></textarea>
+          <textarea v-model="replyContent[comment.id]" 
+          placeholder="같이 가볼까요?" rows="2" class="form-control mt-2"
+            @keyup.enter="submitReply(comment.id)">
+      </textarea>
           <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)">댓글 작성</button>
         </div>
       </div>
     </div>
 
+
+
     <!-- 댓글 입력 -->
     <div class="comment-input mb-3">
       <textarea v-model="newComment" placeholder="댓글을 입력하세요..." rows="3" class="form-control"
-      @keyup.enter="submitComment"></textarea>
+        @keyup.enter="submitComment"></textarea>
       <button class="btn btn-primary mt-2" @click="submitComment">작성</button>
     </div>
   </div>
@@ -132,6 +144,14 @@ const submitReply = async (commentId) => {
     alert('대댓글 저장 중 문제가 발생했습니다.')
   }
 }
+
+const expandedComments = ref({}); // 댓글별 상태 관리 (펼침 여부)
+
+// 대댓글 토글 메서드
+const toggleReplies = (commentId) => {
+  expandedComments.value[commentId] = !expandedComments.value[commentId];
+};
+
 </script>
 
 <style scoped>
@@ -147,7 +167,8 @@ const submitReply = async (commentId) => {
   border-bottom: 1px solid #ddd;
 }
 
-.reply-section, .comment-input {
+.reply-section,
+.comment-input {
   margin-top: 10px;
   display: flex;
   align-items: end;
@@ -158,5 +179,10 @@ const submitReply = async (commentId) => {
   padding-left: 15px;
   margin-top: 10px;
   border-left: 2px solid #ddd;
+}
+
+.replies {
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  overflow: hidden;
 }
 </style>
