@@ -1,6 +1,11 @@
 <template>
   <div class="list-group">
-    <div v-for="notification in notifications" :key="notification.id"
+
+    <div v-if="notifications.length == 0">알림이 없습니다.</div>
+
+
+    <div v-if="notifications.length > 0"
+      v-for="notification in notifications" :key="notification.id"
       class="list-group-item list-group-item-action">
       <div class="d-flex w-100 align-items-center">
         <img
@@ -17,7 +22,7 @@
             </p>
             <button type="button" class="btn-close" @click="deleteNotification(notification.id, authStore.user.id)"></button>
           </div>
-          <p class="mb-1 text-muted">{{ notification.comment }}</p>
+          <p class="mb-1 text-muted">{{ notification.content }}</p>
           <small class="text-muted">{{ notification.createdAt.replace(/\T/, ' ') }}</small>
         </div>
       </div>
@@ -36,20 +41,11 @@ const local = localAxios()
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 
-const notifications = ref([
-  {
-    id: 1,  //댓글 id
-    articleNo: '1', //댓글 달린 글
-    userId: "string", //댓글 단 사람 id
-    userImage: null,
-    createdAt: '정말 좋은 여행 코스네요!',  //댓글이 달린 시간
-    type: ''  //댓글인지 대댓글이지
-  },
-]);
+const notifications = ref([]);
 
 onMounted(async() => {
   try {
-    const response = await local.get('/member/profile/notice', {params: {'userId': authStore.user.id}})
+    const response = await local.get('/companion-board/comment/notice', {params: {'userId': authStore.user.id}})
     notifications.value = (response.data.comments)
   } catch(error) {
     console.log('댓글알림 가져오는 중에 오류 발생', error)
