@@ -34,21 +34,6 @@ const getArticle = async() => {
   }catch(error){
     console.log('글 상세 확인중 에러 발생', error)
   }
-
-
-  // console.log(articleNo + "번글 얻으러 가자!!!");
-  // await detailArticle(
-  //   articleNo,
-  //   async ({ data }) => {
-  //     article.value = data;
-  //     // article.image = "http://localhost" + response.data.image
-  //     console.log(article.image)
-      
-  //   },
-  //   (error) => {
-  //     console.log(error);
-  //   }
-  // );
 };
 
 function moveList() {
