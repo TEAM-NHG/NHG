@@ -114,7 +114,7 @@
     <!-- 댓글 수정 -->
     <update id="updateComment">
         UPDATE comments
-        SET content = #{content}, article_no =#{articleNo}, user_id=#{userId}, content = #{content};     // 댓글이 달린 게시물 번호
+        SET content = #{content}, article_no =#{articleNo}, user_id=#{userId}, content = #{content}
         WHERE id = #{id}
     </update>
     
