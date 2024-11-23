@@ -17,21 +17,38 @@ const router = useRouter();
 const { articleNo } = route.params;
 const article = ref({});
 
+//axios
+import { localAxios } from "@/util/http-commons";
+const local = localAxios();
+
 onMounted(() => {
   getArticle();
 });
 
 const getArticle = async() => {
-  console.log(articleNo + "번글 얻으러 가자!!!");
-  detailArticle(
-    articleNo,
-    ({ data }) => {
-      article.value = data;
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+
+  try {
+    const response = await local.get(`/companion-board/${articleNo}`)
+    article.value = response.data;
+    article.value.image = "http://localhost" + response.data.image
+  }catch(error){
+    console.log('글 상세 확인중 에러 발생', error)
+  }
+
+
+  // console.log(articleNo + "번글 얻으러 가자!!!");
+  // await detailArticle(
+  //   articleNo,
+  //   async ({ data }) => {
+  //     article.value = data;
+  //     // article.image = "http://localhost" + response.data.image
+  //     console.log(article.image)
+      
+  //   },
+  //   (error) => {
+  //     console.log(error);
+  //   }
+  // );
 };
 
 function moveList() {
@@ -71,20 +88,18 @@ function onDeleteArticle() {
         </h2>
       </div>
       <div class="col-lg-10 text-start">
-        <div class="row my-2">
-          <h2 class="text-secondary px-5">{{ article.articleNo }}. {{ article.subject }}</h2>
+        <div class="my-2 d-flex justify-content-between align-items-end">
+          <div style="font-size: 150%;">| 제목: {{ article.subject }}</div>
+
+          <div class="text-end text-secondary fw-light">
+            {{ article.registerTime?.replace(/T/, " ") || "등록 시간 없음" }} | 조회 : {{ article.hit }}    
+          </div>
         </div>
         <div class="row">
           <div class="col-md-8">
-            <div class="clearfix align-content-center">
-              <img class="user-icon" v-if="authStore.user.img && authStore.user.id === article.userId" :src=authStore.user.img alt="">
-              <img class="user-icon" v-else src="@/assets/userIcon.png" alt="">
-              <p>
-                <span class="fw-bold">{{article.userId}}</span> <br />
-                <span class="text-secondary fw-light">
-                  {{ article.registerTime?.replace(/T/, " ") || "등록 시간 없음" }} | 조회 : {{ article.hit }}
-                </span>
-              </p>
+            <div class="d-flex align-items-center mb-2">
+              <img class="user-icon me-3" :src="article.image ? article.image : '@/assets/userIcon.png'">
+              <div>{{article.userId}}</div>
             </div>
           </div>
           <div class="col-md-4 align-self-center text-end">댓글 : 17</div>
