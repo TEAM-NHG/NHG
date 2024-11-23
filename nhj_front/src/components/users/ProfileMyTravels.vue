@@ -1,8 +1,12 @@
 <template>
   <div class="row g-4">
     <div v-for="travel in travels" :key="travel.id" class="col-12 col-md-6 col-lg-4">
-      <div class="card h-100">
-        <img :src="travel.image" class="card-img-top" :alt="travel.title" style="height: 200px; object-fit: cover;">
+      <div class="card" style="width: 15vw;">
+        <img :src="travel.image ? travel.image : 'src/assets/planner/noImage4.jpeg'" 
+              class="card-img-top" 
+              :alt="travel.title" 
+              style="width: 100%; height: 200px; 
+              object-fit: cover;">
         <div class="card-body">
           <h5 class="card-title">{{ travel.title }}</h5>
           <p class="card-text text-muted small">{{ travel.date }}</p>
@@ -34,7 +38,7 @@ const travels = ref([
     title: '제주도 여행',
     date: '2024.03.15 - 2024.03.18',
     location: '제주도',
-    image: '/placeholder-travel-1.jpg'
+    image: ''
   },
   // 더미 데이터 추가 가능
 ]);
