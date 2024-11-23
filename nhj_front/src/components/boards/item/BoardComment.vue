@@ -7,19 +7,23 @@
     <div class="comment-list">
       <div v-for="comment in comments" :key="comment.id" class="comment-item">
         <div class="comment-header d-flex justify-content-between align-items-center">
-          <div>
-            <p></p><strong>{{comment.id}} {{ comment.userId }}</strong>
-            <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
+          <div class="d-flex align-items-center">
+            <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'" style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
+            <strong>{{ comment.userId }}</strong>
           </div>
+          <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
         </div>
-        <p>{{ comment.content }}</p>
+        <div>{{ comment.content }}</div>
 
 
         <!-- 대댓글 리스트 -->
         <div v-if="comment.replies.length" class="replies ms-4 mt-2">
           <div v-for="reply in comment.replies" :key="reply.replyId" class="reply-item">
-            <div class="d-flex justify-content-between">
-              <strong>{{ reply.userId }}</strong>
+            <div class="d-flex d-flex justify-content-between">
+              <div class="d-flex align-items-center" >
+                <img :src="reply.image ? 'http://localhost' + reply.image : 'src/assets/userIcon.png'" style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
+                <strong>{{ reply.userId }}</strong>
+              </div>
               <small class="text-muted">{{ reply.createdAt.replace(/T/, " ") }}</small>
             </div>
             <p>{{ reply.content }}</p>
@@ -70,11 +74,17 @@ onMounted(() => {
   getComments();
 })
 
-const getComments = async () => {
+const getComments = () => {
   detailComments(
     props.articleNo,
     ({ data }) => {
       comments.value = data.comments;
+      //댓글별 유저 이미지 삽입
+      comments.value.forEach(async (comment) => {
+        const response = await local.get(`/member/profile/image?userId=${comment.userId}`)
+        comment.img = "http://localhost" + response.data.image
+        return comment
+      });
     },
     (error) => {
       console.log(error);
@@ -107,7 +117,7 @@ const submitReply = async (commentId) => {
   if (!replyContent.value[commentId]?.trim()) return alert('대댓글을 입력하세요.')
 
   const replyData = {
-    userId: props.userId,
+    userId: authStore.user.id,
     articleNo: props.articleNo,
     content: replyContent.value[commentId],
     parentCommentId: commentId,
