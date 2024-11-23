@@ -31,19 +31,20 @@
       <!-- Navigation Tabs -->
       <div class="card">
         <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-              <router-link :to="{ name: 'my-travels' }" class="nav-link"
-                :class="{ active: $route.name === 'my-travels' }">
-                나의 여행
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link :to="{ name: 'notifications' }" class="nav-link"
-                :class="{ active: $route.name === 'notifications' }">
-                댓글 알림
-              </router-link>
-            </li>
+          <ul class="nav nav-tabs card-header-tabs position-relative">
+              <li class="nav-item">
+                <router-link :to="{ name: 'my-travels' }" class="nav-link"
+                  :class="{ active: $route.name === 'my-travels' }">
+                  나의 여행
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link :to="{ name: 'notifications' }" class="nav-link"
+                  :class="{ active: $route.name === 'notifications' }">
+                  댓글 알림
+                </router-link>
+              </li>
+            <div class="btn position-absolute top-0 end-0"> 생성 </div>
           </ul>
         </div>
         <div class="card-body">
