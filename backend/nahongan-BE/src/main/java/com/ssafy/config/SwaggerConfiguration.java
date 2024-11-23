@@ -1,5 +1,7 @@
 package com.ssafy.config;
 
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +19,22 @@ public class SwaggerConfiguration {
 
 	@Bean
 	public OpenAPI openAPI() {
-		Info info = new Info().title("SSAFY Board API 명세서").description(
-				"<h3>SSAFY API Reference for Developers</h3>Swagger를 이용한 Board API<br><img src=\"/assets/img/ssafy_logo.png\" width=\"150\">")
+		SecurityScheme jwtScheme = new SecurityScheme()
+				.type(SecurityScheme.Type.HTTP)
+				.scheme("bearer")
+				.bearerFormat("JWT") // JWT 형식임을 명시
+				.name("Authorization");
+
+		SecurityRequirement securityRequirement = new SecurityRequirement().addList("BearerAuth");
+
+		Info info = new Info().title("API 명세서").description(
+				"<h3>팀 NHG 파이팅~~ </h3>")
 				.version("v1").contact(new io.swagger.v3.oas.models.info.Contact().name("hissam")
 						.email("hissam@ssafy.com").url("http://edu.ssafy.com"));
-
-		return new OpenAPI().components(new Components()).info(info);
+		return new OpenAPI()
+				.components(new Components().addSecuritySchemes("BearerAuth", jwtScheme))
+				.info(info)
+				.addSecurityItem(securityRequirement);
 	}
 
 	@Bean

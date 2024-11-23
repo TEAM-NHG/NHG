@@ -42,14 +42,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-//			.allowedOrigins("*")
-//			.allowedOrigins("http://localhost:8080", "http://localhost:8081")
-				.allowedOrigins("http://localhost:5173")
+				.allowedOrigins("http://localhost:5173", "http://localhost:80")
 				.allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
 						HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
 						HttpMethod.PATCH.name())
-//				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD")
-//				.allowedMethods("*")
 				.allowCredentials(true) // 쿠키 전송 허용
 				.maxAge(1800); // 1800초 동안 preflight 결과를 캐시에 저장
 	}
