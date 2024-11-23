@@ -26,8 +26,14 @@
       <!-- 로그인 상태에 따라 다른 내용 표시 -->
         <template v-if="authStore.isLoggedIn">
           <div class="nav-item">
-            <router-link :to="{ name: 'profile' }" class="nav-link px-4">
-              <img class="user-icon" :src="authStore.user.img ? authStore.user.img : 'src/assets/userIcon.png'">
+            <router-link :to="{ name: 'profile' }" class="nav-link mx-3">
+              <div class="btn position-relative">
+                <img class="user-icon" :src="authStore.user.img ? authStore.user.img : 'src/assets/userIcon.png'"></img>
+                <span v-show="authStore.user.notification > 0"
+                      class="position-absolute translate-middle p-2 bg-danger rounded-circle"
+                      style="top: 10%; left: 85%;">
+                </span>
+              </div>
             </router-link>
           </div>
           <div @click="logout">로그아웃</div>
@@ -45,7 +51,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
@@ -53,15 +59,9 @@ const authStore = useAuthStore();
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-//axios
-import { localAxios } from '@/util/http-commons';
-const local = localAxios()
-
-onMounted(async () => {
+onMounted(() => {
   //mount 될 때마다 세션에서 확인
   authStore.checkLoginStatus()
-
-
 });
 
 const logout = () => {

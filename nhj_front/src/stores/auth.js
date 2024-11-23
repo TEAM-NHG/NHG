@@ -20,12 +20,19 @@ export const useAuthStore = defineStore('auth', {
         this.user = JSON.parse(user)
       }
     },
-    login(user) {
+    async login(user) {
       // 로그인 처리: 세션 스토리지에 저장하고 상태 업데이트\
       this.isLoggedIn = true;
       this.user = user
+
+      //이미지 처리
       this.user.img = this.user.img ? "http://localhost" + user.img : ''
       sessionStorage.setItem('user', JSON.stringify(this.user));
+
+      //댓글 알림(개수) 처리
+      const response = await local.get('/companion-board/comment/notice', {params: {'userId': this.user.id}})
+      this.user.notification = response.data.comments.length
+      
     },
     logout() {
       // 로그아웃 처리: 세션 스토리지에서 제거하고 상태 업데이트
