@@ -32,7 +32,7 @@ public class SwaggerConfiguration {
 				.version("v1").contact(new io.swagger.v3.oas.models.info.Contact().name("hissam")
 						.email("hissam@ssafy.com").url("http://edu.ssafy.com"));
 		return new OpenAPI()
-				.components(new Components())
+				.components(new Components().addSecuritySchemes("BearerAuth", jwtScheme))
 				.info(info)
 				.addSecurityItem(securityRequirement);
 	}
