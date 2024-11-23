@@ -27,8 +27,7 @@
         <template v-if="authStore.isLoggedIn">
           <div class="nav-item">
             <router-link :to="{ name: 'profile' }" class="nav-link px-4">
-              <img class="user-icon" v-if="authStore.user.img" :src=authStore.user.img alt="">
-              <img class="user-icon" v-else src="@/assets/userIcon.png" alt="">
+              <img class="user-icon" :src="authStore.user.img ? authStore.user.img : 'src/assets/userIcon.png'">
             </router-link>
           </div>
           <div @click="logout">로그아웃</div>
@@ -47,15 +46,22 @@
 
 <script setup>
 import { onMounted } from 'vue';
+
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
+
 import { useRouter } from "vue-router";
 const router = useRouter();
 
+//axios
+import { localAxios } from '@/util/http-commons';
+const local = localAxios()
 
-onMounted(() => {
+onMounted(async () => {
   //mount 될 때마다 세션에서 확인
   authStore.checkLoginStatus()
+
+
 });
 
 const logout = () => {
