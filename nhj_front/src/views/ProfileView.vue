@@ -13,13 +13,13 @@
             <div class="col">
               <div class="d-flex align-items-center mb-2">
                 <h2 class="mb-0 me-3">{{ authStore.user.nickname }}</h2>
-                <button type="button" class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal"
+                <button type="button" class="btn btn-outline-success btn-sm me-2" data-bs-toggle="modal"
                   data-bs-target="#editProfileModal">
                   수정
                 </button>
                 <!-- 모달 컴포넌트 추가 -->
                 <ProfileEditModal @update="handleProfileUpdate" />
-                <button type="button" class="btn btn-outline-primary btn-sm me-2" @click="MemberDelete">탈퇴</button>
+                <button type="button" class="btn btn-outline-danger btn-sm me-2" @click="MemberDelete">탈퇴</button>
               </div>
               <p class="text-muted mb-1">{{ dashPhone }}</p>
               <p class="text-muted mb-0">{{ authStore.user.email }}</p>
