@@ -7,10 +7,8 @@ import com.ssafy.member.web.dto.request.LoginRequest;
 import com.ssafy.member.web.dto.request.ModifyMemberRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
-import com.ssafy.companion_board.web.dto.response.comment.GetCommentNoticeResponse;
 import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
-import com.ssafy.member.web.dto.response.LoginResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -64,8 +62,8 @@ public class MemberController {
 			description = "로그인 후 정보 반환" // 상세 설명
 	)
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request, HttpSession httpSession) throws Exception {
-		return new ResponseEntity<LoginResponse>(memberService.login(request, httpSession), HttpStatus.OK);
+	public ResponseEntity<GetMemberResponse> login(@RequestBody LoginRequest request, HttpSession httpSession) throws Exception {
+		return new ResponseEntity<>(memberService.login(request, httpSession), HttpStatus.OK);
 	}
 
 	@Operation(
@@ -94,7 +92,7 @@ public class MemberController {
 	)
 	@GetMapping("/profile/image")
 	public ResponseEntity<GetMemberImageResponse> getMemberProfileImage(String userId) throws Exception {
-		return new ResponseEntity<GetMemberImageResponse>(memberService.getMemberImage(userId), HttpStatus.OK);
+		return new ResponseEntity<>(memberService.getMemberImage(userId), HttpStatus.OK);
 	}
 	
 	@PostMapping("/find-id")

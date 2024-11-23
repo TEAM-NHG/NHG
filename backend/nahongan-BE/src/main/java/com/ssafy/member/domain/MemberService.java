@@ -14,7 +14,7 @@ import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
 import com.ssafy.member.web.dto.response.GetMemberImageResponse;
 import com.ssafy.member.web.dto.response.GetMemberResponse;
-import com.ssafy.member.web.dto.response.LoginResponse;
+import com.ssafy.member.web.dto.response.GetNoticeCountResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,7 +51,7 @@ public class MemberService {
         memberRepository.create(member);
     }
 
-    public LoginResponse login(LoginRequest request, HttpSession httpSession) throws Exception {
+    public GetMemberResponse login(LoginRequest request, HttpSession httpSession) throws Exception {
         Member member = memberRepository.findById(request.getId());
         System.out.println(member.getId());
         //아이디 검사
@@ -64,7 +64,8 @@ public class MemberService {
         }
         //세션 삽입
         httpSession.setAttribute("user", member.getId());
-        return LoginResponse.from(member);
+        System.out.println("Session user set: " + httpSession.getAttribute("user"));
+        return GetMemberResponse.from(member);
     }
 
     public void logout(HttpSession httpSession) {
@@ -120,5 +121,10 @@ public class MemberService {
 		Member member = memberRepository.findById(userId);
 		return GetMemberImageResponse.builder().image(member.getImg()).build();
 	}
+
+    public GetNoticeCountResponse getMemberNoticeCount(String userId) {
+        Member member = memberRepository.findById(userId);
+        return GetNoticeCountResponse.builder().count(member.getCommentNotificationCount()).build();
+    }
 
 }

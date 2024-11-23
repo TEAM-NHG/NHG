@@ -7,29 +7,34 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @ToString
 public class MemberDto {
 	@Schema(description = "아이디")
-	private final String id;
+	private String id;
 
 	@Schema(description = "비밀번호")
-	private final String password;
+	private String password;
 
 	@Schema(description = "닉네임")
-	private final String nickname;
+	private String nickname;
 
 	@Schema(description = "이메일")
-	private final String email;
+	private String email;
 
 	@Schema(description = "전화번호")
-	private final String phone;
+	private String phone;
 
 	@Schema(description = "프로필 이미지")
-	private final String img;
+	private String img;
+
+	@Schema(description = "댓글 알림")
+	private int commentNotificationCount;
 
 	public Member toEntity() {
 		return Member
@@ -40,6 +45,7 @@ public class MemberDto {
 				.email(this.email)
 				.phone(this.phone)
 				.img(this.img)
+				.commentNotificationCount(this.commentNotificationCount)
 				.build();
 	}
 }

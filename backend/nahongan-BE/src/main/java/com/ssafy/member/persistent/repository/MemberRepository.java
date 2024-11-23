@@ -1,14 +1,12 @@
 package com.ssafy.member.persistent.repository;
 
 import com.ssafy.member.persistent.entity.Member;
-import com.ssafy.member.web.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 @Repository
@@ -27,7 +25,7 @@ public interface MemberRepository {
 	
 	boolean existsByIdAndEmail(@Param("id") String id, @Param("email") String email);
 	
-	boolean modifyPassword(@Param("id") String id, @Param("password") String password);
+	void modifyPassword(@Param("id") String id, @Param("password") String password);
 
     //-------------admin------------------
 

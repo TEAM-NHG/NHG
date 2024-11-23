@@ -21,6 +21,7 @@ public class Member {
 	String password;
 	String img;
 	String role;
+	int commentNotificationCount;
 
 	public void hashPassword(PasswordEncoder passwordEncoder) {
 		this.password = passwordEncoder.encode(this.password);

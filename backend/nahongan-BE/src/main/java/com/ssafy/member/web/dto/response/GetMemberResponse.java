@@ -1,20 +1,16 @@
 package com.ssafy.member.web.dto.response;
 
 import com.ssafy.member.persistent.entity.Member;
+import com.ssafy.member.web.dto.MemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @Getter
-public class GetMemberResponse {
-    private final String id;
-    private final String nickname;
-    private final String email;
-    private final String phone;
-    private final String img;
-
+public class GetMemberResponse extends MemberDto {
     public static GetMemberResponse from(Member member) {
         return GetMemberResponse
                 .builder()
@@ -23,6 +19,7 @@ public class GetMemberResponse {
                 .email(member.getEmail())
                 .phone(member.getPhone())
                 .img(member.getImg())
+                .commentNotificationCount(member.getCommentNotificationCount())
                 .build();
     }
 }
