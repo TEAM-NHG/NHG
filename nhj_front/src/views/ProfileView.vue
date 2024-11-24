@@ -18,7 +18,7 @@
                 <ProfileEditModal />
                 <button type="button" class="btn btn-outline-danger btn-sm me-2" @click="MemberDelete">탈퇴</button>
               </div>
-              <p class="text-muted mb-1">{{ dashPhone }}</p>
+              <p class="text-muted mb-1">{{ authStore.user.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3") }}</p>
               <p class="text-muted mb-0">{{ authStore.user.email }}</p>
             </div>
           </div>
@@ -55,6 +55,7 @@
       @close="closeModal"
       @save="handleSave"
       @delete="handleDelete"
+      @update="handleUpdate"
     />
   </div>
 </template>
@@ -71,10 +72,6 @@ import { localAxios } from "@/util/http-commons";
 const authStore = useAuthStore();
 const router = useRouter();
 const local = localAxios();
-
-const dashPhone = computed(() => {
-  return authStore.user.phone.replace(/(\\d{3})(\\d{4})(\\d{4})/, "$1-$2-$3");
-});
 
 const travelList = ref([]);
 const isModalVisible = ref(false);
@@ -104,22 +101,40 @@ const closeModal = () => {
   selectedTravel.value = null;
 };
 
-const handleSave = (updatedTravel) => {
-  if (updatedTravel.id) {
-    const index = travelList.value.findIndex((t) => t.id === updatedTravel.id);
-    if (index !== -1) {
-      travelList.value[index] = updatedTravel;
-    }
-  } else {
-    updatedTravel.id = Date.now(); // 임시 ID
-    travelList.value.push(updatedTravel);
+const handleSave = (saveTravel) => {
+
+  try{
+    local.post('', saveTravel)
+    alert('저장 되었습니다.')
+    closeModal();
+  }catch(error){
+    console.log("여행 계획 수정 실패: ", error)
   }
-  closeModal();
+  
 };
 
+const handleUpdate = (updatedTravel) => {
+  try{
+    local.put('', updatedTravel)
+    alert('수정 되었습니다.')
+    closeModal();
+  }catch(error){
+    console.log("여행 계획 수정 실패: ", error)
+  }
+}
+
 const handleDelete = (travelId) => {
-  travelList.value = travelList.value.filter((t) => t.id !== travelId);
-  closeModal();
+  //API요청
+  try{
+    local.delete('', travelId)
+    alert('삭제가 완료되었습니다.')
+    closeModal()
+  }catch(error){
+    console.log("여행 계획 삭제 실패: ", error)
+  }
+
+  // travelList.value = travelList.value.filter((t) => t.id !== travelId);
+  // closeModal();
 };
 
 const MemberDelete = async () => {
