@@ -68,14 +68,24 @@
 
     <button
       class="tw-fixed tw-bottom-10 tw-right-20 tw-bg-blue-600 tw-text-white tw-rounded-full tw-p-3 tw-shadow-lg hover:tw-bg-blue-700 tw-transition tw-flex tw-items-center tw-justify-center"
-      style="width: 80px; height: 80px;"></button>
+      style="width: 80px; height: 80px;"
+      @click="savePromt"></button>
+
+    <!-- 모달 -->
+    <PlannerModal
+      v-if="isModalVisible"
+      :travelData="selectedTravel"
+      @close="closeModal"
+      @save="handleSave"
+      @delete="handleDelete"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
 import { localAxios } from "@/util/http-commons"
-
+import PlannerModal from '@/components/users/PlannerModal.vue';
 const local = localAxios()
 
 // 반응형 상태 정의
@@ -156,6 +166,46 @@ watch([response, loading], ([newResponse, isLoading]) => {
     return () => clearInterval(interval)
   }
 })
+
+//저장 구슬
+const isModalVisible = ref(false)
+const selectedTravel = ref(null);
+const savePromt = () => {
+  selectedTravel.value = {
+    title: "",
+    sido: "",
+    gugun: "",
+    image: "",
+    startDate: "",  
+    endDate: "",
+    notes: `[입력창] \n${prompt.value}\n\n[출력창]\n${response.value}`,
+    isCreated: true,
+  };
+  isModalVisible.value = true;
+}
+
+const closeModal = () => {
+  isModalVisible.value = false;
+  selectedTravel.value = null;
+};
+
+const handleSave = (updatedTravel) => {
+  if (updatedTravel.id) {
+    const index = travelList.value.findIndex((t) => t.id === updatedTravel.id);
+    if (index !== -1) {
+      travelList.value[index] = updatedTravel;
+    }
+  } else {
+    updatedTravel.id = Date.now(); // 임시 ID
+    travelList.value.push(updatedTravel);
+  }
+  closeModal();
+};
+
+const handleDelete = (travelId) => {
+  travelList.value = travelList.value.filter((t) => t.id !== travelId);
+  closeModal();
+};
 </script>
 <style scoped>
 .innerBox {
