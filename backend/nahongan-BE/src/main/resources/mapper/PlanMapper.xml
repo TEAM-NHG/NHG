@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.plan.persistent.repository.PlanRepository">
+    <!-- Select Plan by ID -->
+    <select id="findPlanById" parameterType="int" resultType="com.ssafy.plan.persistent.entity.Plan">
+        SELECT id, user_id AS userId, subject, content, register_time AS registerTime
+        FROM plan
+        WHERE id = #{planId}
+    </select>
+
+    <!-- Select Plans by User ID -->
+    <select id="findPlanByUserId" parameterType="String" resultType="com.ssafy.plan.persistent.entity.Plan">
+        SELECT id, user_id AS userId, subject, content, register_time AS registerTime
+        FROM plan
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- Insert a new Plan -->
+    <insert id="createPlan" parameterType="com.ssafy.plan.persistent.entity.Plan">
+        INSERT INTO plan (user_id, subject, content, register_time)
+        VALUES (#{userId}, #{subject}, #{content}, now())
+    </insert>
+
+    <!-- Delete a Plan by ID -->
+    <delete id="deletePlan" parameterType="int">
+        DELETE FROM plan
+        WHERE id = #{planId}
+    </delete>
+
+    <!-- Update an existing Plan -->
+    <update id="updatePlan" parameterType="com.ssafy.plan.persistent.entity.Plan">
+        UPDATE plan
+        SET
+            subject = #{subject},
+            content = #{content}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Count Plans by User ID -->
+    <select id="countPlanByUserId" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM plan
+        WHERE user_id = #{userId}
+    </select>
+
+</mapper>
