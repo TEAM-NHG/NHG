@@ -25,7 +25,7 @@ a {
 }
 
 .text-center{
-  height: 42px;
-  line-height: 42px;
+  height: 35px;
+  line-height: 35px;
 }
 </style>

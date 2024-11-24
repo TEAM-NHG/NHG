@@ -1,14 +1,15 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-transparent">
+  <nav v-if="route.name !== 'home'" 
+       :class="route.name === 'planner' ? 'transparent navbar navbar-expand-lg' : 'navbar navbar-expand-lg'">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <router-link :to="{ name: 'home' }" class="navbar-brand">
+      <router-link :to="{ name: 'home' }" class="ms-4">
         <div style="font-size: 150%;">나혼자간다</div>
       </router-link>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-        <ul class="navbar-nav align-items-center">
+        <ul class="d-flex align-items-center">
           <li class="nav-item">
             <router-link :to="{ name: 'curation' }" class="nav-link px-4">여행 큐레이션</router-link>
           </li>
@@ -19,7 +20,8 @@
             <router-link :to="{ name: 'board' }" class="nav-link px-4">같이 떠나요</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'planner' }" class="nav-link px-4">AI 여행 플래너</router-link>
+            <router-link :to="{ name: 'planner' }" class="nav-link px-4"
+            :class="{ 'planner-active': route.name === 'planner' }" >AI 여행 플래너</router-link>
           </li>
         </ul>
       </div>
@@ -30,8 +32,7 @@
               <div class="btn position-relative">
                 <img class="user-icon" :src="authStore.user.img ? authStore.user.img : 'src/assets/userIcon.png'"></img>
                 <span v-show="authStore.user.notification > 0"
-                      class="position-absolute translate-middle p-2 bg-danger rounded-circle"
-                      style="top: 10%; left: 85%;">
+                      class="nofication p-2 rounded-circle">
                 </span>
               </div>
             </router-link>
@@ -56,8 +57,9 @@ import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
+const route = useRoute();
 
 onMounted(() => {
   //mount 될 때마다 세션에서 확인
@@ -78,14 +80,25 @@ const logout = () => {
 }
 
 .navbar-nav .nav-link {
-  background-color: skyblue;
-  color: #000000;
   font-weight: 300;
-  font-size: 105%;
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
   height: 80px;
+  background-color: #191A1C;
+  color: #faf7f0;
+  font-weight: 300;
+}
+
+.transparent{
+  background-color: transparent;
+  color: #191A1C;
+  font-weight: bolder;
 }
 
 .nav-item:hover {
@@ -101,27 +114,17 @@ const logout = () => {
 }
 
 .router-link-active {
-  /* color: #0056b3 !important; */
-  font-weight: 600;
+  border-bottom: 2px solid white;
 }
 
-.btn-primary {
-  background-color: #CBDCEB;
-  border-color: #CBDCEB;
-  color: #000000;
-  margin-left: 10px;
+.router-link-active.planner-active {
+  border-bottom: 2px solid black;
 }
 
-.btn-primary:hover {
-  background-color: #b0c4d6;
-  border-color: #b0c4d6;
-}
-
-.navbar-transparent {
-  position: fixed;
+.nofication {
+  position: absolute; 
   top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+  right: 5px;
+  background-color: red;
 }
 </style>

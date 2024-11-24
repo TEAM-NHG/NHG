@@ -17,7 +17,7 @@
 
         <!-- Body -->
         <div class="modal-body">
-          <div class="mb-3">
+          <div class="mb-3" style="height: 70px;">
             <label for="title" class="form-label">제목</label>
             <input
               v-if="localData.isEditing"
@@ -51,7 +51,7 @@
               </div>
             </div>
             <div v-else>
-              <div>여행지</div>
+              <div class="form-label">여행지</div>
               <div>{{ `${travelData.sido || "N/A"}, ${travelData.gugun || "N/A"}` }}</div>
             </div>
           </div>
@@ -97,7 +97,7 @@
           </template>
 
           <div v-else class="mb-3">
-            <div class="mb-2">여행 일자</div>
+            <div class="mb-2 form-label">여행 일자</div>
             <span> {{ travelData.startDate || '' }} ~ {{ travelData.endDate || '' }}</span>
           </div>
 
@@ -111,7 +111,10 @@
               v-model="localData.notes"
               placeholder="여행 계획을 작성해주세요."
             ></textarea>
-            <p v-else>{{ travelData.notes || "작성된 여행 계획이 없습니다." }}</p>
+            <div v-else
+                 class="plan-text"
+                 v-html="travelData.notes || '작성된 여행 계획이 없습니다.'">
+            </div>
           </div>
         </div>
 
@@ -232,12 +235,23 @@ const closeModal = () => {
 
 
 <style scoped>
-.modal-body label {
+.modal-body {
   font-weight: bold;
+  padding: 3%;
 }
 .img-fluid {
   max-width: 100%;
   max-height: 200px;
   object-fit: cover;
+}
+.form-label{
+  font-size: 120%;
+}
+.plan-text{
+  height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  padding: 15px;
+  overflow: auto;
 }
 </style>

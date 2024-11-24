@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="outerBox">
     <div class="innerBox">
       <!-- Profile Section -->
       <div class="card mb-4">
@@ -11,7 +11,7 @@
             </div>
             <div class="col">
               <div class="d-flex align-items-center mb-2">
-                <h2 class="mb-0 me-3">{{ authStore.user.nickname }}</h2>
+                <div class="me-3" style="font-size: 125%;">{{ authStore.user.nickname }}</div>
                 <button type="button" class="btn btn-outline-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                   수정
                 </button>
@@ -30,16 +30,24 @@
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs position-relative">
             <li class="nav-item">
-              <router-link :to="{ name: 'my-travels' }" class="nav-link" :class="{ active: $route.name === 'my-travels' }">
+              <router-link :to="{ name: 'my-travels' }" 
+                            class="nav-link" 
+                            :class="{ active: $route.name === 'my-travels' }"
+                            @click="btnvisible = !btnvisible">
                 나의 여행
               </router-link>
+              <div v-show="btnvisible"
+                   class="btn position-absolute top-0 end-0" 
+                   @click="openCreateModal"> 생성 </div>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'notifications' }" class="nav-link" :class="{ active: $route.name === 'notifications' }">
+              <router-link :to="{ name: 'notifications' }" 
+                           class="nav-link" 
+                           :class="{ active: $route.name === 'notifications' }"
+                           @click="btnvisible = !btnvisible">
                 댓글 알림
               </router-link>
             </li>
-            <div class="btn position-absolute top-0 end-0" @click="openCreateModal"> 생성 </div>
           </ul>
         </div>
         <div class="card-body">
@@ -90,6 +98,8 @@ const openCreateModal = () => {
   };
   isModalVisible.value = true;
 };
+
+const btnvisible = ref(true)
 
 const openEditModal = (travel) => {
   selectedTravel.value = travel;
@@ -158,8 +168,17 @@ const MemberDelete = async () => {
 </script>
 
 <style scoped>
+.outerBox{
+  background-color: #191A1C;
+  width: 100vw;
+  height: 100vh;
+  margin-top: 80px;
+}
+
 .innerBox {
-  margin-top: 5%;
+  background-color: aliceblue;
+  border-radius: 20px;
+  height: 100%;
   padding: 2%;
   width: 60vw;
 }
@@ -170,13 +189,15 @@ const MemberDelete = async () => {
   color: #0056b3 !important;
   font-weight: 600;
 }
+
 .user-img {
   width: 120px;
   height: 120px;
   object-fit: cover;
   border-radius: 50%;
 }
-.user-profile {
-  background-color: aquamarine;
+
+.text-muted{
+  font-size: 90%;
 }
 </style>

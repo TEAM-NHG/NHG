@@ -1,30 +1,32 @@
 <!-- src/views/CurationView.vue -->
 <template>
-  <div class="innerBox">
-    <h2 class="mb-4" style="cursor: pointer; width: 15vw; font-size: 230%;" @click="filtersClear(filters)">여행 큐레이션</h2>
-
-    <!-- Search Component -->
-    <CurationSearch @search="handleSearch" />
-
-    <div v-if="isLoading" style="text-align: center;">
-      <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse/>
+  <div class="outerBox">
+    <div class="innerBox">
+      <h2 class="mb-4" style="cursor: pointer; width: 15vw; font-size: 230%;" @click="filtersClear(filters)">여행 큐레이션</h2>
+  
+      <!-- Search Component -->
+      <CurationSearch @search="handleSearch" />
+  
+      <div v-if="isLoading" style="text-align: center;">
+        <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse/>
+      </div>
+  
+      <!-- Cards Grid -->
+      <div class="row g-4" v-else>
+        <CurationCard
+          v-for="card in CardInfos"
+          :key="card.no"
+          :card="card"
+        />
+      </div>
+  
+      <VPageNavigation
+          :current-page="currentPage"
+          :total-page="totalPage"
+          @pageChange="onPageChange"
+          style="margin: 30px;"
+        ></VPageNavigation>
     </div>
-
-    <!-- Cards Grid -->
-    <div class="row g-4" v-else style="background-color: coral;">
-      <CurationCard
-        v-for="card in CardInfos"
-        :key="card.no"
-        :card="card"
-      />
-    </div>
-
-    <VPageNavigation
-        :current-page="currentPage"
-        :total-page="totalPage"
-        @pageChange="onPageChange"
-        style="margin: 30px;"
-      ></VPageNavigation>
   </div>
 </template>
 
@@ -102,10 +104,22 @@ const onPageChange = (val) => {
 
 <style scoped>
 .innerBox{
-  background-color: greenyellow;
-  margin-top: 4vh;
-  padding: 5%;
+  background-color: white;
+  color: #191a1c;
+  border-radius: 5%;
+  margin-top: 80px;
+  padding-top: 4%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 2%;
   width: 60vw;
+}
+
+.outerBox{
+  background-color: #191A1C;
+  width: 100vw;
+  height: 100%;
+  min-height: 100vh
 }
 
 </style>

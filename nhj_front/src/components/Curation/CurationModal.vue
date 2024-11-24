@@ -11,13 +11,13 @@
           <!-- 왼쪽: 정보 섹션 -->
           <div class="col-lg-6 d-flex flex-column justify-content-center">
             <div class="fw-bold my-3 mx-4" style="font-size: 150%;">[ {{ card.title }} ]</div>
-            <div class="mb-2 mx-4 scroll"
+            <div class="mb-4 mx-4 scroll"
                  style="overflow:auto; height: 300px;" 
                  v-html="card.overview.replace(/\([^()]*\)/g, '').replace(/\([^)]*\)/g, '')">
             </div>
 
             <!-- 아이콘 리스트 -->
-            <div class="d-flex justify-content-center align-items-center m-3">
+            <div class="d-flex justify-content-center align-items-center mb-3">
               <img v-for="(image, index) in images" :key="index" :src="image.src" alt="info-icon" class="img-fluid mx-4"
                 style="width: 30px; height: 30px; cursor: pointer;"
                 @click="selectedInfo = image.text" />
@@ -25,12 +25,12 @@
 
             <!-- 선택된 정보 -->
             <p v-show="!selectedInfo" style="color: white;">text</p>
-            <p class="mb-4" style="text-align: center;" v-html="selectedInfo" ></p>
+            <p class="mb-4 mt-2" style="text-align: center;" v-html="selectedInfo" ></p>
 
             <!-- 버튼 -->
             <div class="d-flex justify-content-center m-2">
-              <RouterLink :to="{ name: 'news', params: { word: card.title } }"> <button class="btn">블로그</button> </RouterLink>
-              <RouterLink :to="{ name: 'board', params: { word: card.title } }"> <button class="btn">동행글</button>
+              <RouterLink :to="{ name: 'news', params: { word: card.title } }"> <button class="btn btn-dark">블로그 후기</button> </RouterLink>
+              <RouterLink :to="{ name: 'board', params: { word: card.title } }"> <button class="btn btn-dark">동행 구하기</button>
               </RouterLink>
             </div>
           </div>
@@ -107,8 +107,7 @@ const images = computed(() => [
 
 .btn {
   margin-right: 30px;
-  background-color: #CBDCEB;
-  color: #133E87;
+  width: 10rem;
 }
 
 /* 스크롤바 스타일링 */

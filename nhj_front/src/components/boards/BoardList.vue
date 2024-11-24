@@ -77,16 +77,16 @@ const moveWrite = () => {
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
-        <h2 class="my-3 py-3 shadow-sm bg-light text-center" style="border-radius: 5px;">
+        <div class="header py-3 shadow-sm bg-light text-center" style="border-radius: 5px;">
           <mark class="sky">같이 떠나볼까요?
             <strong>우리</strong>
             의 이야기를 만들어봐요.</mark>
-        </h2>
+        </div>
       </div>
       <div class="col-lg-10">
-        <div class="row align-self-center mb-2" >
+        <div class="row align-self-center mb-3" >
           <div class="col-md-2 text-start">
-            <button type="button" class="btn btn-primary btn-sm" @click="moveWrite">
+            <button type="button" class="btn btn-dark btn-sm" @click="moveWrite">
               글쓰기
             </button>
           </div>
@@ -114,16 +114,24 @@ const moveWrite = () => {
               <BoardListItem v-for="article in articles" :key="article.articleNo" :article="article"></BoardListItem>
             </tbody>
           </table>
+          <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageChange="onPageChange"></VPageNavigation>
       </div>
-      <VPageNavigation :current-page="currentPage" :total-page="totalPage" @pageChange="onPageChange"></VPageNavigation>
     </div>
   </div>
 </template>
 
 <style scoped>
 .container{
-  background-color: greenyellow;
-  height: 80vh;
-  margin-top: 13vh;
+  margin-top: 80px;
+  height: 100vh;
+  padding-top: 2rem;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.header{
+  font-size: 125%;
+  margin-top: 2vh;
+  margin-bottom: 4vh;
 }
 </style>
