@@ -18,12 +18,6 @@
       <option value="32">숙소</option>
       <option value="39">음식점</option>
     </select>
-    <!-- <select class="form-select" v-model="filters.content">
-      <option value="" disabled selected>contents</option>
-      <option value="">전체</option>
-      <option value="info">정보</option>
-      <option value="blog">블로그후기</option>
-    </select> -->
 
     <!-- Search Button -->
     <button @click="search" class="btn btn-primary">검색</button>
