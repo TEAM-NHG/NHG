@@ -16,7 +16,7 @@
     <div class="text-position w-50 text-center">
       <div v-if="!authStore.isLoggedIn">
         <div class="Main-text mb-3">나만의 속도, 나만의 여정</div>
-        <div class="btn btn-primary" @click="routeLogin">시작하기</div>
+        <div class="btn" style="font-size: 110%;" @click="routeLogin">시작하기</div>
       </div>
       <div v-else class="logined">
         <div class="mb-4">
