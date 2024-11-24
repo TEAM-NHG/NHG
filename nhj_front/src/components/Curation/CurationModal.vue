@@ -1,6 +1,6 @@
 <!-- src/components/CurationModal.vue -->
 <template>
-  <div class="modal " tabindex="-1" @click="$emit('closeModal')">
+  <div class="modal " tabindex="-1" @click="$emit('showModal')">
     <div class="modal-dialog modal-xl modal-dialog-centered">
       <div class="modal-content p-4" style="border-radius: 15px;" v-if="!isLoading">
         <!-- 닫기 버튼 -->
