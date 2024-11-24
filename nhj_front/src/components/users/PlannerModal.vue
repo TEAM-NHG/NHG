@@ -180,8 +180,6 @@ const sidoList = ref([
 
 const gugunList = ref([])
 
-const sidoCode = ref(null)
-
 watch(() => localData.value.sido, async (sidoName) => {
   const newSido = sidoList.value.filter((s) => s.sidoName === sidoName)
   const response = await local.get(`/trip-info/filter/gugun?sidoCode=${newSido[0].sidoCode}`)
@@ -189,7 +187,7 @@ watch(() => localData.value.sido, async (sidoName) => {
 });
 
 // Emit 정의
-const emit = defineEmits(["save", "delete", "close"]);
+const emit = defineEmits(["save", "delete", "close", "update"]);
 
 // Methods
 const toggleEdit = () => {
@@ -197,9 +195,16 @@ const toggleEdit = () => {
 };
 
 const saveChanges = () => {
-  // 저장 로직 (백엔드로 데이터 전송)
-  emit("save", localData);
+
+  if(localData.isCreated) {
+    emit("save", localData.value)
+    return;
+  }else{
+    emit("update", localData.value)
+  }
+  
   localData.value.isEditing = false;
+  // emit("save", localData.value);
 };
 
 const cancelEdit = () => {
