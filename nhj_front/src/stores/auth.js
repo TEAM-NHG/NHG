@@ -12,12 +12,16 @@ export const useAuthStore = defineStore('auth', {
     }
   },
   actions: {
-    checkLoginStatus() {
+    async checkLoginStatus() {
       // 세션 스토리지에서 'user' 정보 확인
       const user = sessionStorage.getItem('user');
       this.isLoggedIn = !!user; // user가 존재하면 true, 없으면 false
       if(user) {
         this.user = JSON.parse(user)
+
+        //댓글 알림(개수) 처리
+        const response = await local.get('/companion-board/comment/notice', {params: {'userId': this.user.id}})
+        this.user.notification = response.data.comments.length
       }
     },
     async login(user) {
