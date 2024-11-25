@@ -11,16 +11,19 @@
 		where article_no = #{articleNo};
 	</update>
  
-    <select id="findArticle" parameterType="int" resultMap="CompanionBoardResultMap">
+    <select id="findArticle" parameterType="int" resultType="com.ssafy.companion_board.web.dto.response.GetArticleResponse">
         SELECT
-            article_no AS articleNo,
-            user_id AS userId,
-            subject,
-            content,
-            hit,
-            register_time AS registerTime
+            companion_board.article_no as articleNo,
+            companion_board.user_id as userId,
+            companion_board.subject,
+            companion_board.content,
+            companion_board.hit,
+            companion_board.register_time as registerTime,
+            count(comments.id) AS commentCount
         FROM companion_board
-        WHERE article_no = #{articleNo}
+        LEFT JOIN comments
+        ON comments.article_no = companion_board.article_no
+        WHERE companion_board.article_no = #{articleNo}
     </select>
   
     <select id="findAllArticle" resultType="com.ssafy.companion_board.web.dto.response.GetArticleResponse">

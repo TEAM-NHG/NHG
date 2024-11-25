@@ -17,7 +17,7 @@ import com.ssafy.tripinfo.persistent.entity.Sidos;
 @Mapper
 @Repository
 public interface CompanionBoardRepository {
-	CompanionBoard findArticle(@Param("articleNo") int articleNo) throws SQLException;
+	GetArticleResponse findArticle(@Param("articleNo") int articleNo) throws SQLException;
 	
 	List<GetArticleResponse> findAllArticle(
 			@Param("key") String key, 

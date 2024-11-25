@@ -42,11 +42,10 @@ public class CompanionBoardService {
 
 	public GetArticleResponse getArticle(int articleNo) throws Exception {
 		companionBoardRepository.updateHit(articleNo);
-		CompanionBoard article = companionBoardRepository.findArticle(articleNo);
+		GetArticleResponse article = companionBoardRepository.findArticle(articleNo);
 		Member member = memberRepository.findById(article.getUserId());
-		GetArticleResponse response = GetArticleResponse.from(article);
-		response.setImage(member.getImg());
-		return response;
+		article.setImage(member.getImg());
+		return article;
 	}
 
 	public GetArticleListResponse getArticles(GetArticleListRequest request, int pgno) {
@@ -63,10 +62,18 @@ public class CompanionBoardService {
 	}
 
 	public UpdateArticleResponse updateArticle(UpdateArticleRequest request) throws SQLException {
-		CompanionBoard article = companionBoardRepository.findArticle(request.getArticleNo());
-		article.update(request.getSubject(), request.getContent());
-		companionBoardRepository.updateArticle(article);
-		return UpdateArticleResponse.from(article);
+		GetArticleResponse article = companionBoardRepository.findArticle(request.getArticleNo());
+		CompanionBoard companionBoard  = CompanionBoard.builder()
+			.userId(article.getUserId())
+			.subject(request.getSubject())
+			.content(request.getContent())
+			.articleNo(article.getArticleNo())
+			.hit(article.getHit())
+			.registerTime(article.getRegisterTime())
+			.build();
+		companionBoard.update(request.getSubject(), request.getContent());
+		companionBoardRepository.updateArticle(companionBoard);
+		return UpdateArticleResponse.from(companionBoard);
 	}
 	
 	public void deleteArticle(DeleteArticleRequest request) {
