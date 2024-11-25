@@ -20,10 +20,11 @@
             <router-link
             :to="{ name: 'article-view', params: { articleNo: notification.articleNo } }"
             class="article-title link-dark"
-          >
+            >
             <p class="mb-1">
               <strong>{{ notification.nickname }}</strong>
-              님이 회원님의 게시글에 댓글을 남겼습니다
+              님이 회원님의 {{notification.type === 'article' ? '게시글' : '댓글'}}에 
+              {{notification.type === 'article' ? '댓글' : '답장'}}을 남겼습니다
             </p>
           </router-link>
 
