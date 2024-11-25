@@ -46,7 +46,6 @@ public class TripInfoService {
     	int offset = ATTRACTION_LIST_SIZE*(pgno-1);
     	List<Attractions> attractions = tripInfoRepository.findAttractionByFilter(request.getSidoCode(), request.getGugunCode(), request.getType(), request.getKeyword(), offset, ATTRACTION_LIST_SIZE);
     	int count = tripInfoRepository.countAttraction(request.getSidoCode(), request.getGugunCode(), request.getType(), request.getKeyword());
-    	System.out.println(count);
 		for (Attractions attraction:attractions) {
 			//이미지가 저장안됐다면?
 			if (!attraction.isImageSaved()) {

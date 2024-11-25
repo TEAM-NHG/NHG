@@ -59,7 +59,6 @@ public class TourApiService {
         URI diffUri = URI.create(diffUriString);
         URI commonUri = URI.create(commonUriString);
         CommonDetailDto detailDto = DetailFactory.createDetailDTO(contentTypeId);
-        System.out.println(detailDto);
         return detailResponseParser(requestApi(commonUri), requestApi(diffUri), detailDto, contentTypeId);
     }
 
@@ -74,18 +73,15 @@ public class TourApiService {
                 // "item" 배열에 접근
                 JsonNode itemNode = itemsNode.get("item").get(0);
                 result1 = objectMapper.treeToValue(itemNode, CommonDetailDto.class);
-                System.out.println(itemNode);
 
                 // 각 필드를 수동으로 설정
             }
-            System.out.println(detailDto.toString());
         	
             jsonNode = objectMapper.readTree(response2.getBody());
             itemsNode = jsonNode.get("response").get("body").get("items");
             if (itemsNode != null) {
                 // "item" 배열에 접근
                 JsonNode itemNode = itemsNode.get("item").get(0);
-                System.out.println(itemNode.get("contenttypeid").asText());
                 switch (itemNode.get("contenttypeid").asText()) {
                     case "38":
                         detailDto = objectMapper.treeToValue(itemNode, ShoppingDetailDto.class);
@@ -109,7 +105,6 @@ public class TourApiService {
                         detailDto = objectMapper.treeToValue(itemNode, CommonDetailDto.class);
                         break;
                 }
-                System.out.println(itemNode);
                 detailDto.setContentid(result1.getContentid());
                 detailDto.setContenttypeid(result1.getContenttypeid());
                 detailDto.setTitle(result1.getTitle());
@@ -152,7 +147,6 @@ public class TourApiService {
         JsonNode jsonNode = null;
         try {
             jsonNode = objectMapper.readTree(response.getBody());
-            System.out.println(jsonNode);
             JsonNode itemsNode = jsonNode.get("response").get("body").get("items");
             JsonNode cntNode = jsonNode.get("response").get("body").get("numOfRows");
             if (cntNode.asInt() != 0) {
@@ -162,7 +156,6 @@ public class TourApiService {
                 while (i<cntNode.asInt()) {
                     attractionImageDtos.getImages().add(objectMapper.treeToValue(itemNode.get(i++), AttractionImageDto.class).getOriginimgurl());
                 }
-                System.out.println(itemsNode);
             }
         }
         catch (JsonProcessingException e) {

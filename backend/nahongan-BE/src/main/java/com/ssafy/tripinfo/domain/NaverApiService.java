@@ -52,13 +52,11 @@ public class NaverApiService {
 
     private List<BlogArticle> responseParser(ResponseEntity<String> response) {
         NaverBlogResult result = null;
-        System.out.println(response.getBody());
         try {
             result = objectMapper.readValue(response.getBody(), NaverBlogResult.class);
         } catch (JsonProcessingException e) {
             e.fillInStackTrace();
         }
-
         return Objects.requireNonNull(result).toEntities();
     }
 }
