@@ -1,15 +1,14 @@
 <template>
   <div class="home-container" style="height: 100vh;">
     <!-- 배경 이미지 -->
-    <transition name="fade">
+    <!-- <transition name="fade">
       <img
         :src="currentImage"
         :key="currentImage"
         alt="Main Background"
         class="w-50 main-image"
         style="height: 90vh; object-fit: cover;">
-    </transition>
-
+    </transition> -->  
     <div class="position-absolute top-0 start-0 w-100 black">''</div>
 
     <!-- 텍스트 오버레이 -->
@@ -39,7 +38,10 @@
         </div>
       </div>
     </div>
-
+    <video src="@/assets/Main/nhg03-27-50.mp4" autoplay muted
+        alt="Main Background"
+        class="w-50 main-image"
+        style="height: 90vh; object-fit: cover;"></video>  
     <div class="position-absolute bottom-0 start-0 w-100 black">''</div>
   </div>
 </template>
@@ -93,8 +95,8 @@ onMounted(() => {
 .main-image {
   position: absolute;
   top: 5vh;
+  left: 50%;
   width: 100%;
-  z-index: -1;
 }
 
 /* 페이드 효과 */
@@ -137,7 +139,6 @@ onMounted(() => {
 .text-position {
   position: absolute;
   top: 42vh;
-  left: 50%;
   bottom: auto;
   right: auto;
 }
