@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { listArticle } from "@/api/board.js";
 
 //route
@@ -26,6 +26,16 @@ const articles = ref([]);
 const currentPage = ref(1);
 const totalPage = ref(0);
 const { VITE_ARTICLE_LIST_SIZE } = import.meta.env;
+
+// `route.params.word` 변경 감지
+watch(
+  () => route.params.word,
+  (newWord) => {
+    param.value.word = newWord; // 상태 업데이트
+    getArticleList();
+  }
+);
+
 const param = ref({
   pgno: currentPage.value,
   spp: VITE_ARTICLE_LIST_SIZE,

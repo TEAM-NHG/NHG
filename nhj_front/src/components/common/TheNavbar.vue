@@ -14,10 +14,10 @@
             <router-link :to="{ name: 'curation' }" class="nav-link px-4">여행 큐레이션</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'news' }" class="nav-link px-4">여행 소식</router-link>
+            <router-link :to="{ name: 'news', params: { word: '' } }" class="nav-link px-4">여행 소식</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'board' }" class="nav-link px-4">같이 떠나요</router-link>
+            <router-link :to="{ name: 'article-list', params: { word: '' } }" class="nav-link px-4">같이 떠나요</router-link>
           </li>
           <li class="nav-item">
             <router-link :to="{ name: 'planner' }" class="nav-link px-4"

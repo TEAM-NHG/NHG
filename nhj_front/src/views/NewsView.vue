@@ -41,7 +41,7 @@
 
 <script setup>
 import NewsCard from "@/components/News/NewsCard.vue";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 
 //route
 import { useRoute } from "vue-router";
@@ -53,6 +53,20 @@ const local = localAxios()
 
 const searchOption = ref("title");
 const searchText = ref(route.params.word ? route.params.word : "")
+
+watch(
+  () => route.params.word,
+  (newWord) => {
+    searchText.value = newWord; // 상태 업데이트
+    cards.value = []
+    page.value = 1; // 현재 페이지
+    isLoading.value = false; // 로딩 상태
+    allLoaded.value = false; // 모든 데이터를 로드했는지 여부
+    loadMoreTrigger.value = null; // 관찰 대상 요소
+    fetchData();
+    setupObserver();
+  }
+);
 
 // 데이터 불러오기
 onMounted(async () => {
