@@ -71,6 +71,7 @@ const deleteNotification = async (commentId, userId) => {
     const response = await local.put(`/companion-board/comment/${commentId}/read`, 
     {'commentId': commentId, 'userId' : userId})
     notifications.value = notifications.value.filter(n => n.id !== commentId);
+    authStore.user.notification -= 1
   }catch(error) {
     console.log('댓글 알림 삭제 중 오류 발생', error)
   }

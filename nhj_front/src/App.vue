@@ -16,7 +16,6 @@ body {
   font-family: 'NanumSquare';
   font-weight: bold;
   font-size: 105%;
-  background-color: pink;
 }
 
 .app-container {

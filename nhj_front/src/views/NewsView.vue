@@ -1,44 +1,41 @@
 <template>
-  <div class="innerBox ">
+  <div class="outerBox">
 
-    <div class="news-header">
-
-      <div>
-        <div class="mb-5" style="font-size: 200%;">블로그 여행 소식 모음집</div>
+    <div class="innerBox ">
+      <div class="news-header">
+        <div>
+          <div class="mb-5" style="font-size: 210%;">블로그 여행 소식 모음집</div>
+        </div>
+        <!-- 검색창 -->
+        <div class="d-flex search">
+          <select class="form-select w-auto me-2" v-model="searchOption">
+            <option value="title">제목</option>
+          </select>
+          <input type="text" class="form-control me-2" placeholder="검색어..." v-model="searchText" />
+          <button class="btn btn-primary" style="width: 80px;" @click="search" @keyup.enter="search">검색</button>
+        </div>
       </div>
-
-      <!-- 검색창 -->
-      <div class="d-flex search">
-        <select class="form-select w-auto me-2" v-model="searchOption">
-          <option value="title">제목</option>
-        </select>
-        <input type="text" class="form-control me-2" placeholder="검색어..." v-model="searchText" />
-        <button class="btn btn-primary" style="width: 80px;" @click="search" @keyup.enter="search">검색</button>
+  
+      <!-- 카드 목록 -->
+      <div class="row">
+        <NewsCard v-for="card in cards" :key="card.blogger" :card="card" />
       </div>
-
+  
+      <!-- 무한스크롤 -->
+      <div ref="loadMoreTrigger" class="loading-trigger" v-if="!allLoaded">
+        <p v-if="isLoading">Loading...</p>
+      </div>
     </div>
+  
+    <!-- 제일 위로 올라가는 버튼 -->
+    <button v-if="showScrollButton" @click="scrollToTop"
+      class="tw-fixed tw-bottom-10 tw-right-10 tw-bg-gray-600 tw-text-white tw-rounded-full tw-p-3 hover:tw-bg-gray-800"
+      style="width: 45px; height: 45px;">
+      <font-awesome-icon :icon="['fad', 'chevron-up']" />
+    </button>
 
-    <!-- 카드 목록 -->
-    <div class="row">
-      <NewsCard v-for="card in cards" :key="card.blogger" :card="card" />
-    </div>
-
-    <!-- 무한스크롤 -->
-    <div ref="loadMoreTrigger" class="loading-trigger" v-if="!allLoaded">
-      <p v-if="isLoading">Loading...</p>
-    </div>
   </div>
 
-  <!-- 제일 위로 올라가는 버튼 -->
-  <button
-  v-if="showScrollButton"
-  @click="scrollToTop"
-  class="tw-fixed tw-bottom-10 tw-right-10 tw-bg-blue-600 tw-text-white tw-rounded-full tw-p-3 tw-shadow-lg hover:tw-bg-blue-700 tw-transition tw-flex tw-items-center tw-justify-center"
-  style="width: 60px; height: 45px;"
->
-  <font-awesome-icon :icon="['fad', 'chevron-up']" />
-  <!-- <img src="@/assets/arrow-up.png" alt="위로" class="tw-w-6 tw-h-6" /> -->
-</button>
 
 </template>
 
@@ -134,13 +131,20 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.outerBox{
+  background-color: #191A1C;
+  width: 100vw;
+  height: 100%;
+  min-height: 100vh
+}
+
 .innerBox {
-  background-color: greenyellow;
-  margin-top: 5vh;
+  background-color: white;
+  border-radius: 5%;
+  margin-top: 80px;
   padding: 5%;
   width: 60vw;
 }
-
 
 .news-header {
   display: flex;
@@ -152,7 +156,6 @@ onUnmounted(() => {
 .search {
   height: 40px;
 }
-
 
 /* 무한스크롤 */
 .infinite-scroll {
@@ -169,4 +172,5 @@ onUnmounted(() => {
 .loading-trigger p {
   color: gray;
 }
+
 </style>

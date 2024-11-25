@@ -1,7 +1,7 @@
 <template>
   <div class="comments-section">
     <hr class="my-4">
-    <div style="font-size: 150%;">댓글</div>
+    <div class="mb-4" style="font-size: 150%;">댓글</div>
 
     <!-- 댓글 리스트 -->
     <div v-for="comment in comments" :key="comment.id" class="comment-item">
@@ -10,8 +10,10 @@
           <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'"
             style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
           <strong class="pt-2">{{ comment.userId }}</strong>
-          <div class="btn text-muted btn-sm ms-2" @click="comment.isEditing = true">수정</div>
-          <div class="btn text-muted btn-sm" @click="deleteComment(comment.id)">삭제</div>
+          <template v-if="comment.userId === authStore.user.id">
+            <div class="btn text-muted btn-sm ms-2" @click="comment.isEditing = true">수정</div>
+            <div class="btn text-muted btn-sm" @click="deleteComment(comment.id)">삭제</div>
+          </template>
         </div>
         <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
       </div>
@@ -26,36 +28,19 @@
 
         <!-- 아코디언 토글 버튼 -->
         <button @click="toggleReplies(comment.id)">
-          {{ expandedComments[comment.id] ? '댓글 숨기기' : '댓글 보기' }}
+          {{ expandedComments[comment.id] ? '댓글 숨기기' : '댓글 달기' }}
         </button>
       </div>
 
-      <!-- 대댓글 리스트 -->
-      <div v-if="expandedComments[comment.id]" class="replies ms-4 mt-2">
-        <div v-for="reply in comment.replies" :key="reply.replyId" class="reply-item">
-          <div class="d-flex justify-content-between mb-2">
-            <div class="d-flex align-items-center">
-              <img :src="reply.image ? 'http://localhost' + reply.image : 'src/assets/userIcon.png'"
-                style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
-              <strong class="pt-2">{{ reply.userId }}</strong>
-            </div>
-          </div>
-          <div class="d-flex justify-content-between align-items-end">
-            <div>{{ reply.content }}</div>
-            <small class="text-muted">{{ reply.createdAt.replace(/T/, " ") }}</small>
-          </div>
-        </div>
-        <!-- 대댓글 작성 -->
-        <div class="reply-section ms-4">
-          <textarea v-model="replyContent[comment.id]" placeholder="같이 가볼까요?" rows="2" class="form-control mt-2"
-            @keyup.enter="submitReply(comment.id)">
-      </textarea>
-          <button class="btn btn-secondary mt-1" @click="submitReply(comment.id)">댓글 작성</button>
-        </div>
-      </div>
+      <!-- 대댓글 컴포넌트 -->
+      <BoardReplyComment 
+        v-if="expandedComments[comment.id]"
+        :replies="comment.replies"
+        :parent-comment-id="comment.id"
+        :article-no="articleNo"
+        @update-replies="getComments"
+      />
     </div>
-
-
 
     <!-- 댓글 입력 -->
     <div class="comment-input mb-3">
@@ -67,40 +52,36 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue';
 import { detailComments } from "@/api/board";
-
-//axios
-import { localAxios } from "@/util/http-commons"
-const local = localAxios()
-
-//pinia
+import { localAxios } from "@/util/http-commons";
 import { useAuthStore } from '@/stores/auth';
+import BoardReplyComment from './BoardReplyComment.vue';
+
+const local = localAxios();
 const authStore = useAuthStore();
 
-// props로 댓글 데이터 받기
 const props = defineProps({
-  articleNo: Number,       // 게시글 번호
+  articleNo: Number,
   userId: String
-})
+});
 
-const comments = ref([]) // 댓글 데이터
-const newComment = ref('') // 새로운 댓글 입력 상태
-const replyContent = ref({}) // 대댓글 입력 상태
+const comments = ref([]);
+const newComment = ref('');
+const expandedComments = ref({});
 
 onMounted(() => {
   getComments();
-})
+});
 
 const getComments = () => {
   detailComments(
     props.articleNo,
     ({ data }) => {
       comments.value = data.comments;
-      //댓글별 유저 이미지 삽입
       comments.value.forEach(async (comment) => {
-        const response = await local.get(`/member/profile/image?userId=${comment.userId}`)
-        comment.img = "http://localhost" + response.data.image
+        const response = await local.get(`/member/profile/image?userId=${comment.userId}`);
+        comment.img = "http://localhost" + response.data.image;
         comment.isEditing = false;
       });
     },
@@ -108,61 +89,31 @@ const getComments = () => {
       console.log(error);
     }
   );
-}
+};
 
 // 댓글 작성
 const submitComment = async () => {
-  if (!newComment.value.trim()) return alert('댓글을 입력하세요.')
+  if (!newComment.value.trim()) return alert('댓글을 입력하세요.');
 
   const commentData = {
     articleNo: props.articleNo,
-    userId: authStore.user.id, // 실제 유저 ID는 백엔드 세션으로 관리
-    content: newComment.value
-  }
-
-  try {
-    await local.post('/companion-board/comment', commentData)
-    getComments(); // DB 저장 후 새로운 댓글 추가
-    newComment.value = ''
-  } catch (error) {
-    console.error('댓글 저장 실패:', error)
-    alert('댓글 저장 중 문제가 발생했습니다.')
-  }
-}
-
-// 대댓글 작성
-const submitReply = async (commentId) => {
-  if (!replyContent.value[commentId]?.trim()) return alert('대댓글을 입력하세요.')
-
-  const replyData = {
     userId: authStore.user.id,
-    articleNo: props.articleNo,
-    content: replyContent.value[commentId],
-    parentCommentId: commentId,
-  }
+    content: newComment.value
+  };
 
   try {
-    await local.post('/companion-board/comment/child', replyData)
+    await local.post('/companion-board/comment', commentData);
     getComments();
-    replyContent.value[commentId] = ''
+    newComment.value = '';
   } catch (error) {
-    console.error('대댓글 저장 실패:', error)
-    alert('대댓글 저장 중 문제가 발생했습니다.')
+    console.error('댓글 저장 실패:', error);
+    alert('댓글 저장 중 문제가 발생했습니다.');
   }
-}
-
-const expandedComments = ref({}); // 댓글별 상태 관리 (펼침 여부)
-
-// 대댓글 토글 메서드
-const toggleReplies = (commentId) => {
-  expandedComments.value[commentId] = !expandedComments.value[commentId];
 };
 
-//수정 매서드
+// 댓글 수정
 const modifyComment = async (commentId, content) => {
-  // 댓글이 수정 상태라면 수정 내용 저장 요청
   const modifiedComment = comments.value.find(c => c.id === commentId);
-  console.log(modifiedComment)
   if (!modifiedComment.content.trim()) {
     alert('내용을 입력해주세요.');
     return;
@@ -170,36 +121,39 @@ const modifyComment = async (commentId, content) => {
 
   try {
     await local.put(`/companion-board/comment/${commentId}`, {
-      "commentId" : commentId,
-      "content" : content
+      commentId: commentId,
+      content: content
     });
     alert('댓글이 수정되었습니다.');
-    modifiedComment.isEditing = false; // 수정 상태 종료
+    modifiedComment.isEditing = false;
   } catch (error) {
     console.error('댓글 수정 실패:', error);
     alert('댓글 수정 중 문제가 발생했습니다.');
   }
 };
 
-
-//댓글 삭제 매서드
-const deleteComment = (commentId) => {
-  if(!confirm('정말 삭제하시겠습니까?')) {
+// 댓글 삭제
+const deleteComment = async (commentId) => {
+  if (!confirm('정말 삭제하시겠습니까?')) {
     return;
   }
-  try{
-    local.delete(`/companion-board/comment/${commentId}`)
-    comments.value.filter(c => c.id !== commentId);
-  }catch(error) {
-    console.log('댓글 삭제 실패: ', error)
+  try {
+    await local.delete(`/companion-board/comment/${commentId}`);
+    getComments();
+  } catch (error) {
+    console.log('댓글 삭제 실패: ', error);
     alert('댓글 삭제 중 문제가 발생했습니다.');
   }
-}
+};
+
+// 대댓글 토글
+const toggleReplies = (commentId) => {
+  expandedComments.value[commentId] = !expandedComments.value[commentId];
+};
 </script>
 
 <style scoped>
-.comment-input textarea,
-.reply-section textarea {
+.comment-input textarea {
   width: 100%;
   resize: none;
 }
@@ -210,22 +164,10 @@ const deleteComment = (commentId) => {
   border-bottom: 1px solid #ddd;
 }
 
-.reply-section,
 .comment-input {
   margin-top: 10px;
   display: flex;
   align-items: end;
   flex-direction: column;
-}
-
-.replies .reply-item {
-  padding-left: 15px;
-  margin-top: 10px;
-  border-left: 2px solid #ddd;
-}
-
-.replies {
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  overflow: hidden;
 }
 </style>

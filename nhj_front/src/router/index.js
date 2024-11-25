@@ -8,7 +8,7 @@ import PlannerView from '../views/PlannerView.vue'
 import ProfileView from '../views/ProfileView.vue'
 import SignupView from '@/views/SignupView.vue'
 import LoginView from '@/views/LoginView.vue'
-import ProfileMyTravels from '@/components/users/ProfileMyTravels.vue'
+import PlannerCard from '@/components/users/PlannerCard.vue'
 import ProfileComment from '@/components/users/ProfileComment.vue'
 
 const router = createRouter({
@@ -75,7 +75,7 @@ const router = createRouter({
         {
           path: '/my-travels',
           name: 'my-travels', // name 추가
-          component: ProfileMyTravels
+          component: PlannerCard
         },
         {
           path: '/notifications',

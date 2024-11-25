@@ -1,20 +1,17 @@
 <template>
   <!-- 전체 화면 배경에 이미지 고정 -->
-  <div class="background-container">
     <!-- 어두운 오버레이 -->
     <div class="overlay"></div>
     <img src="@/assets/insideout/장기기억저장소.jpg" alt="Main Background"
       class="planner-image position-fixed top-0 start-0"
-      style="height: 100%; width: 100%; object-fit: cover; z-index: -2;">
-
-  </div>
+      style="height: 100vh; width: 100vw; object-fit: cover; z-index: -2;">
 
   <div class="innerBox">
 
-    <h1 class="mb-4">AI 여행 플래너</h1>
-    <div class="mb-4">
+    <div class="info mb-4">
+      <div class="mb-4 text-center" style="font-size: 150%;">AI 여행 플래너</div>
       <p class="mb-2">● 나만의 여행코치는 생성형 AI를 활용한 서비스로 계획을 생성 혹은 평가 받을 수 있는 공간입니다.</p>
-      <p>● 여행 일정에 대해 구체적으로 적을 수록 상세한 평가를 받을 수 있으며, 제시된 캐릭터 별로 같은 평가를 다르게 받아 보실 수 있습니다.</p>
+      <p >● 여행 일정에 대해 구체적으로 적을 수록 상세한 평가를 받을 수 있으며, 제시된 캐릭터 별로 같은 평가를 다르게 받아 보실 수 있습니다.</p>
     </div>
     <div class="emotion-buttons d-flex justify-content-center mb-4">
       <template v-for="emotion in emotions" :key="emotion.id">
@@ -32,27 +29,27 @@
 
     <div class="row">
       <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body inputText">
+        <div class="card inputText">
+          <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-1">
               <div>prompt 입력창</div>
               <button class="btn btn-light mb-1" @click="handleEmotionClick(selectedEmotion)">생성</button>
             </div>
             <textarea v-model="prompt" class="form-control" rows="8" placeholder="여행 계획을 입력해주세요..."
-              style="height: 20vh;" />
+              />
           </div>
         </div>
       </div>
 
       <div class="col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body outputText" style="height: 280px;"
+        <div class="card output-text">
+          <div class="card-body"
             :style="{ 'background-color': selectedEmotion.borderColor }">
             <div class="d-flex justify-content-between align-items-center" style="height: 42px;">
               <div>출력창</div>
             </div>
             <div class="output-area p-3 bg-light rounded mt-2 position-relative">
-              <img class="position-absolute top-0 end-0" :src="selectedEmotion.src ?
+              <img class="output-image" :src="selectedEmotion.src ?
                 selectedEmotion.src : 'src/assets/insideout/characters.png'" style="height: 50px;">
               <div v-if="loading" class="loading-spinner">
                 <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse />
@@ -67,15 +64,28 @@
     </div>
 
     <button
-      class="tw-fixed tw-bottom-10 tw-right-20 tw-bg-blue-600 tw-text-white tw-rounded-full tw-p-3 tw-shadow-lg hover:tw-bg-blue-700 tw-transition tw-flex tw-items-center tw-justify-center"
-      style="width: 80px; height: 80px;"></button>
+      class="tw-fixed tw-bottom-10 tw-right-20"
+      style="width: 120px; height: 120px;"
+      @click="savePromt">
+      <img src="@/assets/insideout/구슬.png" alt="">
+    </button>
+    
+
+    <!-- 모달 -->
+    <PlannerModal
+      v-if="isModalVisible"
+      :travelData="selectedTravel"
+      @close="closeModal"
+      @save="handleSave"
+      @delete="handleDelete"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
 import { localAxios } from "@/util/http-commons"
-
+import PlannerModal from '@/components/users/PlannerModal.vue';
 const local = localAxios()
 
 // 반응형 상태 정의
@@ -156,18 +166,78 @@ watch([response, loading], ([newResponse, isLoading]) => {
     return () => clearInterval(interval)
   }
 })
+
+//저장 구슬
+const isModalVisible = ref(false)
+const selectedTravel = ref(null);
+const savePromt = () => {
+  selectedTravel.value = {
+    title: "",
+    sido: "",
+    gugun: "",
+    image: "",
+    startDate: "",  
+    endDate: "",
+    notes: `[입력창] \n${prompt.value}\n\n[출력창]\n${response.value}`,
+    isCreated: true,
+  };
+  isModalVisible.value = true;
+}
+
+const closeModal = () => {
+  isModalVisible.value = false;
+  selectedTravel.value = null;
+};
+
+const handleSave = (updatedTravel) => {
+  if (updatedTravel.id) {
+    const index = travelList.value.findIndex((t) => t.id === updatedTravel.id);
+    if (index !== -1) {
+      travelList.value[index] = updatedTravel;
+    }
+  } else {
+    updatedTravel.id = Date.now(); // 임시 ID
+    travelList.value.push(updatedTravel);
+  }
+  closeModal();
+};
+
+const handleDelete = (travelId) => {
+  travelList.value = travelList.value.filter((t) => t.id !== travelId);
+  closeModal();
+};
 </script>
 <style scoped>
 .innerBox {
-  background-color: rgba(0, 0, 0, 0.2);
-  margin-top: 6%;
-  padding: 4%;
+  background-color: rgba(250, 235, 215, 0.3);
+  margin-top: 13vh;
+  border-radius: 20px;
+  padding: 3%;
   width: 70vw;
 }
 
 * {
   font-family: 'Bazzi', sans-serif;
+}
+
+.info {
+  font-size: 120%;
+}
+
+.card-body {
+  height: 300px;
   border-radius: 10px;
+}
+
+.output-text {
+  background-color: antiquewhite;
+  border: 0;
+  border-radius: 10px;
+}
+
+.output-image{
+  position: absolute;
+  right: 20px;
 }
 
 .emotion-button img {
@@ -218,19 +288,13 @@ watch([response, loading], ([newResponse, isLoading]) => {
 }
 
 .inputText {
-  background: linear-gradient(45deg, #ffff17, rgba(255, 0, 0, 0) 70.71%), linear-gradient(0deg, #72dc4f, rgba(0, 255, 0, 0) 70.71%), linear-gradient(245deg, #5756A6, rgba(0, 0, 255, 0) 70.71%), linear-gradient(180deg, #E62C2B, rgba(0, 0, 255, 0) 70.71%);
+  background: linear-gradient(45deg, #ffff17, rgba(255, 0, 0, 0) 70.71%), 
+              linear-gradient(0deg, #72dc4f, rgba(0, 255, 0, 0) 70.71%), 
+              linear-gradient(245deg, #5756A6, rgba(0, 0, 255, 0) 70.71%), 
+              linear-gradient(180deg, #E62C2B, rgba(0, 0, 255, 0) 70.71%);
   color: black;
-  /* 텍스트 색상 */
   border-radius: 10px;
-}
-
-.outputText {
-  background-color: antiquewhite;
-}
-
-.card {
-  border-radius: 10px;
-  height: 280px;
+  border: 0;
 }
 
 .planner {
