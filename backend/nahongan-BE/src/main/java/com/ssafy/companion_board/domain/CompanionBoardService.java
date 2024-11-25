@@ -52,10 +52,14 @@ public class CompanionBoardService {
 	public GetArticleListResponse getArticles(GetArticleListRequest request, int pgno) {
 		// TODO Auto-generated method stub
     	int offset = LIST_SIZE*(pgno-1);
-    	List<CompanionBoard> articles = companionBoardRepository.findAllArticle(request.getKey(), request.getWord(), offset, LIST_SIZE);
+    	List<GetArticleResponse> articles = companionBoardRepository.findAllArticle(request.getKey(), request.getWord(), offset, LIST_SIZE);
     	int count = companionBoardRepository.countArticle(request.getKey(), request.getWord());
-
-		return GetArticleListResponse.from(articles, pgno, count/LIST_SIZE+1);
+    	
+		return GetArticleListResponse.builder()
+				.articles(articles)
+				.currentPage(pgno)
+				.lastPage(count/LIST_SIZE+1)
+				.build();
 	}
 
 	public UpdateArticleResponse updateArticle(UpdateArticleRequest request) throws SQLException {

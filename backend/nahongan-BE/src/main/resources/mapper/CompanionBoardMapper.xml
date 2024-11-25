@@ -23,18 +23,22 @@
         WHERE article_no = #{articleNo}
     </select>
   
-    <select id="findAllArticle" resultMap="CompanionBoardResultMap">
+    <select id="findAllArticle" resultType="com.ssafy.companion_board.web.dto.response.GetArticleResponse">
         SELECT
-            article_no,
-            user_id,
-            subject,
-            content,
-            hit,
-            register_time
+            companion_board.article_no as articleNo,
+            companion_board.user_id as userId,
+            companion_board.subject,
+            companion_board.content,
+            companion_board.hit,
+            companion_board.register_time as registerTime,
+            count(comments.id) AS commentCount
         FROM companion_board
+        LEFT JOIN comments
+        ON comments.article_no = companion_board.article_no
         <where>
 			<include refid="search"/>
 		</where>
+		GROUP BY companion_board.article_no
         ORDER BY register_time DESC
         LIMIT #{offset}, #{size}
     </select>
@@ -69,13 +73,13 @@
     
     <sql id="search">
     	<if test="key == 'subject'">
-			AND subject LIKE CONCAT('%', #{word}, '%')
+			AND companion_board.subject LIKE CONCAT('%', #{word}, '%')
     	</if>
     	<if test="key == 'article_no'">
-			AND article_no = #{word}
+			AND companion_board.article_no = #{word}
     	</if>
     	<if test="key == 'user_id'">
-			AND user_id LIKE CONCAT('%', #{word}, '%')
+			AND companion_board.user_id LIKE CONCAT('%', #{word}, '%')
     	</if>
 	</sql>
     

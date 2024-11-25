@@ -7,10 +7,12 @@ import com.ssafy.companion_board.persistent.entity.CompanionBoard;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class GetArticleResponse {
@@ -21,6 +23,7 @@ public class GetArticleResponse {
     private String content; // 내용
     private int hit; // 조회수
     private LocalDateTime registerTime; // 등록 시간
+    private int commentCount;
     
     public static GetArticleResponse from(CompanionBoard article) {
         return GetArticleResponse
