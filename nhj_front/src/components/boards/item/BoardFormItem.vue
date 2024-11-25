@@ -63,7 +63,7 @@ watch(
 
 function onSubmit() {
   // event.preventDefault();
-
+  article.value.content = article.value.content.replace(/\n/g, '<br>')
   if (subjectErrMsg.value) {
     alert(subjectErrMsg.value);
   } else if (contentErrMsg.value) {

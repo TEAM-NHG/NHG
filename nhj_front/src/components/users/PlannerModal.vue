@@ -111,7 +111,7 @@
             ></textarea>
             <div v-else
                  class="plan-text"
-                 v-html="travelData.notes || '작성된 여행 계획이 없습니다.'">
+                 v-html="travelData.notes.replace(/\n/g, '<br>') || '작성된 여행 계획이 없습니다.'">
             </div>
           </div>
         </div>
@@ -158,6 +158,8 @@ const props = defineProps({
 // 로컬 상태 관리
 const localData = ref(props.travelData);
 localData.value.isEditing = localData.value.isCreated;
+localData.value.startDate = localData.value.startDate.replace(/T.*/, "")
+localData.value.endDate = localData.value.endDate.replace(/T.*/, "")
 
 // 시도 및 구군 데이터
 const sidoList = ref([
@@ -207,13 +209,12 @@ const saveChanges = () => {
   PlannerFormData.append("plan", JSON.stringify(localData.value));
   if(localData.value.isCreated) {
     emit("save", PlannerFormData)
-    return;
+    closeModal()
   }else{
     emit("update", PlannerFormData)
   }
 
   localData.value.isEditing = false;
-  // emit("save", localData.value);
 };
 
 const cancelEdit = () => {

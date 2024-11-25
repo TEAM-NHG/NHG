@@ -35,9 +35,9 @@
                             @click="btnvisible = !btnvisible">
                 나의 여행
               </router-link>
-              <div v-show="btnvisible"
+              <!-- <div v-show="btnvisible"
                    class="btn position-absolute top-0 end-0"
-                   @click="openCreateModal"> 생성 </div>
+                   @click="openCreateModal"> 생성 </div> -->
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'notifications' }"
@@ -50,28 +50,18 @@
           </ul>
         </div>
         <div class="card-body">
-          <router-view @open-modal="openEditModal" :test="computedTravels" />
+          <router-view />
         </div>
       </div>
     </div>
 
-    <!-- 모달 -->
-    <PlannerModal
-      v-if="isModalVisible"
-      :travelData="selectedTravel"
-      @close="closeModal"
-      @save="handleSave"
-      @delete="handleDelete"
-      @update="handleUpdate"
-    />
   </div>
 </template>
 
 <script setup>
 import ProfileEditModal from "@/components/users/ProfileEditModal.vue";
-import PlannerModal from "@/components/users/PlannerModal.vue";
 import defaultUserIcon from '@/assets/userIcon.png';
-import { ref, onMounted, computed } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import { localAxios } from "@/util/http-commons";
@@ -80,87 +70,8 @@ const authStore = useAuthStore();
 const router = useRouter();
 const local = localAxios();
 
-const isModalVisible = ref(false);
-const selectedTravel = ref(null);
-
-onMounted( () => {
-  getTravleList()
-})
-
-const travels = ref([])
-const computedTravels = computed(() => travels.value);
-const getTravleList = async () => {
-  try{
-    const reponse = await local.get('/plan')
-    travels.value = reponse.data.plans;
-  }catch(error){
-    console.log("여행 계획 생성 실패 :",error)
-  }
-}
-
-
-const openCreateModal = () => {
-  selectedTravel.value = {
-    title: "",
-    sido: "",
-    gugun: "",
-    image: "",
-    startDate: "",
-    endDate: "",
-    notes: "",
-    isCreated: true,
-  };
-  isModalVisible.value = true;
-};
-
 const btnvisible = ref(true)
-
-const openEditModal = (travel) => {
-  selectedTravel.value = travel;
-  isModalVisible.value = true;
-};
-
-const closeModal = () => {
-  isModalVisible.value = false;
-  selectedTravel.value = null;
-};
-
-const handleSave = async (saveTravel) => {
-  console.log(saveTravel)
-  try{
-    await local.post('/plan', saveTravel, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-    alert('저장 되었습니다.')
-    closeModal();
-  }catch(error){
-    console.log("여행 계획 생성 실패: ", error)
-  }
-
-};
-
-const handleUpdate = async (updatedTravel) => {
-  try{
-    await local.put('/plan', updatedTravel)
-    alert('수정 되었습니다.')
-    closeModal();
-  }catch(error){
-    console.log("여행 계획 수정 실패: ", error)
-  }
-}
-
-const handleDelete = async (travelId) => {
-  //API요청
-  try{
-    await local.delete(`/plan/${travelId}`)
-    alert('삭제가 완료되었습니다.')
-    // travelList.value = travelList.value.filter((t) => t.id !== travelId);
-    closeModal()
-  }catch(error){
-    console.log("여행 계획 삭제 실패: ", error)
-  }
-
-};
+const openCreateModal = ref(false)
 
 const MemberDelete = async () => {
   const confirmDelete = confirm("정말 회원 정보를 삭제하시겠습니까?");

@@ -7,7 +7,7 @@
     <div v-for="comment in comments" :key="comment.id" class="comment-item">
       <div class="comment-header d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
-          <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'"
+          <img :src="comment.img ? comment.img : defaultUserIcon"
             style="width: 25px; height: 25px; margin-right: 15px; object-fit: cover; border-radius: 50%;">
           <strong class="pt-2">{{ comment.nickname }}</strong>
           <template v-if="comment.userId === authStore.user.id">
@@ -62,6 +62,7 @@ import { detailComments } from "@/api/board";
 import { localAxios } from "@/util/http-commons";
 import { useAuthStore } from '@/stores/auth';
 import BoardReplyComment from './BoardReplyComment.vue';
+import defaultUserIcon from '@/assets/userIcon.png';
 
 const local = localAxios();
 const authStore = useAuthStore();
@@ -86,7 +87,9 @@ const getComments = () => {
       comments.value = data.comments;
       comments.value.forEach(async (comment) => {
         const response = await local.get(`/member/profile/image?userId=${comment.userId}`);
-        comment.img = "http://localhost" + response.data.image;
+        if(comment.img){
+          comment.img = "http://localhost" + response.data.image;
+        }
         comment.isEditing = false;
       });
     },

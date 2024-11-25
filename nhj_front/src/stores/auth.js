@@ -22,8 +22,6 @@ export const useAuthStore = defineStore('auth', {
           this.user.img = "http://localhost" + this.user.img
         }
 
-        console.log(this.user)
-
         //댓글 알림(개수) 처리
         const response = await local.get('/companion-board/comment/notice', {params: {'userId': this.user.id}})
         this.user.notification = response.data.comments.length
