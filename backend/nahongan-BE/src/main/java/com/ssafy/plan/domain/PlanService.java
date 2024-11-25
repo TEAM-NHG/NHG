@@ -1,6 +1,7 @@
 package com.ssafy.plan.domain;
 
 import com.ssafy.common.util.ImageUploader;
+import com.ssafy.member.domain.MemberService;
 import com.ssafy.member.persistent.entity.Member;
 import com.ssafy.plan.persistent.entity.Plan;
 import com.ssafy.plan.persistent.repository.PlanRepository;
@@ -25,7 +26,7 @@ public class PlanService {
 	
 	private final PlanRepository planRepository;
 	
-	private final ImageUploader imageUploader;
+	private final MemberService memberService;
 
 	public PlanDto findPlanById(int planId) throws SQLException {
 		return PlanDto.from(planRepository.findPlanById(planId));
@@ -40,10 +41,9 @@ public class PlanService {
 				.build();
 	}
 
-	public void createPlan(MultipartFile images, CreatePlanDto planDto, String userId) {
-		String detailPath = "member" + File.separator + userId;
+	public void createPlan(MultipartFile images, CreatePlanDto planDto, String userId) throws SQLException {
         Plan plan = planDto.toEntity(userId);
-		plan.setImage(imageUploader.upload(images, detailPath));
+        plan.setImage(memberService.setMemberImage(images, userId));
         planRepository.createPlan(plan);
 	}
 

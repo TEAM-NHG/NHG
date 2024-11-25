@@ -43,7 +43,7 @@ public class PlanController {
 	}
 
 	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public void createPlan(@RequestPart(value="plan") CreatePlanDto plan, @RequestPart(required = false, value="images") MultipartFile images, @AuthenticationPrincipal UserDetails userDetails) {
+	public void createPlan(@RequestPart(value="plan") CreatePlanDto plan, @RequestPart(required = false, value="images") MultipartFile images, @AuthenticationPrincipal UserDetails userDetails) throws SQLException {
 		planService.createPlan(images, plan, userDetails.getUsername());
 	}
 
