@@ -12,7 +12,7 @@
             <option value="title">제목</option>
           </select>
           <input type="text" class="form-control me-2" placeholder="검색어..." v-model="searchText" />
-          <button class="btn btn-primary" style="width: 80px;" @click="search" @keyup.enter="search">검색</button>
+          <button class="btn btn-dark" style="width: 80px;" @click="search" @keyup.enter="search">검색</button>
         </div>
       </div>
 
