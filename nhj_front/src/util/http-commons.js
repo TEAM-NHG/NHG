@@ -13,13 +13,17 @@ function localAxios() {
 
   instance.interceptors.request.use(
     function (config) {
+      const token = localStorage.getItem("token");
       if (config.onStart) config.onStart(); // 콜백 함수로 로딩 시작
+      if (token) {
+        config.headers.Authorization = `${token}`;
+      }
       return config;
     },
     function (error) {
       if (error.config?.onFinish) error.config.onFinish(); // 콜백 함수로 로딩 종료
       return Promise.reject(error);
-    }
+    },
   );
 
   instance.interceptors.response.use(
@@ -36,15 +40,4 @@ function localAxios() {
   return instance;
 }
 
-// station vue api axios instance
-function stationAxios() {
-  const instance = axios.create({
-    baseURL: VITE_ELECTRIC_CHARGING_STATION_URL,
-    headers: {
-      "Content-Type": "application/json;charset=utf-8",
-    },
-  });
-  return instance;
-}
-
-export { localAxios, stationAxios };
+export { localAxios };

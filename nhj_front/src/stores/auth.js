@@ -13,34 +13,38 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     async checkLoginStatus() {
-      // 세션 스토리지에서 'user' 정보 확인
-      const user = sessionStorage.getItem('user');
-      this.isLoggedIn = !!user; // user가 존재하면 true, 없으면 false
-      if(user) {
-        this.user = JSON.parse(user)
+      if(localStorage.getItem('token')) {
+        const profileRes = await local.get('/member/profile')
+        this.user = profileRes.data
+
+        //이미지 처리
+        this.user.img = "http://localhost" + this.user.img
+
+        console.log(this.user)
 
         //댓글 알림(개수) 처리
         const response = await local.get('/companion-board/comment/notice', {params: {'userId': this.user.id}})
         this.user.notification = response.data.comments.length
+
+        this.isLoggedIn = true
       }
     },
     async login(user) {
-      // 로그인 처리: 세션 스토리지에 저장하고 상태 업데이트\
-      this.isLoggedIn = true;
-      this.user = user
+      const loginRes = await local.post(`/member/login`, user)
+      localStorage.setItem('token', loginRes.headers.authorization)
+
+      const profileRes = await local.get('/member/profile')
+      this.user = profileRes.data
 
       //이미지 처리
-      this.user.img = this.user.img ? "http://localhost" + user.img : ''
-      sessionStorage.setItem('user', JSON.stringify(this.user));
+      this.user.img = "http://localhost" + this.user.img
 
-      //댓글 알림(개수) 처리
-      const response = await local.get('/companion-board/comment/notice', {params: {'userId': this.user.id}})
-      this.user.notification = response.data.comments.length
-      
+      console.log(this.user)
+
+      this.isLoggedIn = true
     },
     logout() {
-      // 로그아웃 처리: 세션 스토리지에서 제거하고 상태 업데이트
-      sessionStorage.removeItem('user');
+      localStorage.removeItem('token');
       this.isLoggedIn = false;
       this.user = null
     },

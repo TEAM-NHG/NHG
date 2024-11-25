@@ -81,8 +81,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import UserFindIdModal from '@/components/users/FindIdModal.vue';
 import FindPasswordModal from '@/components/users/FindPasswordModal.vue';
-import { localAxios } from "@/util/http-commons";
-const local = localAxios();
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 
@@ -105,8 +103,7 @@ const togglePassword = () => {
 // 로그인 처리
 const handleLogin = async () => {
   try {
-    const response = await local.post(`/member/login`, loginForm.value);
-    authStore.login(response.data)
+    await authStore.login(loginForm.value)
     router.replace({ name: 'home' });
   }catch(error){
     alert('아이디와 비밀번호를 다시 확인해주세요')
