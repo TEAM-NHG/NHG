@@ -50,7 +50,7 @@
           </ul>
         </div>
         <div class="card-body">
-          <router-view @open-modal="openEditModal" />
+          <router-view @open-modal="openEditModal" :test="computedTravels" />
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
 import ProfileEditModal from "@/components/users/ProfileEditModal.vue";
 import PlannerModal from "@/components/users/PlannerModal.vue";
 
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import { localAxios } from "@/util/http-commons";
@@ -80,9 +80,24 @@ const authStore = useAuthStore();
 const router = useRouter();
 const local = localAxios();
 
-const travelList = ref([]);
 const isModalVisible = ref(false);
 const selectedTravel = ref(null);
+
+onMounted( () => {
+  getTravleList()
+})
+
+const travels = ref([])
+const computedTravels = computed(() => travels.value);
+const getTravleList = async () => {
+  try{
+    const reponse = await local.get('/plan')
+    travels.value = reponse.data.plans;
+  }catch(error){
+    console.log("여행 계획 생성 실패 :",error)
+  }
+}
+
 
 const openCreateModal = () => {
   selectedTravel.value = {
@@ -110,21 +125,23 @@ const closeModal = () => {
   selectedTravel.value = null;
 };
 
-const handleSave = (saveTravel) => {
-
+const handleSave = async (saveTravel) => {
+  console.log(saveTravel)
   try{
-    local.post('', saveTravel)
+    await local.post('/plan', saveTravel, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
     alert('저장 되었습니다.')
     closeModal();
   }catch(error){
-    console.log("여행 계획 수정 실패: ", error)
+    console.log("여행 계획 생성 실패: ", error)
   }
 
 };
 
-const handleUpdate = (updatedTravel) => {
+const handleUpdate = async (updatedTravel) => {
   try{
-    local.put('', updatedTravel)
+    await local.put('/plan', updatedTravel)
     alert('수정 되었습니다.')
     closeModal();
   }catch(error){
@@ -132,18 +149,17 @@ const handleUpdate = (updatedTravel) => {
   }
 }
 
-const handleDelete = (travelId) => {
+const handleDelete = async (travelId) => {
   //API요청
   try{
-    local.delete('', travelId)
+    await local.delete(`/plan/${travelId}`)
     alert('삭제가 완료되었습니다.')
+    // travelList.value = travelList.value.filter((t) => t.id !== travelId);
     closeModal()
   }catch(error){
     console.log("여행 계획 삭제 실패: ", error)
   }
 
-  // travelList.value = travelList.value.filter((t) => t.id !== travelId);
-  // closeModal();
 };
 
 const MemberDelete = async () => {
@@ -170,7 +186,8 @@ const MemberDelete = async () => {
 .outerBox{
   background-color: #191A1C;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  min-height: 92vh;
   margin-top: 8vh;
 }
 

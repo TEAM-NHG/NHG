@@ -189,6 +189,7 @@ const closeModal = () => {
   selectedTravel.value = null;
 };
 
+
 const handleSave = (updatedTravel) => {
   if (updatedTravel.id) {
     const index = travelList.value.findIndex((t) => t.id === updatedTravel.id);
