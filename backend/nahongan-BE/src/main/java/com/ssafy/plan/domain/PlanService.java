@@ -9,7 +9,6 @@ import com.ssafy.plan.web.dto.PlanDto;
 import com.ssafy.plan.web.dto.PlanDtoList;
 import com.ssafy.plan.web.dto.request.CreatePlanDto;
 import com.ssafy.plan.web.dto.request.UpdatePlanDto;
-import com.ssafy.tripinfo.domain.TripInfoService;
 import com.ssafy.tripinfo.persistent.entity.Guguns;
 import com.ssafy.tripinfo.persistent.repository.TripInfoRepository;
 
@@ -37,7 +36,7 @@ public class PlanService {
 	public PlanDto findPlanById(int planId) throws SQLException {
 		Plan plan = planRepository.findPlanById(planId);
 		String sidoName = tripInfoRepository.findSidoNameBySidoCode(plan.getSidoCode());
-		String gugunName = tripInfoRepository.findGugunNameByGugunNo(plan.getGugunCode());
+		String gugunName = tripInfoRepository.findGugunNameByGugunCodeAndSidoCode(plan.getSidoCode(), plan.getGugunCode());
 		return PlanDto.from(plan, sidoName, gugunName);
 	}
 
@@ -50,7 +49,7 @@ public class PlanService {
 					.map((plan) -> {try {
 						return PlanDto.from(plan
 										,tripInfoRepository.findSidoNameBySidoCode(plan.getSidoCode())
-										,tripInfoRepository.findGugunNameByGugunNo(plan.getGugunCode()));
+										,tripInfoRepository.findGugunNameByGugunCodeAndSidoCode(plan.getSidoCode(), plan.getGugunCode()));
 										} catch (SQLException e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();
