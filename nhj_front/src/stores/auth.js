@@ -18,7 +18,9 @@ export const useAuthStore = defineStore('auth', {
         this.user = profileRes.data
 
         //이미지 처리
-        this.user.img = "http://localhost" + this.user.img
+        if(this.user.img) {
+          this.user.img = "http://localhost" + this.user.img
+        }
 
         console.log(this.user)
 

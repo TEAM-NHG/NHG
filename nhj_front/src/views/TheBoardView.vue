@@ -14,6 +14,6 @@ mark.sky {
 .outerBox{
   background-color: #191a1c;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
 }
 </style>

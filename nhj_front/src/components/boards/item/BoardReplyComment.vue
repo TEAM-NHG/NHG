@@ -106,7 +106,7 @@ const handleDelete = async (commentId) => {
   if (!confirm('정말 삭제하시겠습니까?')) {
     return;
   }
-  
+
   try {
     await local.delete(`/companion-board/comment/${commentId}`);
     emit('update-replies'); // 부모 컴포넌트에 업데이트 요청

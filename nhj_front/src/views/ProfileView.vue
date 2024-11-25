@@ -6,8 +6,7 @@
         <div class="user-profile">
           <div class="row align-items-center">
             <div class="col-auto">
-              <img v-if="authStore.user.img" :src="authStore.user.img" :alt="authStore.user.nickname" class="user-img rounded-circle" />
-              <img v-else src="@/assets/userIcon.png" alt="noImg" class="user-img rounded-circle">
+              <img :src="authStore.user.img ? authStore.user.img : '@/assets/userIcon.png'" class="user-img rounded-circle">
             </div>
             <div class="col">
               <div class="d-flex align-items-center mb-2">
@@ -30,19 +29,19 @@
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs position-relative">
             <li class="nav-item">
-              <router-link :to="{ name: 'my-travels' }" 
-                            class="nav-link" 
+              <router-link :to="{ name: 'my-travels' }"
+                            class="nav-link"
                             :class="{ active: $route.name === 'my-travels' }"
                             @click="btnvisible = !btnvisible">
                 나의 여행
               </router-link>
               <div v-show="btnvisible"
-                   class="btn position-absolute top-0 end-0" 
+                   class="btn position-absolute top-0 end-0"
                    @click="openCreateModal"> 생성 </div>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'notifications' }" 
-                           class="nav-link" 
+              <router-link :to="{ name: 'notifications' }"
+                           class="nav-link"
                            :class="{ active: $route.name === 'notifications' }"
                            @click="btnvisible = !btnvisible">
                 댓글 알림
@@ -72,7 +71,7 @@
 import ProfileEditModal from "@/components/users/ProfileEditModal.vue";
 import PlannerModal from "@/components/users/PlannerModal.vue";
 
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 import { localAxios } from "@/util/http-commons";
@@ -91,7 +90,7 @@ const openCreateModal = () => {
     sido: "",
     gugun: "",
     image: "",
-    startDate: "",  
+    startDate: "",
     endDate: "",
     notes: "",
     isCreated: true,
@@ -120,7 +119,7 @@ const handleSave = (saveTravel) => {
   }catch(error){
     console.log("여행 계획 수정 실패: ", error)
   }
-  
+
 };
 
 const handleUpdate = (updatedTravel) => {
@@ -172,7 +171,7 @@ const MemberDelete = async () => {
   background-color: #191A1C;
   width: 100vw;
   height: 100vh;
-  margin-top: 80px;
+  margin-top: 8vh;
 }
 
 .innerBox {

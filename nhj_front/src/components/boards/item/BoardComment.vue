@@ -1,14 +1,14 @@
 <template>
   <div class="comments-section">
-    <hr class="my-4">
-    <div class="mb-4" style="font-size: 150%;">댓글</div>
+    <hr class="mt-2 mb-3">
+    <div class="mb-3" style="font-size: 150%;">| 댓글</div>
 
     <!-- 댓글 리스트 -->
     <div v-for="comment in comments" :key="comment.id" class="comment-item">
       <div class="comment-header d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center">
           <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'"
-            style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
+            style="width: 25px; height: 25px; margin-right: 15px; object-fit: cover; border-radius: 50%;">
           <strong class="pt-2">{{ comment.userId }}</strong>
           <template v-if="comment.userId === authStore.user.id">
             <div class="btn text-muted btn-sm ms-2" @click="comment.isEditing = true">수정</div>
@@ -18,7 +18,7 @@
         <small class="text-muted ms-2">{{ comment.updatedAt.replace(/T/, " ") }}</small>
       </div>
 
-      <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex justify-content-between align-items-center mb-2">
         <!-- 댓글 내용: 수정 상태에 따라 표시 -->
         <div v-if="!comment.isEditing" style="margin-left: 40px;">
           {{ comment.content }}
@@ -33,14 +33,19 @@
       </div>
 
       <!-- 대댓글 컴포넌트 -->
-      <BoardReplyComment 
+      <BoardReplyComment
         v-if="expandedComments[comment.id]"
         :replies="comment.replies"
         :parent-comment-id="comment.id"
         :article-no="articleNo"
         @update-replies="getComments"
       />
+
+      <!-- <hr class="my-2"> -->
+
     </div>
+
+    <hr class="my-4">
 
     <!-- 댓글 입력 -->
     <div class="comment-input mb-3">
@@ -159,9 +164,7 @@ const toggleReplies = (commentId) => {
 }
 
 .comment-list .comment-item {
-  margin-bottom: 20px;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  background-color: black;
 }
 
 .comment-input {

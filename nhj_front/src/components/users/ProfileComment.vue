@@ -58,7 +58,9 @@ onMounted(async() => {
     //이미지 삽입
     notifications.value.forEach(async (notification) => {
       const response = await local.get(`/member/profile/image?userId=${notification.userId}`)
-      notification.img = "http://localhost" + response.data.image
+      if(response.data.image) {
+        notification.img = "http://localhost" + response.data.image
+      }
     })
   } catch(error) {
     console.log('댓글알림 가져오는 중에 오류 발생', error)
@@ -68,7 +70,7 @@ onMounted(async() => {
 
 const deleteNotification = async (commentId, userId) => {
   try{
-    const response = await local.put(`/companion-board/comment/${commentId}/read`, 
+    const response = await local.put(`/companion-board/comment/${commentId}/read`,
     {'commentId': commentId, 'userId' : userId})
     notifications.value = notifications.value.filter(n => n.id !== commentId);
     authStore.user.notification -= 1

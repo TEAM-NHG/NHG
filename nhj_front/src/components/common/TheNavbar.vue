@@ -1,5 +1,5 @@
 <template>
-  <nav v-if="route.name !== 'home'" 
+  <nav v-if="route.name !== 'home'"
        :class="route.name === 'planner' ? 'transparent navbar navbar-expand-lg' : 'navbar navbar-expand-lg'">
     <div class="container-fluid d-flex justify-content-between align-items-center">
       <router-link :to="{ name: 'home' }" class="ms-4">
@@ -89,7 +89,7 @@ const logout = () => {
   left: 0;
   right: 0;
   z-index: 500;
-  height: 80px;
+  height: 8vh;
   background-color: #191A1C;
   color: #faf7f0;
   font-weight: 300;
@@ -122,7 +122,7 @@ const logout = () => {
 }
 
 .nofication {
-  position: absolute; 
+  position: absolute;
   top: 0;
   right: 5px;
   background-color: red;

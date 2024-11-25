@@ -3,7 +3,7 @@ import BoardFormItem from "./item/BoardFormItem.vue";
 </script>
 
 <template>
-  <div class="container" style="margin-top: 10%;">
+  <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
@@ -17,4 +17,13 @@ import BoardFormItem from "./item/BoardFormItem.vue";
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container{
+  background-color: white;
+  margin-top: 8vh;
+  padding: 3vh 12vh;
+  height: 92vh;
+  border-radius: 25px;
+  width: 60vw;
+}
+</style>
