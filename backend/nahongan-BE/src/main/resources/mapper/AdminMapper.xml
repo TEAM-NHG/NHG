@@ -1,330 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.admin.persistent.repository.AdminRepository">
-    <!-- 테이블별 컬럼 조회 -->
-    <select id="selectAttractionImageColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'attraction_image' AND TABLE_SCHEMA = 'trip';
+    <!-- 테이블 목록 조회 -->
+    <select id="getTables" resultType="map">
+        SELECT
+            TABLE_NAME,
+            TABLE_TYPE,
+            ENGINE,
+            TABLE_ROWS,
+            TABLE_COMMENT
+        FROM INFORMATION_SCHEMA.TABLES
+        WHERE TABLE_SCHEMA = "trip"
+        ORDER BY TABLE_NAME;
     </select>
 
-    <select id="selectAttractionsColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
+    <!-- 특정 테이블의 컬럼 정보 조회 -->
+    <select id="getColumns" resultType="map">
+        SELECT
+            COLUMN_NAME,
+            COLUMN_TYPE,
+            IS_NULLABLE,
+            COLUMN_DEFAULT,
+            COLUMN_KEY,
+            EXTRA,
+            COLUMN_COMMENT
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'attractions' AND TABLE_SCHEMA = 'trip';
+        WHERE TABLE_SCHEMA = "trip"
+          AND TABLE_NAME = #{tableName}
+        ORDER BY ORDINAL_POSITION;
     </select>
 
-    <select id="selectCommentsColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'comments' AND TABLE_SCHEMA = 'trip';
+    <!-- 특정 테이블의 제약조건 정보 조회 -->
+    <select id="getConstraints" resultType="map">
+        SELECT
+            CONSTRAINT_NAME,
+            CONSTRAINT_TYPE,
+            TABLE_NAME,
+            COLUMN_NAME,
+            REFERENCED_TABLE_NAME,
+            REFERENCED_COLUMN_NAME
+        FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
+                 LEFT JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
+                           ON kcu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
+        WHERE kcu.TABLE_SCHEMA = "trip"
+          AND kcu.TABLE_NAME = #{tableName}
+        ORDER BY CONSTRAINT_NAME;
     </select>
 
-    <select id="selectCompanionBoardColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'companion_board' AND TABLE_SCHEMA = 'trip';
+    <select id="selectAll" resultType="java.util.LinkedHashMap">
+        SELECT *
+        FROM ${tableName}
+        <where>
+            <foreach item="filter" index="index" collection="filters">
+                ${filter.column} LIKE CONCAT('%', #{filter.value}, '%')
+                <if test="index != filters.size() - 1">
+                    AND
+                </if>
+            </foreach>
+        </where>
+        <choose>
+            <when test="sortConfig.direction == 1">
+                ORDER BY ${sortConfig.column} ASC
+            </when>
+            <when test="sortConfig.direction == 2">
+                ORDER BY ${sortConfig.column} DESC
+            </when>
+        </choose>
+        LIMIT ${offset}, ${size}
     </select>
 
-    <select id="selectContentTypesColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'contenttypes' AND TABLE_SCHEMA = 'trip';
+    <select id="getCount" resultType="int">
+        SELECT count(*) FROM ${tableName}
+        <where>
+            <foreach item="filter" index="index" collection="filters">
+                ${filter.column} LIKE CONCAT('%', #{filter.value}, '%')
+                <if test="index != filters.size() - 1">
+                    AND
+                </if>
+            </foreach>
+        </where>
+        <choose>
+            <when test="sortConfig.direction == 1">
+                ORDER BY ${sortConfig.column} ASC
+            </when>
+            <when test="sortConfig.direction == 2">
+                ORDER BY ${sortConfig.column} DESC
+            </when>
+        </choose>
     </select>
 
-    <select id="selectGugunsColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'guguns' AND TABLE_SCHEMA = 'trip';
+    <select id="selectById" resultType="java.util.LinkedHashMap">
+        SELECT * FROM ${tableName} WHERE id = #{id}
     </select>
 
-    <select id="selectMembersColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'members' AND TABLE_SCHEMA = 'trip';
-    </select>
-
-    <select id="selectSidosColumns" resultType="map">
-        SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE
-        FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_NAME = 'sidos' AND TABLE_SCHEMA = 'trip';
-    </select>
-
-    <!-- AttractionImage ResultMap -->
-
-    <!-- AttractionImage CRUD -->
-    <insert id="insertAttractionImage" parameterType="com.ssafy.tripinfo.persistent.entity.AttractionImage">
-        INSERT INTO attraction_image (content_id, originimgurl)
-        VALUES (#{contentId}, #{originImgUrl});
+    <insert id="insert">
+        INSERT INTO ${tableName}
+        <foreach collection="data" item="entry" open="(" separator="," close=")">
+            ${entry.key}
+        </foreach>
+        VALUES
+        <foreach collection="data" item="entry" open="(" separator="," close=")">
+            #{entry.value}
+        </foreach>
     </insert>
 
-    <select id="selectAttractionImage" resultMap="AttractionImageResultMap">
-        SELECT * FROM attraction_image WHERE id = #{id};
-    </select>
-
-    <select id="selectAllAttractionImages" resultMap="AttractionImageResultMap">
-        SELECT * FROM attraction_image;
-    </select>
-
-    <update id="updateAttractionImage" parameterType="com.ssafy.tripinfo.persistent.entity.AttractionImage">
-        UPDATE attraction_image
-        SET content_id = #{contentId}, originimgurl = #{originImgUrl}
-        WHERE id = #{id};
+    <update id="update">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="data" item="entry" separator=",">
+                ${entry.key} = #{entry.value}
+            </foreach>
+        </set>
+        WHERE ${idColumn} = #{idValue}
     </update>
 
-    <delete id="deleteAttractionImage" parameterType="int">
-        DELETE FROM attraction_image WHERE id = #{id};
+    <delete id="delete">
+        DELETE FROM ${tableName} WHERE id = #{id}
     </delete>
-
-    <!-- Attractions CRUD -->
-    <insert id="insertAttractions" parameterType="com.ssafy.tripinfo.persistent.entity.Attractions">
-        INSERT INTO attractions (name, description)
-        VALUES (#{name}, #{description});
-    </insert>
-
-    <select id="selectAttractions" resultMap="AttractionsResultMap">
-        SELECT * FROM attractions WHERE id = #{id};
-    </select>
-
-    <select id="selectAllAttractions" resultMap="AttractionsResultMap">
-        SELECT * FROM attractions;
-    </select>
-
-    <update id="updateAttractions" parameterType="com.ssafy.tripinfo.persistent.entity.Attractions">
-        UPDATE attractions
-        SET name = #{name}, description = #{description}
-        WHERE id = #{id};
-    </update>
-
-    <delete id="deleteAttractions" parameterType="int">
-        DELETE FROM attractions WHERE id = #{id};
-    </delete>
-
-    <!-- Guguns CRUD -->
-    <insert id="insertGugun" parameterType="com.ssafy.tripinfo.persistent.entity.Guguns">
-        INSERT INTO guguns (sido_code, gugun_code, gugun_name)
-        VALUES (#{sidoCode}, #{gugunCode}, #{gugunName});
-    </insert>
-
-    <select id="selectGugunById" resultMap="GugunResultMap">
-        SELECT * FROM guguns WHERE no = #{no};
-    </select>
-
-    <select id="selectAllGuguns" resultMap="GugunResultMap">
-        SELECT * FROM guguns;
-    </select>
-
-    <update id="updateGugun" parameterType="com.ssafy.tripinfo.persistent.entity.Guguns">
-        UPDATE guguns
-        SET sido_code = #{sidoCode}, gugun_code = #{gugunCode}, gugun_name = #{gugunName}
-        WHERE no = #{no};
-    </update>
-
-    <delete id="deleteGugun" parameterType="int">
-        DELETE FROM guguns WHERE no = #{no};
-    </delete>
-
-    <!-- Members CRUD -->
-    <insert id="insertMember" parameterType="com.ssafy.member.persistent.entity.Member">
-        INSERT INTO members (id, password, nickname, email, phone, img, role)
-        VALUES (#{id}, #{password}, #{nickname}, #{email}, #{phone}, #{img}, #{role});
-    </insert>
-
-    <select id="selectMemberById" resultMap="MemberResultMap">
-        SELECT * FROM members WHERE id = #{id};
-    </select>
-
-    <select id="selectAllMembers" resultMap="MemberResultMap">
-        SELECT * FROM members;
-    </select>
-
-    <update id="updateMember" parameterType="com.ssafy.member.persistent.entity.Member">
-        UPDATE members
-        SET password = #{password}, nickname = #{nickname}, email = #{email},
-            phone = #{phone}, img = #{img}, role = #{role}
-        WHERE id = #{id};
-    </update>
-
-    <delete id="deleteMember" parameterType="string">
-        DELETE FROM members WHERE id = #{id};
-    </delete>
-
-    <!-- Sido CRUD -->
-    <insert id="insertSido" parameterType="com.ssafy.tripinfo.persistent.entity.Sidos">
-        INSERT INTO sidos (sido_code, sido_name)
-        VALUES (#{sidoCode}, #{sidoName});
-    </insert>
-
-    <select id="selectSidoById" parameterType="int" resultMap="SidoResultMap">
-        SELECT no, sido_code AS sidoCode, sido_name AS sidoName
-        FROM sidos
-        WHERE no = #{no};
-    </select>
-
-    <select id="selectAllSidos" resultMap="SidoResultMap">
-        SELECT no, sido_code AS sidoCode, sido_name AS sidoName
-        FROM sidos;
-    </select>
-
-    <update id="updateSido" parameterType="com.ssafy.tripinfo.persistent.entity.Sidos">
-        UPDATE sidos
-        SET sido_code = #{sidoCode}, sido_name = #{sidoName}
-        WHERE no = #{no};
-    </update>
-
-    <delete id="deleteSido" parameterType="int">
-        DELETE FROM sidos
-        WHERE no = #{no};
-    </delete>
-
-    <!-- ContentType CRUD -->
-    <insert id="insertContentType" parameterType="com.ssafy.tripinfo.persistent.entity.ContentTypes">
-        INSERT INTO contenttypes (content_type_id, content_type_name)
-        VALUES (#{contentTypeId}, #{contentTypeName});
-    </insert>
-
-    <select id="selectContentTypeById" parameterType="int" resultMap="ContentTypeResultMap">
-        SELECT content_type_id AS contentTypeId, content_type_name AS contentTypeName
-        FROM contenttypes
-        WHERE content_type_id = #{contentTypeId};
-    </select>
-
-    <select id="selectAllContentTypes" resultMap="ContentTypeResultMap">
-        SELECT content_type_id AS contentTypeId, content_type_name AS contentTypeName
-        FROM contenttypes;
-    </select>
-
-    <update id="updateContentType" parameterType="com.ssafy.tripinfo.persistent.entity.ContentTypes">
-        UPDATE contenttypes
-        SET content_type_name = #{contentTypeName}
-        WHERE content_type_id = #{contentTypeId};
-    </update>
-
-    <delete id="deleteContentType" parameterType="int">
-        DELETE FROM contenttypes
-        WHERE content_type_id = #{contentTypeId};
-    </delete>
-
-    <insert id="insertCompanionBoard" parameterType="com.ssafy.companion_board.persistent.entity.CompanionBoard">
-        INSERT INTO companion_board (user_id, subject, content, hit, register_time)
-        VALUES (#{userId}, #{subject}, #{content}, #{hit}, #{registerTime});
-    </insert>
-
-    <select id="selectCompanionBoardById" parameterType="int" resultMap="CompanionBoardResultMap">
-        SELECT article_no AS articleNo, user_id AS userId, subject, content, hit, register_time AS registerTime
-        FROM companion_board
-        WHERE article_no = #{articleNo};
-    </select>
-
-    <select id="selectAllCompanionBoards" resultMap="CompanionBoardResultMap">
-        SELECT article_no AS articleNo, user_id AS userId, subject, content, hit, register_time AS registerTime
-        FROM companion_board;
-    </select>
-
-    <update id="updateCompanionBoard" parameterType="com.ssafy.companion_board.persistent.entity.CompanionBoard">
-        UPDATE companion_board
-        SET user_id = #{userId}, subject = #{subject}, content = #{content}, hit = #{hit}, register_time = #{registerTime}
-        WHERE article_no = #{articleNo};
-    </update>
-
-    <delete id="deleteCompanionBoard" parameterType="int">
-        DELETE FROM companion_board
-        WHERE article_no = #{articleNo};
-    </delete>
-
-    <insert id="insertComment" parameterType="com.ssafy.companion_board.persistent.entity.Comment">
-        INSERT INTO comments (article_no, user_id, content, parent_id, created_at, updated_at)
-        VALUES (#{articleNo}, #{userId}, #{content}, #{parentId}, #{createdAt}, #{updatedAt});
-    </insert>
-
-    <select id="selectCommentById" parameterType="int" resultMap="CommentResultMap">
-        SELECT id, article_no AS articleNo, user_id AS userId, content, parent_id AS parentId, created_at AS createdAt, updated_at AS updatedAt
-        FROM comments
-        WHERE id = #{id};
-    </select>
-
-    <select id="selectCommentsByArticleNo" parameterType="int" resultMap="CommentResultMap">
-        SELECT id, article_no AS articleNo, user_id AS userId, content, parent_id AS parentId, created_at AS createdAt, updated_at AS updatedAt
-        FROM comments
-        WHERE article_no = #{articleNo};
-    </select>
-
-    <update id="updateComment" parameterType="com.ssafy.companion_board.persistent.entity.Comment">
-        UPDATE comments
-        SET content = #{content}, updated_at = NOW()
-        WHERE id = #{id};
-    </update>
-
-    <delete id="deleteComment" parameterType="int">
-        DELETE FROM comments
-        WHERE id = #{id};
-    </delete>
-
-    <!-- AttractionImage ResultMap -->
-    <resultMap id="AttractionImageResultMap" type="com.ssafy.tripinfo.persistent.entity.AttractionImage">
-        <id property="id" column="id" />
-        <result property="contentId" column="content_id" />
-        <result property="originImgUrl" column="originimgurl" />
-    </resultMap>
-
-    <!-- Attractions ResultMap -->
-    <resultMap id="AttractionsResultMap" type="com.ssafy.tripinfo.persistent.entity.Attractions">
-        <id property="id" column="id" />
-        <result property="name" column="name" />
-        <result property="description" column="description" />
-    </resultMap>
-
-    <!-- Guguns ResultMap -->
-    <resultMap id="GugunResultMap" type="com.ssafy.tripinfo.persistent.entity.Guguns">
-        <id property="no" column="no" />
-        <result property="sidoCode" column="sido_code" />
-        <result property="gugunCode" column="gugun_code" />
-        <result property="gugunName" column="gugun_name" />
-    </resultMap>
-
-    <!-- Members ResultMap -->
-    <resultMap id="MemberResultMap" type="com.ssafy.member.persistent.entity.Member">
-        <id property="id" column="id" />
-        <result property="password" column="password" />
-        <result property="nickname" column="nickname" />
-        <result property="email" column="email" />
-        <result property="phone" column="phone" />
-        <result property="img" column="img" />
-        <result property="role" column="role" />
-    </resultMap>
-
-    <!-- Sido ResultMap -->
-    <resultMap id="SidoResultMap" type="com.ssafy.tripinfo.persistent.entity.Sidos">
-        <id property="no" column="no" />
-        <result property="sidoCode" column="sido_code" />
-        <result property="sidoName" column="sido_name" />
-    </resultMap>
-
-    <!-- ContentType ResultMap -->
-    <resultMap id="ContentTypeResultMap" type="com.ssafy.tripinfo.persistent.entity.ContentTypes">
-        <id property="contentTypeId" column="content_type_id" />
-        <result property="contentTypeName" column="content_type_name" />
-    </resultMap>
-
-    <!-- CompanionBoard ResultMap -->
-    <resultMap id="CompanionBoardResultMap" type="com.ssafy.companion_board.persistent.entity.CompanionBoard">
-        <id property="articleNo" column="article_no" />
-        <result property="userId" column="user_id" />
-        <result property="subject" column="subject" />
-        <result property="content" column="content" />
-        <result property="hit" column="hit" />
-        <result property="registerTime" column="register_time" />
-    </resultMap>
-
-    <!-- Comment ResultMap -->
-    <resultMap id="CommentResultMap" type="com.ssafy.companion_board.persistent.entity.Comment">
-        <id property="id" column="id" />
-        <result property="articleNo" column="article_no" />
-        <result property="userId" column="user_id" />
-        <result property="content" column="content" />
-        <result property="parentId" column="parent_id" />
-        <result property="createdAt" column="created_at" />
-        <result property="updatedAt" column="updated_at" />
-    </resultMap>
-
 </mapper>
