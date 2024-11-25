@@ -47,7 +47,6 @@
         SET
             subject = #{subject},
             content = #{content},
-            image = #{image},
             sido_code = #{sidoCode},
             gugun_code = #{gugunCode},
             start_date = #{startDate},

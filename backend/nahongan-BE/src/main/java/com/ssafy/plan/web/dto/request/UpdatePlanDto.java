@@ -14,7 +14,6 @@ public class UpdatePlanDto {
     private int id;
     private String subject; // 제목
     private String content; // 내용
-    private String image;
     private int sidoCode;
     private int gugunCode;
     private Date startDate;
@@ -23,7 +22,6 @@ public class UpdatePlanDto {
     public void updateEntity(Plan plan) {
     	plan.setContent(content);
     	plan.setSubject(subject);
-    	plan.setImage(image);
     	plan.setSidoCode(sidoCode);
     	plan.setGugunCode(gugunCode);
     	plan.setStartDate(startDate);

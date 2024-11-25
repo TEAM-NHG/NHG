@@ -1,5 +1,7 @@
 package com.ssafy.plan.domain;
 
+import com.ssafy.common.util.ImageUploader;
+import com.ssafy.member.persistent.entity.Member;
 import com.ssafy.plan.persistent.entity.Plan;
 import com.ssafy.plan.persistent.repository.PlanRepository;
 import com.ssafy.plan.web.dto.PlanDto;
@@ -9,7 +11,9 @@ import com.ssafy.plan.web.dto.request.UpdatePlanDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 public class PlanService {
 	
 	private final PlanRepository planRepository;
+	
+	private final ImageUploader imageUploader;
 
 	public PlanDto findPlanById(int planId) throws SQLException {
 		return PlanDto.from(planRepository.findPlanById(planId));
@@ -34,10 +40,11 @@ public class PlanService {
 				.build();
 	}
 
-	public void createPlan(CreatePlanDto planDto, String userId) {
-		System.out.println(planDto.getSidoCode());
-		System.out.println(planDto.getGugunCode());
-		planRepository.createPlan(planDto.toEntity(userId));
+	public void createPlan(MultipartFile images, CreatePlanDto planDto, String userId) {
+		String detailPath = "member" + File.separator + userId;
+        Plan plan = planDto.toEntity(userId);
+		plan.setImage(imageUploader.upload(images, detailPath));
+        planRepository.createPlan(plan);
 	}
 
 	public void deletePlan(int planId) {

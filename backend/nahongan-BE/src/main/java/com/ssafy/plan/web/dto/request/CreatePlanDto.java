@@ -13,7 +13,6 @@ import lombok.*;
 public class CreatePlanDto {
     private String subject; // 제목
     private String content; // 내용
-    private String image;
     private int sidoCode;
     private int gugunCode;
     private Date startDate;
@@ -23,7 +22,6 @@ public class CreatePlanDto {
     public Plan toEntity(String userId) {
         return Plan.builder()
         		.userId(userId)
-                .image(image)
                 .sidoCode(sidoCode)
                 .gugunCode(gugunCode)
                 .subject(subject)

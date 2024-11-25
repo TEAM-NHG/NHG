@@ -32,14 +32,10 @@ import java.sql.SQLException;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    
-    private final CommentRepository commentRepository;
 
     private final PasswordEncoder passwordEncoder;
     
     private final ImageUploader imageUploader;
-    
-    private String USER_IMAGE_PATH;
     
     public void join(JoinRequest request) throws Exception {
         System.out.println(checkId(request.getId()));
