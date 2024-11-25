@@ -10,7 +10,7 @@ defineProps({ article: Object });
         :to="{ name: 'article-view', params: { articleNo: article.articleNo } }"
         class="article-title link-dark"
       >
-        {{ article.subject }}
+        {{ article.subject }} [{{ article.commentCount }}]
       </router-link>
     </td>
     <td>{{ article.userId }}</td>
