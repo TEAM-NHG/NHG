@@ -100,6 +100,12 @@ function updateArticle() {
 function moveList() {
   router.push({ name: "article-list" });
 }
+
+// 사용자가 입력한 값을 반영
+const updateContent = (event) => {
+  // \n을 다시 <br>로 변환
+  article.value.content = event.target.value.replace(/\n/g, "<br>");
+};
 </script>
 
 <template>
@@ -120,7 +126,7 @@ function moveList() {
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">내용 : </label>
-      <textarea class="form-control" v-model="article.content" rows="18"></textarea>
+      <textarea class="form-control"  rows="18" @input="updateContent">{{ article.content.replace(/<br\s*\/?>/g, '\n') }}</textarea>
     </div>
     <div class="col-auto text-center">
       <button type="submit" class="btn btn-outline-primary mb-3" v-if="type === 'regist'">
