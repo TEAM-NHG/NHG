@@ -27,6 +27,7 @@ public class PlanDto {
     private LocalDateTime registerTime; // 등록 시간
     
     public static PlanDto from(Plan plan, String sidoName, String gugunName) {
+		System.out.println(sidoName);
     	return PlanDto.builder()
     			.id(plan.getId())
     			.userId(plan.getUserId())
