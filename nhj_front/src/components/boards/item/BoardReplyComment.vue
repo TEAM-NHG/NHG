@@ -3,7 +3,7 @@
     <div v-for="reply in replies" :key="reply.replyId" class="reply-item">
       <div class="d-flex justify-content-between mb-2">
         <div class="d-flex align-items-center">
-          <img :src="reply.image ? 'http://localhost' + reply.image : 'src/assets/userIcon.png'"
+          <img :src="reply.image ? 'http://localhost' + reply.image : defaultUserIcon"
             style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
           <strong class="pt-2">{{ reply.userId }}</strong>
           <template v-if="reply.userId === authStore.user.id">
@@ -37,6 +37,7 @@
 import { ref } from 'vue';
 import { localAxios } from "@/util/http-commons";
 import { useAuthStore } from '@/stores/auth';
+import defaultUserIcon from '@/assets/userIcon.png';
 
 const local = localAxios();
 const authStore = useAuthStore();
