@@ -15,5 +15,6 @@ mark.sky {
   background-color: #191a1c;
   width: 100vw;
   height: 100%;
+  min-height: 100vh;
 }
 </style>
