@@ -15,7 +15,6 @@ public class CommonDetailDto {
     private int contenttypeid;
     private String title;
     private String homepage;
-    private String tel;
     private String overview;
     private String addr1;
     private String addr2;

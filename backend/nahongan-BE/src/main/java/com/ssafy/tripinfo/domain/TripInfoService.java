@@ -112,28 +112,33 @@ public class TripInfoService {
 			attraction.setAddr1(detailDto.getAddr1());
 			attraction.setAddr2(detailDto.getAddr2());
 			attraction.setOverview(detailDto.getOverview());
-			attraction.setTel(detailDto.getTel());
 			attraction.setHomepage(detailDto.getHomepage());
 			if (detailDto instanceof ShoppingDetailDto) {
                 attraction.setParking(((ShoppingDetailDto) detailDto).getParkingshopping());
 				attraction.setTime(((ShoppingDetailDto) detailDto).getOpentime());
 			}
 			if (detailDto instanceof EventDetailDto) {
-				attraction.setTime(((EventDetailDto) detailDto).getPlaytime());
+				attraction.setTime(((EventDetailDto) detailDto).getUsetimefestival());
+				attraction.setTel(((EventDetailDto) detailDto).getSponsor1tel());
 			}
 			if (detailDto instanceof AttractionDetailDto) {
 				attraction.setParking(((AttractionDetailDto) detailDto).getParking());
+				attraction.setTime(((AttractionDetailDto) detailDto).getUsetime());
+				attraction.setTel(((AttractionDetailDto) detailDto).getInfocenter());
 			}
 			if (detailDto instanceof FoodDetailDto) {
 				attraction.setParking(((FoodDetailDto) detailDto).getParkingfood());
 				attraction.setTime(((FoodDetailDto) detailDto).getOpentimefood());
+				attraction.setTel(((FoodDetailDto) detailDto).getInfocenterfood());
 			}
 			if (detailDto instanceof LeisureDetailDto) {
 				attraction.setParking(((LeisureDetailDto) detailDto).getParkingleports());
 				attraction.setTime(((LeisureDetailDto) detailDto).getUsetimeleports());
+				attraction.setTel(((LeisureDetailDto) detailDto).getInfocenterleports());
 			}
 			if (detailDto instanceof LodgingDetailDto) {
 				attraction.setParking(((LodgingDetailDto) detailDto).getParkinglodging());
+				attraction.setTel(((LodgingDetailDto) detailDto).getInfocenterlodging());
 			}
 			attraction.setDetailSaved(true);
 			tripInfoRepository.modifyAttractions(attraction);

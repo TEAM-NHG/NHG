@@ -12,4 +12,5 @@ import lombok.ToString;
 public class ShoppingDetailDto extends CommonDetailDto {
     private String parkingshopping;  // 쇼핑 (38)
     private String opentime;
+    private String infocentershopping;
 }

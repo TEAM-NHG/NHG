@@ -11,4 +11,5 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class LodgingDetailDto extends CommonDetailDto {
     private String parkinglodging;
+    private String infocenterlodging;
 }

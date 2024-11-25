@@ -11,5 +11,6 @@ import lombok.*;
 @ToString(callSuper = true)
 public class AttractionDetailDto extends CommonDetailDto {
     private String parking;
-
+    private String infocenter;
+    private String usetime;
 }

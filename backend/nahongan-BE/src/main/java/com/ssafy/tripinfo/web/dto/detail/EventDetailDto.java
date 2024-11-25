@@ -11,5 +11,6 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class EventDetailDto extends CommonDetailDto {
     private String eventenddate;     // 행사 종료일 (15)
-    private String playtime;
+    private String usetimefestival;
+    private String sponsor1tel;
 }

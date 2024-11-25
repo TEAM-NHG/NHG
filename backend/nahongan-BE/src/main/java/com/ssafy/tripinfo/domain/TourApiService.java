@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 
 @Service
@@ -25,12 +27,26 @@ public class TourApiService {
     @Value("${tourapi.key}")
     private String serviceKey;
 
-    private ResponseEntity<String> requestApi(URI uri) {
-    	System.out.println(uri);
-        RequestEntity<Void> requestEntity = RequestEntity
-                .get(uri)
-                .build();
-        return restTemplate.exchange(requestEntity, String.class);
+    private String requestApi(String urlString) {
+        HttpURLConnection urlConnection = null;
+        InputStream stream = null;
+        String result = null;
+        try {
+            URL url = new URL(urlString);
+
+            urlConnection = (HttpURLConnection) url.openConnection();
+            stream = getNetworkConnection(urlConnection);
+            result = readStreamToString(stream);
+
+            if (stream != null) stream.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+        }
+        return result;
     }
 
     public CommonDetailDto searchDetail(int contentId, int contentTypeId) throws UnsupportedEncodingException {
@@ -57,18 +73,21 @@ public class TourApiService {
         		.queryParam("addrinfoYN", "Y")
         		.build()
         		.toString();
-        URI diffUri = URI.create(diffUriString);
-        URI commonUri = URI.create(commonUriString);
+        System.out.println("uri 테스트");
+        System.out.println(diffUriString);
+        System.out.println(commonUriString);
         CommonDetailDto detailDto = DetailFactory.createDetailDTO(contentTypeId);
-        return detailResponseParser(requestApi(commonUri), requestApi(diffUri), detailDto, contentTypeId);
+        return detailResponseParser(requestApi(commonUriString), requestApi(diffUriString), detailDto, contentTypeId);
     }
 
 
-    private CommonDetailDto detailResponseParser(ResponseEntity<String> response1, ResponseEntity<String> response2, CommonDetailDto detailDto, int contentTypeId) {
+    private CommonDetailDto detailResponseParser(String response1, String response2, CommonDetailDto detailDto, int contentTypeId) {
+        System.out.println(response1);
+        System.out.println(response2);
         JsonNode jsonNode = null;
         CommonDetailDto result1 = DetailFactory.createDetailDTO(contentTypeId);
         try {
-        	jsonNode = objectMapper.readTree(response1.getBody());
+        	jsonNode = objectMapper.readTree(response1);
             JsonNode itemsNode = jsonNode.get("response").get("body").get("items");
             if (itemsNode != null) {
                 // "item" 배열에 접근
@@ -78,7 +97,7 @@ public class TourApiService {
                 // 각 필드를 수동으로 설정
             }
         	
-            jsonNode = objectMapper.readTree(response2.getBody());
+            jsonNode = objectMapper.readTree(response2);
             itemsNode = jsonNode.get("response").get("body").get("items");
             if (itemsNode != null) {
                 // "item" 배열에 접근
@@ -110,7 +129,6 @@ public class TourApiService {
                 detailDto.setContenttypeid(result1.getContenttypeid());
                 detailDto.setTitle(result1.getTitle());
                 detailDto.setHomepage(result1.getHomepage());
-                detailDto.setTel(result1.getTel());
                 detailDto.setOverview(result1.getOverview());
                 detailDto.setAddr1(result1.getAddr1());
                 detailDto.setAddr2(result1.getAddr2());
@@ -135,19 +153,20 @@ public class TourApiService {
                 .build()
                 .toString();
         URI imageUri = URI.create(imageUriString);
+        System.out.println(imageUri.toString());
         AttractionImageDtos dtos = AttractionImageDtos.builder()
                                 .images(new ArrayList<>())
                                 .build();
 
-        imageResponseParser(requestApi(imageUri), dtos);
+        imageResponseParser(requestApi(imageUriString), dtos);
 
         return dtos;
     }
 
-    private void imageResponseParser(ResponseEntity<String> response, AttractionImageDtos attractionImageDtos) {
+    private void imageResponseParser(String response, AttractionImageDtos attractionImageDtos) {
         JsonNode jsonNode = null;
         try {
-            jsonNode = objectMapper.readTree(response.getBody());
+            jsonNode = objectMapper.readTree(response);
             JsonNode itemsNode = jsonNode.get("response").get("body").get("items");
             JsonNode cntNode = jsonNode.get("response").get("body").get("numOfRows");
             if (cntNode.asInt() != 0) {
@@ -162,5 +181,34 @@ public class TourApiService {
         catch (JsonProcessingException e) {
             e.fillInStackTrace();
         }
+    }
+
+    private InputStream getNetworkConnection(HttpURLConnection urlConnection) throws IOException {
+        urlConnection.setConnectTimeout(3000);
+        urlConnection.setReadTimeout(3000);
+        urlConnection.setRequestMethod("GET");
+        urlConnection.setDoInput(true);
+
+        if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+            throw new IOException("HTTP error code : " + urlConnection.getResponseCode());
+        }
+
+        return urlConnection.getInputStream();
+    }
+
+    /* InputStream을 전달받아 문자열로 변환 후 반환 */
+    private String readStreamToString(InputStream stream) throws IOException{
+        StringBuilder result = new StringBuilder();
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+
+        String readLine;
+        while((readLine = br.readLine()) != null) {
+            result.append(readLine + "\n\r");
+        }
+
+        br.close();
+
+        return result.toString();
     }
 }
