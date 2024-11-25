@@ -20,6 +20,7 @@
             <router-link
             :to="{ name: 'article-view', params: { articleNo: notification.articleNo } }"
             class="article-title link-dark"
+            @click="deleteNotification(notification.id, authStore.user.id)"
             >
             <p class="mb-1">
               <strong>{{ notification.nickname }}</strong>
