@@ -6,7 +6,7 @@
         <div class="user-profile">
           <div class="row align-items-center">
             <div class="col-auto">
-              <img :src="authStore.user.img ? authStore.user.img : '@/assets/userIcon.png'" class="user-img rounded-circle">
+              <img :src="authStore.user.img ? authStore.user.img : defaultUserIcon" class="user-img rounded-circle">
             </div>
             <div class="col">
               <div class="d-flex align-items-center mb-2">
@@ -70,7 +70,7 @@
 <script setup>
 import ProfileEditModal from "@/components/users/ProfileEditModal.vue";
 import PlannerModal from "@/components/users/PlannerModal.vue";
-
+import defaultUserIcon from '@/assets/userIcon.png';
 import { ref, onMounted, computed } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";

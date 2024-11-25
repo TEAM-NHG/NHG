@@ -30,7 +30,7 @@
           <div class="nav-item">
             <router-link :to="{ name: 'profile' }" class="nav-link mx-3">
               <div class="btn position-relative">
-                <img class="user-icon" :src="authStore.user.img ? authStore.user.img : 'src/assets/userIcon.png'"></img>
+                <img class="user-icon" :src="authStore.user.img ? authStore.user.img : defaultUserIcon"></img>
                 <span v-show="authStore.user.notification > 0"
                       class="nofication p-2 rounded-circle">
                 </span>
@@ -53,7 +53,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
-
+import defaultUserIcon from '@/assets/userIcon.png';
 import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore();
 
