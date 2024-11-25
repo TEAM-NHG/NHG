@@ -161,6 +161,42 @@ localData.value.isEditing = localData.value.isCreated;
 localData.value.startDate = localData.value.startDate.replace(/T.*/, "")
 localData.value.endDate = localData.value.endDate.replace(/T.*/, "")
 
+//유효성 검사
+const validateForm = () => {
+  const errors = 0;
+  
+  if (!localData.value.title.trim()) {
+    alert('제목을 입력해주세요.');
+    return false;
+  }
+  if(!localData.value.sido) {
+    alert('여행 시도를 선택해주세요.');
+    return false;
+  }
+  if(!localData.value.gugun) {
+    alert('여행 구군을 선택해주세요.');
+    return false;
+  }
+  if (!localData.value.startDate) {
+    alert('시작 날짜를 선택해주세요.');
+    return false;
+  }
+  if (!localData.value.endDate) {
+    alert('종료 날짜를 선택해주세요.');
+    return false;
+  }
+  if (new Date(localData.value.endDate) < new Date(localData.value.startDate)) {
+    alert(`여행 날짜를 확인해주세요.\n종료 날짜는 시작 날짜보다 앞설 수 없습니다.`);
+    return false;
+  } 
+  if (!localData.value.notes.trim()) {
+    alert('여행 계획을 입력해주세요.');
+    return false;
+  }
+
+  return true;
+};
+
 // 시도 및 구군 데이터
 const sidoList = ref([
   { "no": 1, "sidoCode": 1, "sidoName": "서울" },
@@ -206,6 +242,9 @@ const handleImageUpload = (event) => {
 };
 
 const saveChanges = () => {
+  if (!validateForm()) {
+    return
+  }
   PlannerFormData.append("plan", JSON.stringify(localData.value));
   if(localData.value.isCreated) {
     emit("save", PlannerFormData)
