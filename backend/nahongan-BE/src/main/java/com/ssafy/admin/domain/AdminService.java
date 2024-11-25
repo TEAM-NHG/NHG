@@ -1,5 +1,7 @@
 package com.ssafy.admin.domain;
 
+import com.ssafy.admin.dto.TableDataRequest;
+import com.ssafy.admin.dto.TableDto;
 import com.ssafy.admin.persistent.repository.AdminRepository;
 import com.ssafy.companion_board.persistent.entity.CompanionBoard;
 import com.ssafy.member.persistent.entity.Member;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,205 +23,69 @@ public class AdminService {
 
     private final AdminRepository adminRepository;
 
-    // --- AttractionImage CRUD ---
-    public void insertAttractionImage(AttractionImage attractionImage) {
-        adminRepository.insertAttractionImage(attractionImage);
+    int LIST_SIZE = 10;
+
+    public List<Map<String, Object>> getTables() {
+        return adminRepository.getTables();
     }
 
-    public AttractionImage selectAttractionImage(int id) {
-        return adminRepository.selectAttractionImage(id);
+    public List<Map<String, Object>> getColumns(String tableName) {
+        return adminRepository.getColumns(tableName);
     }
 
-    public List<AttractionImage> selectAllAttractionImages() {
-        return adminRepository.selectAllAttractionImages();
+    public List<Map<String, Object>> getConstraints(String tableName) {
+        return adminRepository.getConstraints(tableName);
     }
 
-    public void updateAttractionImage(AttractionImage attractionImage) {
-        adminRepository.updateAttractionImage(attractionImage);
+    public TableDto selectAll(TableDataRequest request) {
+        int offset = (request.getPage() - 1) * LIST_SIZE;
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("tableName", request.getTableName());
+        params.put("filters", request.getFilters());
+        params.put("sortConfig", request.getSortConfig());
+        params.put("offset", offset);
+        params.put("size", LIST_SIZE);
+        List<Map<String, Object>> resultMap = adminRepository.selectAll(params);
+        int count = adminRepository.getCount(params);
+        return TableDto.builder().table(resultMap).currentPage(request.getPage()).lastPage(count/LIST_SIZE+1).build();
     }
 
-    public void deleteAttractionImage(int id) {
-        adminRepository.deleteAttractionImage(id);
+    public Map<String, Object> selectById(String tableName, int id) {
+        return adminRepository.selectById(tableName, id);
     }
 
-    public List<Map<String, String>> selectAttractionImageColumns() {
-        return adminRepository.selectAttractionImageColumns();
+    public int insert(String tableName, Map<String, Object> data) {
+        // 데이터 변환: Map<String, Object> -> List<Map<String, Object>>
+        List<Map<String, Object>> dataList = data.entrySet().stream()
+                .map(entry -> Map.of("key", entry.getKey(), "value", entry.getValue()))
+                .toList();
+
+        // 변환된 데이터 확인
+        System.out.println(dataList);
+
+        // MyBatis 호출
+        return adminRepository.insert(tableName, dataList);
     }
 
-    // --- Attractions CRUD ---
-    public void insertAttractions(Attractions attractions) {
-        adminRepository.insertAttractions(attractions);
+    public int update(String tableName, Map<String, Object> data) {// 데이터 변환: Map<String, Object> -> List<Map<String, Object>>
+        // idColumn과 idValue 추출
+        String idColumn = data.keySet().iterator().next(); // 첫 번째 키가 idColumn
+        Object idValue = data.get(idColumn); // idColumn에 해당하는 값
+
+        // idColumn과 idValue를 제외한 나머지 항목들로 dataList 구성
+        List<Map<String, Object>> dataList = data.entrySet().stream()
+                .filter(entry -> !entry.getKey().equals(idColumn))  // idColumn을 제외
+                .map(entry -> Map.of("key", entry.getKey(), "value", entry.getValue()))  // 나머지 항목들을 Map으로 변환
+                .toList();
+        // MyBatis 쿼리 호출 (예: adminRepository.update(tableName, data))
+        return adminRepository.update(tableName, dataList, idColumn, idValue);
     }
 
-    public Attractions selectAttractions(int id) {
-        return adminRepository.selectAttractions(id);
+    public int delete(String tableName, int id) {
+        return adminRepository.delete(tableName, id);
     }
 
-    public List<Attractions> selectAllAttractions() {
-        return adminRepository.selectAllAttractions();
-    }
-
-    public void updateAttractions(Attractions attractions) {
-        adminRepository.updateAttractions(attractions);
-    }
-
-    public void deleteAttractions(int id) {
-        adminRepository.deleteAttractions(id);
-    }
-
-    public List<Map<String, String>> selectAttractionsColumns() {
-        return adminRepository.selectAttractionsColumns();
-    }
-
-    // --- CompanionBoard CRUD ---
-    public void insertCompanionBoard(CompanionBoard companionBoard) {
-        adminRepository.insertCompanionBoard(companionBoard);
-    }
-
-    public CompanionBoard selectCompanionBoardById(int articleNo) {
-        return adminRepository.selectCompanionBoardById(articleNo);
-    }
-
-    public List<CompanionBoard> selectAllCompanionBoards() {
-        return adminRepository.selectAllCompanionBoards();
-    }
-
-    public void updateCompanionBoard(CompanionBoard companionBoard) {
-        adminRepository.updateCompanionBoard(companionBoard);
-    }
-
-    public void deleteCompanionBoard(int articleNo) {
-        adminRepository.deleteCompanionBoard(articleNo);
-    }
-
-    public List<Map<String, String>> selectCompanionBoardColumns() {
-        return adminRepository.selectCompanionBoardColumns();
-    }
-
-    // --- ContentType CRUD ---
-    public void insertContentType(ContentTypes contentTypes) {
-        adminRepository.insertContentType(contentTypes);
-    }
-
-    public ContentTypes selectContentTypeById(int contentTypeId) {
-        return adminRepository.selectContentTypeById(contentTypeId);
-    }
-
-    public List<ContentTypes> selectAllContentTypes() {
-        return adminRepository.selectAllContentTypes();
-    }
-
-    public void updateContentType(ContentTypes contentTypes) {
-        adminRepository.updateContentType(contentTypes);
-    }
-
-    public void deleteContentType(int contentTypeId) {
-        adminRepository.deleteContentType(contentTypeId);
-    }
-
-    public List<Map<String, String>> selectContentTypesColumns() {
-        return adminRepository.selectContentTypesColumns();
-    }
-
-    // --- Gugun CRUD ---
-    public void insertGugun(Guguns gugun) {
-        adminRepository.insertGugun(gugun);
-    }
-
-    public Guguns selectGugunById(int no) {
-        return adminRepository.selectGugunById(no);
-    }
-
-    public List<Guguns> selectAllGuguns() {
-        return adminRepository.selectAllGuguns();
-    }
-
-    public void updateGugun(Guguns gugun) {
-        adminRepository.updateGugun(gugun);
-    }
-
-    public void deleteGugun(int no) {
-        adminRepository.deleteGugun(no);
-    }
-
-    public List<Map<String, String>> selectGugunsColumns() {
-        return adminRepository.selectGugunsColumns();
-    }
-
-    // --- Member CRUD ---
-    public void insertMember(Member member) {
-        adminRepository.insertMember(member);
-    }
-
-    public Member selectMemberById(String id) {
-        return adminRepository.selectMemberById(id);
-    }
-
-    public List<Member> selectAllMembers() {
-        return adminRepository.selectAllMembers();
-    }
-
-    public void updateMember(Member member) {
-        adminRepository.updateMember(member);
-    }
-
-    public void deleteMember(String id) {
-        adminRepository.deleteMember(id);
-    }
-
-    public List<Map<String, String>> selectMembersColumns() {
-        return adminRepository.selectMembersColumns();
-    }
-
-    // --- Sido CRUD ---
-    public void insertSido(Sidos sido) {
-        adminRepository.insertSido(sido);
-    }
-
-    public Sidos selectSidoById(int no) {
-        return adminRepository.selectSidoById(no);
-    }
-
-    public List<Sidos> selectAllSidos() {
-        return adminRepository.selectAllSidos();
-    }
-
-    public void updateSido(Sidos sido) {
-        adminRepository.updateSido(sido);
-    }
-
-    public void deleteSido(int no) {
-        adminRepository.deleteSido(no);
-    }
-
-    public List<Map<String, String>> selectSidosColumns() {
-        return adminRepository.selectSidosColumns();
-    }
-
-    // --- Comment CRUD ---
-    public void insertComment(Comment comment) {
-        adminRepository.insertComment(comment);
-    }
-
-    public Comment selectCommentById(int id) {
-        return adminRepository.selectCommentById(id);
-    }
-
-    public List<Comment> selectCommentsByArticleNo(int articleNo) {
-        return adminRepository.selectCommentsByArticleNo(articleNo);
-    }
-
-    public void updateComment(Comment comment) {
-        adminRepository.updateComment(comment);
-    }
-
-    public void deleteComment(int id) {
-        adminRepository.deleteComment(id);
-    }
-
-    public List<Map<String, String>> selectCommentsColumns() {
-        return adminRepository.selectCommentsColumns();
-    }
 }
 
 
