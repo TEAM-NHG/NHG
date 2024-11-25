@@ -65,7 +65,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST).authenticated()
                 .requestMatchers(HttpMethod.PUT).authenticated()
                 .requestMatchers(HttpMethod.DELETE).authenticated()
-                .requestMatchers(HttpMethod.GET, "/api/member/profile/**", "/api/companion-board/comment/notice").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/member/profile/**", "/api/companion-board/comment/notice", "/api/plan/**").authenticated()
                 .anyRequest().permitAll());
         http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
         //loginfilter 쓸거임

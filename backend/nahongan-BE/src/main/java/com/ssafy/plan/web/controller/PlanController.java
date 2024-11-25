@@ -7,9 +7,12 @@ import com.ssafy.plan.web.dto.request.CreatePlanDto;
 import com.ssafy.plan.web.dto.request.UpdatePlanDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -39,9 +42,9 @@ public class PlanController {
 		return planService.findPlanByUserId(userId);
 	}
 
-	@PostMapping
-	public void createPlan(@RequestBody CreatePlanDto planDto,@AuthenticationPrincipal UserDetails userDetails) {
-		planService.createPlan(planDto, userDetails.getUsername());
+	@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public void createPlan(@RequestPart(value="plan") CreatePlanDto plan, @RequestPart(required = false, value="images") MultipartFile images, @AuthenticationPrincipal UserDetails userDetails) {
+		planService.createPlan(images, plan, userDetails.getUsername());
 	}
 
 	@PutMapping
