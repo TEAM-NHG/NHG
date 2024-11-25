@@ -14,14 +14,16 @@ import lombok.Getter;
 public class CommentNotice {
 	private int id;            // 댓글 ID
     private int articleNo;  
-    private String userId; 
+    private String userId;
+	private String nickname;
     private String content;
     private LocalDateTime createdAt;  // 댓글 생성일
     private String type;
     
-    public static CommentNotice from(Comment comment, String type) {
+    public static CommentNotice from(CommentDto comment, String type) {
     	return CommentNotice.builder()
     			.id(comment.getId())
+				.nickname(comment.getNickname())
     			.articleNo(comment.getArticleNo())
     			.userId(comment.getUserId())
     			.content(comment.getContent())

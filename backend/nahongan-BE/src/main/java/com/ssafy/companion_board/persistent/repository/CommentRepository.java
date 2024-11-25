@@ -27,9 +27,9 @@ public interface CommentRepository {
 	
 	int countComment(@Param("articleNo") int articleNo);
 	
-	List<Comment> findCommentByUserArticle(String userId);
+	List<CommentDto> findCommentByUserArticle(String userId);
 	
-	List<Comment> findChildCommentByUserParentComment(String userId);
+	List<CommentDto> findChildCommentByUserParentComment(String userId);
 	
 	void updateArticleOwnerRead(int commentId, String userId);
 	void updateParentCommentOwnerRead(int commentId, String userId);

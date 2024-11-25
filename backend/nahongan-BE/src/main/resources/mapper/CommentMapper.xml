@@ -26,6 +26,7 @@
 		<result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
 		<result property="isArticleOwnerRead" column="is_article_owner_read" />
 		<result property="isCommentOwnerRead" column="is_comment_owner_read" />
+		<result property="nickname" column="nickname"/>
 		<result property="image" column="image"/>
 	</resultMap>
 
@@ -47,10 +48,12 @@
             user_id = #{userId} 
     </select>
     
-    <select id="findCommentByUserArticle" resultMap="CommentResultMap">
+    <select id="findCommentByUserArticle" resultMap="CommentDtoResultMap">
         SELECT 
-		    *
+		    *, members.img as image, members.nickname
 		FROM comments
+		LEFT JOIN members
+		ON members.id = comments.user_id
 		WHERE 
 		    article_no IN (
 		        SELECT 
@@ -67,11 +70,12 @@
 
     </select>
     
-    <select id="findChildCommentByUserParentComment" resultMap="CommentResultMap">
-        SELECT 
-		    *
-		FROM 
-		    comments
+    <select id="findChildCommentByUserParentComment" resultMap="CommentDtoResultMap">
+		SELECT
+			*, members.img as image, members.nickname
+		FROM comments
+		LEFT JOIN members
+		ON members.id = comments.user_id
 		WHERE 
 		    parent_id IN (
 		        SELECT 
@@ -134,10 +138,9 @@
 		    WHERE c.id = #{commentId}
 		      AND p.user_id = #{userId};
 	</update>
-	
-    <!-- 게시물에 대한 모든 댓글 갯수 조회 -->
+
     <select id="findComments" resultMap="CommentDtoResultMap">
-        SELECT *, members.img as image
+        SELECT *, members.img as image, members.nickname
         FROM comments
 		LEFT JOIN members
         ON members.id = comments.user_id

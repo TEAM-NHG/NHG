@@ -97,6 +97,7 @@ public class CommentService {
 						.isArticleOwnerRead(parent.isArticleOwnerRead())
 						.isCommentOwnerRead(parent.isCommentOwnerRead())
 						.image(parent.getImage())
+						.nickname(parent.getNickname())
 						.replies(new ArrayList<>()) // 초기 대댓글 리스트
 						.build())
 				.collect(Collectors.toList());

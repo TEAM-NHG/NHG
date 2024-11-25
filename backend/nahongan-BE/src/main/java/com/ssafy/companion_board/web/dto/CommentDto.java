@@ -27,6 +27,7 @@ public class CommentDto {
     private boolean isArticleOwnerRead; 
     private boolean isCommentOwnerRead;
     private String image;
+    private String nickname;
 
     /**
      * Entity로 변환하는 메서드
