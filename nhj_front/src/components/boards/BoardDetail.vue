@@ -92,9 +92,7 @@ function onDeleteArticle() {
           </div>
           <div class="col-md-4 align-self-center text-end">댓글 : {{ article.commentCount }}</div>
           <div class="divider mb-3"></div>
-          <div class="">
-            {{ article.content }}
-          </div>
+          <div v-html="article.content"></div>
           <div class="divider mt-3 mb-3"></div>
           <div class="d-flex justify-content-end">
             <button type="button" class="btn btn-outline-primary mb-3" @click="moveList">
