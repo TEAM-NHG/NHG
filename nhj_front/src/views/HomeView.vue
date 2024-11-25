@@ -108,11 +108,15 @@ onMounted(() => {
 }
 
 .Main-text {
-  font-size: 200%;
+  font-size: 300%;
 }
 
 .logined{
-  font-size: 150%;
+  font-size: 160%;
+  border-bottom: 3px solid black;
+  border-top: 3px solid black;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
 }
 
 .black {
@@ -132,7 +136,7 @@ onMounted(() => {
 
 .text-position {
   position: absolute;
-  top: 45vh;
+  top: 42vh;
   left: 50%;
   bottom: auto;
   right: auto;
