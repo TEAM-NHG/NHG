@@ -47,6 +47,15 @@
         WHERE 
             user_id = #{userId} 
     </select>
+
+	<select id="findChildComments" resultMap="CommentDtoResultMap">
+		SELECT
+			*
+		FROM
+			comments
+		WHERE
+			parent_id = #{commentId}
+	</select>
     
     <select id="findCommentByUserArticle" resultMap="CommentDtoResultMap">
         SELECT 
