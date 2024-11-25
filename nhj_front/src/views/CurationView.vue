@@ -3,14 +3,14 @@
   <div class="outerBox">
     <div class="innerBox">
       <h2 class="mb-4" style="cursor: pointer; width: 15vw; font-size: 230%;" @click="filtersClear(filters)">여행 큐레이션</h2>
-  
+
       <!-- Search Component -->
       <CurationSearch @search="handleSearch" />
-  
+
       <div v-if="isLoading" style="text-align: center;">
         <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse/>
       </div>
-  
+
       <!-- Cards Grid -->
       <div class="row g-4" v-else>
         <CurationCard
@@ -19,7 +19,7 @@
           :card="card"
         />
       </div>
-  
+
       <VPageNavigation
           :current-page="currentPage"
           :total-page="totalPage"
@@ -106,8 +106,8 @@ const onPageChange = (val) => {
 .innerBox{
   background-color: white;
   color: #191a1c;
-  border-radius: 5%;
-  margin-top: 80px;
+  border-radius: 25px;
+  margin-top: 8vh;
   padding-top: 4%;
   padding-left: 5%;
   padding-right: 5%;

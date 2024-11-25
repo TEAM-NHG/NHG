@@ -15,18 +15,18 @@
           <button class="btn btn-primary" style="width: 80px;" @click="search" @keyup.enter="search">검색</button>
         </div>
       </div>
-  
+
       <!-- 카드 목록 -->
       <div class="row">
         <NewsCard v-for="card in cards" :key="card.blogger" :card="card" />
       </div>
-  
+
       <!-- 무한스크롤 -->
       <div ref="loadMoreTrigger" class="loading-trigger" v-if="!allLoaded">
         <p v-if="isLoading">Loading...</p>
       </div>
     </div>
-  
+
     <!-- 제일 위로 올라가는 버튼 -->
     <button v-if="showScrollButton" @click="scrollToTop"
       class="tw-fixed tw-bottom-10 tw-right-10 tw-bg-gray-600 tw-text-white tw-rounded-full tw-p-3 hover:tw-bg-gray-800"
@@ -140,8 +140,8 @@ onUnmounted(() => {
 
 .innerBox {
   background-color: white;
-  border-radius: 5%;
-  margin-top: 80px;
+  border-radius: 25px;
+  margin-top: 8vh;
   padding: 5%;
   width: 60vw;
 }

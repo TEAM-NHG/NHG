@@ -100,7 +100,7 @@ const moveWrite = () => {
             </form>
           </div>
         </div>
-          <table class="table table-hover">
+          <table class="table table-hover mb-4">
             <thead>
               <tr class="text-center">
                 <th scope="col">글번호</th>
@@ -121,12 +121,17 @@ const moveWrite = () => {
 </template>
 
 <style scoped>
+* {
+  font-size: 98%;
+}
+
 .container{
-  margin-top: 80px;
-  height: 100vh;
+  margin-top: 8vh;
+  height: 92vh;
+  width: 60vw;
   padding-top: 2rem;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 25px;
 }
 
 .header{

@@ -1,7 +1,8 @@
 <script setup>
 import BoardComment from "./item/BoardComment.vue";
-import { detailArticle, deleteArticle } from "@/api/board";
+import { deleteArticle } from "@/api/board";
 import { ref, onMounted } from "vue";
+import defaultUserIcon from '@/assets/userIcon.png';
 
 //pinia
 import { useAuthStore } from '@/stores/auth';
@@ -30,7 +31,9 @@ const getArticle = async() => {
   try {
     const response = await local.get(`/companion-board/${articleNo}`)
     article.value = response.data;
-    article.value.image = "http://localhost" + response.data.image
+    if(article.value.image) {
+      article.value.image = "http://localhost" + response.data.image
+    }
   }catch(error){
     console.log('글 상세 확인중 에러 발생', error)
   }
@@ -65,7 +68,7 @@ function onDeleteArticle() {
 </script>
 
 <template>
-  <div class="container" style="margin-top: 10%;">
+  <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
@@ -77,13 +80,13 @@ function onDeleteArticle() {
           <div style="font-size: 150%;">| 제목: {{ article.subject }}</div>
 
           <div class="text-end text-secondary fw-light">
-            {{ article.registerTime?.replace(/T/, " ") || "등록 시간 없음" }} | 조회 : {{ article.hit }}    
+            {{ article.registerTime?.replace(/T/, " ") || "등록 시간 없음" }} | 조회 : {{ article.hit }}
           </div>
         </div>
         <div class="row">
           <div class="col-md-8">
             <div class="d-flex align-items-center mb-2">
-              <img class="user-icon me-3" :src="article.image ? article.image : '@/assets/userIcon.png'">
+              <img class="user-icon me-3" :src="article.image ? article.image : defaultUserIcon">
               <div>{{article.userId}}</div>
             </div>
           </div>
@@ -120,8 +123,22 @@ function onDeleteArticle() {
 </template>
 
 <style scoped>
+* {
+  font-size: 98%;
+}
+
 .user-icon{
   width: 40px;
   border-radius: 50%;
+}
+
+.container{
+  background-color: white;
+  margin-top: 8vh;
+  padding: 3vh 12vh;
+  height: 100%;
+  min-height: 92vh;
+  border-radius: 25px;
+  width: 60vw;
 }
 </style>
