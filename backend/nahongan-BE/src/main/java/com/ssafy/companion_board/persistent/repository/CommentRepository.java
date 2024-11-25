@@ -18,6 +18,8 @@ public interface CommentRepository {
 	Comment findCommentByUserId(@Param("userId") String userId) throws SQLException;
 	
 	List<CommentDto> findComments(@Param("articleNo") int articleNo) throws SQLException;
+
+	List<CommentDto> findChildComments(@Param("commentId") int commentId) throws SQLException;
 	 
 	int createComment(Comment comment);
 	

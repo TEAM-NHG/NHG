@@ -29,8 +29,12 @@ public class CommentService {
 	
 	private final CommentRepository commentRepository;
 	
-	public void deleteComment(int commentId) {
+	public void deleteComment(int commentId) throws SQLException {
 		commentRepository.deleteComment(commentId);
+		List<CommentDto> commentDtos = commentRepository.findChildComments(commentId);
+		for (CommentDto commentDto:commentDtos) {
+			commentRepository.deleteComment(commentDto.getId());
+		}
 	}
 
 	public void createComment(CreateCommentRequest request, String userId) {
