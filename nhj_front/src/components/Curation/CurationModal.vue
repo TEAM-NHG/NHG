@@ -9,7 +9,7 @@
 
         <div class="row ">
           <!-- 왼쪽: 정보 섹션 -->
-          <div class="col-lg-6 d-flex flex-column justify-content-center">
+          <div class="col-lg-6 d-flex flex-column justify-content-center info">
             <div class="fw-bold my-3 mx-4" style="font-size: 150%;">[ {{ card.title }} ]</div>
             <div class="mb-4 mx-4 scroll"
                  style="overflow:auto; height: 300px;" 
@@ -108,6 +108,12 @@ const images = computed(() => [
 .btn {
   margin-right: 30px;
   width: 10rem;
+  height: 3rem;
+}
+
+img:hover {
+  transform: scale(1.2);
+  transition: all 0.3s ease;
 }
 
 /* 스크롤바 스타일링 */
@@ -127,5 +133,9 @@ const images = computed(() => [
 
 .scroll::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.info{
+  height: 550px;
 }
 </style>

@@ -87,7 +87,7 @@ const getComments = () => {
       comments.value = data.comments;
       comments.value.forEach(async (comment) => {
         const response = await local.get(`/member/profile/image?userId=${comment.userId}`);
-        if(comment.img){
+        if(response.data.image){
           comment.img = "http://localhost" + response.data.image;
         }
         comment.isEditing = false;
