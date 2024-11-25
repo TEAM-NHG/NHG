@@ -19,8 +19,11 @@
             companion_board.content,
             companion_board.hit,
             companion_board.register_time as registerTime,
-            count(comments.id) AS commentCount
+            count(comments.id) AS commentCount,
+            members.nickname
         FROM companion_board
+        LEFT JOIN members
+        ON companion_board.user_id = members.id
         LEFT JOIN comments
         ON comments.article_no = companion_board.article_no
         WHERE companion_board.article_no = #{articleNo}
@@ -34,8 +37,11 @@
             companion_board.content,
             companion_board.hit,
             companion_board.register_time as registerTime,
-            count(comments.id) AS commentCount
+            count(comments.id) AS commentCount,
+            members.nickname
         FROM companion_board
+        LEFT JOIN members
+        ON companion_board.user_id = members.id
         LEFT JOIN comments
         ON comments.article_no = companion_board.article_no
         <where>

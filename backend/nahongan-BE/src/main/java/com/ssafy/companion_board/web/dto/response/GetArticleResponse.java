@@ -18,6 +18,7 @@ import lombok.Setter;
 public class GetArticleResponse {
 	private int articleNo; // 게시글 번호
     private String userId; // 사용자 ID
+    private String nickname;
     private String image;
     private String subject; // 제목
     private String content; // 내용
@@ -25,11 +26,12 @@ public class GetArticleResponse {
     private LocalDateTime registerTime; // 등록 시간
     private int commentCount;
     
-    public static GetArticleResponse from(CompanionBoard article) {
+    public static GetArticleResponse from(CompanionBoard article, String nickname) {
         return GetArticleResponse
                 .builder()
                 .articleNo(article.getArticleNo())
                 .userId(article.getUserId())
+                .nickname(nickname)
                 .subject(article.getSubject())
                 .content(article.getContent())
                 .hit(article.getHit())

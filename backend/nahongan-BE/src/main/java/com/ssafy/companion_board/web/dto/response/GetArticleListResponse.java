@@ -17,10 +17,10 @@ public class GetArticleListResponse {
 	List<GetArticleResponse> articles;
 	int currentPage;
 	int lastPage;
-	public static GetArticleListResponse from(List<CompanionBoard> articles, int currentPage, int lastPage) {
+	public static GetArticleListResponse from(List<CompanionBoard> articles, String nickname, int currentPage, int lastPage) {
 		return GetArticleListResponse.builder()
 				.articles(articles.stream()
-						.map((article) -> GetArticleResponse.from(article))
+						.map((article) -> GetArticleResponse.from(article, nickname))
 						.collect(Collectors.toList()))
 				.currentPage(currentPage)
 				.lastPage(lastPage)
