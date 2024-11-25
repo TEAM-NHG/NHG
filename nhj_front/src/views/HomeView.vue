@@ -1,19 +1,31 @@
 <template>
-  <div class="home-container scroll-container" style="height: 100vh;">
+  <div v-if="!authStore.user" class="home-container scroll-container" style="height: 100vh;">
     <div class="scroll-area"><ChildHomeView1/></div>
     <div class="scroll-area"><ChildHomeView2/></div>
     <div class="scroll-area"><ChildHomeView3/></div>
     <div class="scroll-area"><ChildHomeView4/></div>
     <div class="scroll-area"><ChildHomeView5/></div>
+    <div class="scroll-area"><ChildHomeView6/></div>
+    <font-awesome-icon :icon="['fas', 'angles-down']" beat-fade 
+                        style="color: #ffffff; position: fixed; bottom: 10vh; width: 100%;"/>
+  </div>
+
+  <div v-else>
+    <div class="scroll-area"><ChildHomeView6/></div>
   </div>
 </template>
 
 <script setup>
-import ChildHomeView1 from './ChildHomeView1.vue';
-import ChildHomeView2 from './ChildHomeView2.vue';
-import ChildHomeView3 from './ChildHomeView3.vue';
-import ChildHomeView4 from './ChildHomeView4.vue';
-import ChildHomeView5 from './ChildHomeView5.vue';
+import { useAuthStore } from '@/stores/auth';
+import ChildHomeView1 from './HomeChild/ChildHomeView1.vue';
+import ChildHomeView2 from './HomeChild/ChildHomeView2.vue';
+import ChildHomeView3 from './HomeChild/ChildHomeView3.vue';
+import ChildHomeView4 from './HomeChild/ChildHomeView4.vue';
+import ChildHomeView5 from './HomeChild/ChildHomeView5.vue';
+import ChildHomeView6 from './HomeChild/ChildHomeView6.vue';
+
+const authStore = useAuthStore()
+
 </script>
 <style scoped>
 .home-container {
