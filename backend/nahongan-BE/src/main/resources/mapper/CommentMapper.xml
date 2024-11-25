@@ -110,7 +110,7 @@
     <!-- 댓글 삭제 -->
     <delete id="deleteComment">
         DELETE FROM comments
-        WHERE id = #{commentId} and parent_id = #{commentId}
+        WHERE id = #{commentId}
     </delete>
 
     <!-- 댓글 수정 -->

@@ -26,6 +26,7 @@ public class TourApiService {
     private String serviceKey;
 
     private ResponseEntity<String> requestApi(URI uri) {
+    	System.out.println(uri);
         RequestEntity<Void> requestEntity = RequestEntity
                 .get(uri)
                 .build();
@@ -73,7 +74,7 @@ public class TourApiService {
                 // "item" 배열에 접근
                 JsonNode itemNode = itemsNode.get("item").get(0);
                 result1 = objectMapper.treeToValue(itemNode, CommonDetailDto.class);
-
+                System.out.println(result1);
                 // 각 필드를 수동으로 설정
             }
         	

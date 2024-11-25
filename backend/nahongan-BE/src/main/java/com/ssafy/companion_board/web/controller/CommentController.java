@@ -13,29 +13,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.companion_board.domain.CommentService;
-import com.ssafy.companion_board.domain.CompanionBoardService;
 import com.ssafy.companion_board.web.dto.CommentDto;
-import com.ssafy.companion_board.web.dto.request.DeleteArticleRequest;
-import com.ssafy.companion_board.web.dto.request.GetArticleListRequest;
-import com.ssafy.companion_board.web.dto.request.UpdateArticleRequest;
-import com.ssafy.companion_board.web.dto.request.WriteArticleRequest;
 import com.ssafy.companion_board.web.dto.request.comment.CreateChildCommentRequest;
 import com.ssafy.companion_board.web.dto.request.comment.CreateCommentRequest;
-import com.ssafy.companion_board.web.dto.request.comment.GetCommentRequest;
-import com.ssafy.companion_board.web.dto.request.comment.GetCommentsRequest;
 import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentReadRequest;
 import com.ssafy.companion_board.web.dto.request.comment.UpdateCommentRequest;
-import com.ssafy.companion_board.web.dto.response.GetArticleListResponse;
-import com.ssafy.companion_board.web.dto.response.GetArticleResponse;
-import com.ssafy.companion_board.web.dto.response.UpdateArticleResponse;
-import com.ssafy.companion_board.web.dto.response.comment.GetCommentResponse;
 import com.ssafy.companion_board.web.dto.response.comment.GetCommentsResponse;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -81,7 +68,8 @@ public class CommentController {
 	}
 	
 	@DeleteMapping("/comment/{commentId}")
-	public ResponseEntity<Void> deleteComment(@PathVariable("commentId") int commentId, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+	public ResponseEntity<Void> deleteComment(@PathVariable int commentId, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		System.out.println(commentId);
 		commentService.deleteComment(commentId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
