@@ -17,7 +17,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class WriteArticleRequest {
-	private String userId;
 	private String subject; // 제목
     private String content; // 내용
 }
