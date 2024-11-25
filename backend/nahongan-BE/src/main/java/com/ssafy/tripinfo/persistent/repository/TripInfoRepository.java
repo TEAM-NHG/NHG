@@ -16,7 +16,7 @@ public interface TripInfoRepository {
 	
 	String findSidoNameBySidoCode(int sidoCode) throws SQLException;
 	
-	String findGugunNameByGugunNo(int no) throws SQLException;
+	String findGugunNameByGugunCodeAndSidoCode(int sidoCode, int gugunCode) throws SQLException;
 	
 	//각 시에 맞는 구군정보 쿼리
 	List<Guguns> findGugunBySido(@Param("sidoCode") String sidoCode);

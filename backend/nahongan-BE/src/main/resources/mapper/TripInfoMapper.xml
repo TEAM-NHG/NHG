@@ -102,16 +102,16 @@
     </select>
     
     
-    <select id="findGugunNameByGugunNo" resultType="String">
+    <select id="findGugunNameByGugunCodeAndSidoCode" resultType="String">
     	SELECT gugun_name
     	FROM guguns
-		WHERE no = #{no} 
+		WHERE gugun_code = #{gugunCode} and sido_code = #{sidoCode}
     </select>
     
     <select id="findSidoNameBySidoCode" resultType="String">
     	SELECT sido_name
     	FROM sidos
-		WHERE sido_code=#{sidoCode} 
+		WHERE no=#{sidoCode}
     </select>
     
     <select id="findGugunBySidoNameAndGugunName" resultMap="gugunResultMap">
