@@ -5,7 +5,7 @@
         <div class="d-flex align-items-center">
           <img :src="reply.image ? 'http://localhost' + reply.image : defaultUserIcon"
             style="width: 25px; border-radius: 50%; margin-right: 15px" alt="">
-          <strong class="pt-2">{{ reply.userId }}</strong>
+          <strong class="pt-2">{{ reply.nickname }}</strong>
           <template v-if="reply.userId === authStore.user.id">
             <div class="btn text-muted btn-sm ms-2" @click="reply.isEditing = true">수정</div>
             <div class="btn text-muted btn-sm" @click="handleDelete(reply.id)">삭제</div>
