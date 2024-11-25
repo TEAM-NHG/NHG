@@ -20,6 +20,7 @@ public class GetMemberResponse extends MemberDto {
                 .phone(member.getPhone())
                 .img(member.getImg())
                 .commentNotificationCount(member.getCommentNotificationCount())
+                .role(member.getRole())
                 .build();
     }
 }

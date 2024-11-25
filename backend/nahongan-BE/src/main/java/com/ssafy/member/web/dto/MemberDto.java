@@ -35,6 +35,9 @@ public class MemberDto {
 
 	@Schema(description = "댓글 알림")
 	private int commentNotificationCount;
+	
+	@Schema(description = "권한")
+	private String role;
 
 	public Member toEntity() {
 		return Member
