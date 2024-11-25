@@ -111,7 +111,7 @@
     <select id="findSidoNameBySidoCode" resultType="String">
     	SELECT sido_name
     	FROM sidos
-		WHERE no=#{sidoCode}
+		WHERE sido_code=#{sidoCode}
     </select>
     
     <select id="findGugunBySidoNameAndGugunName" resultMap="gugunResultMap">

@@ -28,22 +28,42 @@ public class TourApiService {
     private String serviceKey;
 
     private String requestApi(String urlString) {
-        HttpURLConnection urlConnection = null;
-        InputStream stream = null;
+        int maxRetries = 2; // 최대 재요청 횟수
+        int retryCount = 0; // 현재 재요청 횟수
         String result = null;
-        try {
-            URL url = new URL(urlString);
 
-            urlConnection = (HttpURLConnection) url.openConnection();
-            stream = getNetworkConnection(urlConnection);
-            result = readStreamToString(stream);
+        while (retryCount < maxRetries) {
+            HttpURLConnection urlConnection = null;
+            InputStream stream = null;
 
-            if (stream != null) stream.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
+            try {
+                URL url = new URL(urlString);
+                urlConnection = (HttpURLConnection) url.openConnection();
+
+                // 타임아웃 설정
+                urlConnection.setConnectTimeout(5000); // 연결 타임아웃 5초
+                urlConnection.setReadTimeout(5000);    // 읽기 타임아웃 5초
+
+                stream = getNetworkConnection(urlConnection);
+                result = readStreamToString(stream);
+
+                // 요청 성공 시 루프 종료
+                break;
+            } catch (IOException e) {
+                retryCount++; // 재시도 횟수 증가
+                System.err.println("Request failed, retrying... (" + retryCount + "/" + maxRetries + ")");
+                if (retryCount == maxRetries) {
+                    System.err.println("Max retries reached. Request failed.");
+                }
+            } finally {
+                try {
+                    if (stream != null) stream.close();
+                } catch (IOException e) {
+                    System.err.println("Error closing stream: " + e.getMessage());
+                }
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
             }
         }
         return result;
@@ -133,7 +153,7 @@ public class TourApiService {
                 detailDto.setAddr1(result1.getAddr1());
                 detailDto.setAddr2(result1.getAddr2());
             }
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             e.fillInStackTrace();
         }
         System.out.println(detailDto);

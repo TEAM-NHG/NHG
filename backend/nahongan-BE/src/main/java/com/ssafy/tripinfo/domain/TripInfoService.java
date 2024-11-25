@@ -140,6 +140,7 @@ public class TripInfoService {
 				attraction.setParking(((LodgingDetailDto) detailDto).getParkinglodging());
 				attraction.setTel(((LodgingDetailDto) detailDto).getInfocenterlodging());
 			}
+			System.out.println(detailDto);
 			attraction.setDetailSaved(true);
 			tripInfoRepository.modifyAttractions(attraction);
 		}
