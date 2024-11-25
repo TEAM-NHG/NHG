@@ -3,11 +3,13 @@ package com.ssafy.tripinfo.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.tripinfo.persistent.entity.AttractionImage;
 import com.ssafy.tripinfo.persistent.entity.Attractions;
+import com.ssafy.tripinfo.persistent.entity.Guguns;
 import com.ssafy.tripinfo.persistent.repository.TripInfoRepository;
 import com.ssafy.tripinfo.web.dto.detail.AttractionDetailDto;
 import com.ssafy.tripinfo.web.dto.detail.CommonDetailDto;
@@ -138,5 +140,8 @@ public class TripInfoService {
 		}
 		return attraction;
 	}
-
+	
+	public Guguns findGugunBySidoNameAndGugunName(String sidoName, String gugunName) {
+		return tripInfoRepository.findGugunBySidoNameAndGugunName(sidoName, gugunName);
+	}
 }

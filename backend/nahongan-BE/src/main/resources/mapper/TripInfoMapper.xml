@@ -100,6 +100,25 @@
         FROM attraction_image
         WHERE content_id = #{contentId};
     </select>
+    
+    
+    <select id="findGugunNameByGugunNo" resultType="String">
+    	SELECT gugun_name
+    	FROM guguns
+		WHERE no = #{no} 
+    </select>
+    
+    <select id="findSidoNameBySidoCode" resultType="String">
+    	SELECT sido_name
+    	FROM sidos
+		WHERE sido_code=#{sidoCode} 
+    </select>
+    
+    <select id="findGugunBySidoNameAndGugunName" resultMap="gugunResultMap">
+    	SELECT *
+    	FROM guguns
+		WHERE guguns.sido_code = (SELECT sido_code FROM sidos WHERE sido_name = #{sidoName}) AND gugun_name = #{gugunName} 
+    </select>
 
     <!-- filter -->
     <sql id="search">

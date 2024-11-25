@@ -11,23 +11,22 @@ import lombok.*;
 @Getter
 @Setter
 public class CreatePlanDto {
-    private String subject; // 제목
-    private String content; // 내용
-    private int sidoCode;
-    private int gugunCode;
+    private String title; // 제목
+    private String notes; // 내용
+    private String sido;
+    private String gugun;
     private Date startDate;
     private Date endDate;
     
-    
-    public Plan toEntity(String userId) {
-        return Plan.builder()
-        		.userId(userId)
-                .sidoCode(sidoCode)
-                .gugunCode(gugunCode)
-                .subject(subject)
-                .content(content)
-                .startDate(startDate)
-                .endDate(endDate)
-                .build();
+    public Plan toEntity(String userId, int sidoCode, int gugunCode) {
+    	return Plan.builder()
+    			.subject(title)
+    			.content(notes)
+    			.sidoCode(sidoCode)
+    			.gugunCode(gugunCode)
+    			.userId(userId)
+    			.startDate(startDate)
+    			.endDate(endDate)
+    			.build();
     }
 }

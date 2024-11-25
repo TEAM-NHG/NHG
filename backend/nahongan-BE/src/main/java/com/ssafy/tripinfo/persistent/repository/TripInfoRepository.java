@@ -14,8 +14,15 @@ public interface TripInfoRepository {
 	//시 정보 쿼리
 	List<Sidos> findAllSido() throws SQLException;
 	
+	String findSidoNameBySidoCode(int sidoCode) throws SQLException;
+	
+	String findGugunNameByGugunNo(int no) throws SQLException;
+	
 	//각 시에 맞는 구군정보 쿼리
 	List<Guguns> findGugunBySido(@Param("sidoCode") String sidoCode);
+	
+	Guguns findGugunBySidoNameAndGugunName(@Param("sidoName") String sidoName
+									,@Param("gugunName") String gugunName);
 	 
 	//컨텐츠타입 쿼리
 	List<ContentTypes> findAllContentType();

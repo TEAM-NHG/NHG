@@ -50,6 +50,7 @@
             sido_code = #{sidoCode},
             gugun_code = #{gugunCode},
             start_date = #{startDate},
+            image = #{image},
             end_date = #{endDate},
             register_time = now()
         WHERE id = #{id}

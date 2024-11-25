@@ -47,9 +47,9 @@ public class PlanController {
 		planService.createPlan(images, plan, userDetails.getUsername());
 	}
 
-	@PutMapping
-	public void updatePlan(@RequestBody UpdatePlanDto updatePlanDto) throws SQLException {
-		planService.updatePlan(updatePlanDto);
+	@PutMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public void updatePlan(@RequestPart(value="plan") UpdatePlanDto plan, @RequestPart(required = false, value="images") MultipartFile images, @AuthenticationPrincipal UserDetails userDetails) throws SQLException {
+		planService.updatePlan(images, plan, userDetails.getUsername());
 	}
 
 	/**
