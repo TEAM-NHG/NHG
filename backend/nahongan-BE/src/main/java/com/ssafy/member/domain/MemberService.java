@@ -51,23 +51,6 @@ public class MemberService {
         memberRepository.create(member);
     }
 
-    public GetMemberResponse login(LoginRequest request, HttpSession httpSession) throws Exception {
-        Member member = memberRepository.findById(request.getId());
-        System.out.println(member.getId());
-        //아이디 검사
-        if (member == null) {
-            throw new BaseException("없는 아이디인디요", HttpStatus.BAD_REQUEST);
-        }
-        //비밀번호 검사
-        if (!member.checkPassword(request.getPassword(), passwordEncoder)) {
-            throw new BaseException("없는 비번인디요", HttpStatus.BAD_REQUEST);
-        }
-        //세션 삽입
-        httpSession.setAttribute("user", member.getId());
-        System.out.println("Session user set: " + httpSession.getAttribute("user"));
-        return GetMemberResponse.from(member);
-    }
-
     public void logout(HttpSession httpSession) {
         System.out.println(httpSession.getAttribute("user"));
         httpSession.removeAttribute("user");
@@ -78,8 +61,7 @@ public class MemberService {
         return memberRepository.existsById(id);
     }
 
-    public GetMemberResponse getMember(HttpSession httpSession) {
-        String id = (String) httpSession.getAttribute("user");
+    public GetMemberResponse getMember(String id) {
         System.out.println(id);
         Member member = memberRepository.findById(id);
         if (member == null) {
@@ -113,8 +95,7 @@ public class MemberService {
 	public String setMemberImage(MultipartFile images, String userId) throws SQLException {
 		Member member = memberRepository.findById(userId);
 		String detailPath = "member" + File.separator + userId;
-		String imagePath = imageUploader.upload(images, detailPath);
-		return imagePath;
+        return imageUploader.upload(images, detailPath);
 	}
 
 	public GetMemberImageResponse getMemberImage(String userId) {

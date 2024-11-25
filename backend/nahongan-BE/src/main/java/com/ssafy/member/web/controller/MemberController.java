@@ -25,6 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.member.domain.MemberService;
@@ -72,24 +74,24 @@ public class MemberController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	@Operation(
-			summary = "로그아웃 API", // 요약
-			description = "로그아웃 세션해제" // 상세 설명
-	)
-	@PostMapping("/logout")
-	public ResponseEntity<Void> logout(HttpSession httpSession) throws Exception {
-		memberService.logout(httpSession);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
+//	@Operation(
+//			summary = "로그아웃 API", // 요약
+//			description = "로그아웃 세션해제" // 상세 설명
+//	)
+//	@PostMapping("/logout")
+//	public ResponseEntity<Void> logout(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+//
+//		memberService.logout();
+//		return new ResponseEntity<>(HttpStatus.OK);
+//	}
 
 	@Operation(
 			summary = "프로필 정보 호출 API", // 요약
 			description = "비밀번호를 제외한 모든 유저의 정보 반환" // 상세 설명
 	)
 	@GetMapping("/profile")
-	public ResponseEntity<GetMemberResponse> getMemberProfile(HttpSession httpSession) throws Exception {
-		System.out.println((String) httpSession.getAttribute("user"));
-		return new ResponseEntity<GetMemberResponse>(memberService.getMember(httpSession), HttpStatus.OK);
+	public ResponseEntity<GetMemberResponse> getMemberProfile(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		return new ResponseEntity<GetMemberResponse>(memberService.getMember(userDetails.getUsername()), HttpStatus.OK);
 	}
 
 	@Operation(
@@ -123,15 +125,9 @@ public class MemberController {
 		return new ResponseEntity<>(memberService.modify(images, member), HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{userId}")
-	public ResponseEntity<?> delete(@PathVariable("userId") String id) throws SQLException {
-		return new ResponseEntity<>(memberService.delete(id), HttpStatus.OK);
-	}
-	
 	@PostMapping(value = "/profile/img",  consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ResponseEntity<Void> setMemberImage(@RequestPart(required = false) MultipartFile images, HttpSession session) throws SQLException {
-		String userId = (String) session.getAttribute("user");
-		memberService.setMemberImage(images, userId);
+	public ResponseEntity<Void> setMemberImage(@RequestPart(required = false) MultipartFile images, @AuthenticationPrincipal UserDetails userDetails) throws SQLException {
+		memberService.setMemberImage(images, userDetails.getUsername());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
