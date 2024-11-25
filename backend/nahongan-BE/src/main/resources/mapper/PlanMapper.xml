@@ -3,24 +3,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.plan.persistent.repository.PlanRepository">
+	<resultMap id="PlanResultMap" type="com.ssafy.plan.persistent.entity.Plan">
+	    <id property="id" column="id" />
+	    <result property="userId" column="user_id" />
+	    <result property="image" column="image" />
+	    <result property="sidoCode" column="sido_code" />
+	    <result property="gugunCode" column="gugun_code" />
+	    <result property="subject" column="subject" />
+	    <result property="content" column="content" />
+	    <result property="startDate" column="start_date" />
+	    <result property="endDate" column="end_date" />
+	    <result property="registerTime" column="register_time" />
+	</resultMap>
     <!-- Select Plan by ID -->
-    <select id="findPlanById" parameterType="int" resultType="com.ssafy.plan.persistent.entity.Plan">
-        SELECT id, user_id AS userId, subject, content, register_time AS registerTime
+    <select id="findPlanById" parameterType="int" resultMap="PlanResultMap">
+        SELECT *
         FROM plan
         WHERE id = #{planId}
     </select>
 
     <!-- Select Plans by User ID -->
-    <select id="findPlanByUserId" parameterType="String" resultType="com.ssafy.plan.persistent.entity.Plan">
-        SELECT id, user_id AS userId, subject, content, register_time AS registerTime
+    <select id="findPlanByUserId" parameterType="String" resultMap="PlanResultMap">
+        SELECT *
         FROM plan
         WHERE user_id = #{userId}
     </select>
 
     <!-- Insert a new Plan -->
     <insert id="createPlan" parameterType="com.ssafy.plan.persistent.entity.Plan">
-        INSERT INTO plan (user_id, subject, content, register_time)
-        VALUES (#{userId}, #{subject}, #{content}, now())
+        INSERT INTO plan (user_id, subject, content, image, sido_code, gugun_code, start_date, end_date, register_time)
+        VALUES (#{userId}, #{subject}, #{content}, #{image},#{sidoCode},#{gugunCode}, #{startDate}, #{endDate}, now())
     </insert>
 
     <!-- Delete a Plan by ID -->
@@ -34,7 +46,13 @@
         UPDATE plan
         SET
             subject = #{subject},
-            content = #{content}
+            content = #{content},
+            image = #{image},
+            sido_code = #{sidoCode},
+            gugun_code = #{gugunCode},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            register_time = now()
         WHERE id = #{id}
     </update>
 

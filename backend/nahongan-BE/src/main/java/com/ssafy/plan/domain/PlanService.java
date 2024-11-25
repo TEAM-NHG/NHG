@@ -35,6 +35,8 @@ public class PlanService {
 	}
 
 	public void createPlan(CreatePlanDto planDto, String userId) {
+		System.out.println(planDto.getSidoCode());
+		System.out.println(planDto.getGugunCode());
 		planRepository.createPlan(planDto.toEntity(userId));
 	}
 
@@ -44,7 +46,7 @@ public class PlanService {
 
 	public void updatePlan(UpdatePlanDto updatePlanDto) throws SQLException {
 		Plan plan = planRepository.findPlanById(updatePlanDto.getId());
-		plan.update(updatePlanDto.getSubject(), updatePlanDto.getContent());
+		updatePlanDto.updateEntity(plan);
 		planRepository.updatePlan(plan);
 	}
 
