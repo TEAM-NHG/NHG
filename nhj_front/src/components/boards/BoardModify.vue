@@ -7,7 +7,7 @@ import BoardFormItem from "./item/BoardFormItem.vue";
     <div class="row justify-content-center">
       <div class="col-lg-10">
         <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-          <mark class="sky">글수정</mark>
+          <mark class="sky" style="font-size: 125%;">글수정</mark>
         </h2>
       </div>
       <div class="col-lg-10 text-start">
@@ -25,5 +25,6 @@ import BoardFormItem from "./item/BoardFormItem.vue";
   height: 92vh;
   border-radius: 25px;
   width: 60vw;
+  font-size: 110%;
 }
 </style>
