@@ -62,7 +62,7 @@ const newReplyContent = ref('');
 
 // 대댓글 작성
 const submitReply = async () => {
-  if (!newReplyContent.value?.trim()) return alert('대댓글을 입력하세요.');
+  if (!newReplyContent.value?.trim()) return alert('댓글을 입력해주세요.');
 
   const replyData = {
     userId: authStore.user.id,
