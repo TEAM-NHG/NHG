@@ -48,9 +48,7 @@
             <div class="d-flex justify-content-between align-items-center" style="height: 42px;">
               <div>출력창</div>
             </div>
-            <div class="output-area p-3 bg-light rounded mt-2 position-relative">
-              <img class="output-image" :src="selectedEmotion.src ?
-                selectedEmotion.src : 'src/assets/insideout/characters.png'" style="height: 50px;">
+            <div class="output-area p-3 bg-light rounded mt-2">
               <div v-if="loading" class="loading-spinner">
                 <font-awesome-icon :icon="['fas', 'spinner']" spin-pulse />
               </div>
@@ -77,7 +75,6 @@
       :travelData="selectedTravel"
       @close="closeModal"
       @save="handleSave"
-      @delete="handleDelete"
     />
   </div>
 </template>
@@ -189,24 +186,20 @@ const closeModal = () => {
   selectedTravel.value = null;
 };
 
-
-const handleSave = (updatedTravel) => {
-  if (updatedTravel.id) {
-    const index = travelList.value.findIndex((t) => t.id === updatedTravel.id);
-    if (index !== -1) {
-      travelList.value[index] = updatedTravel;
-    }
-  } else {
-    updatedTravel.id = Date.now(); // 임시 ID
-    travelList.value.push(updatedTravel);
+const handleSave = async (saveTravel) => {
+  console.log(saveTravel)
+  try{
+    await local.post('/plan', saveTravel, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+    alert('저장 되었습니다. 나의 페이지에서 확인하실 수 있습니다')
+    closeModal();
+  }catch(error){
+    console.log("여행 계획 생성 실패: ", error)
   }
-  closeModal();
+
 };
 
-const handleDelete = (travelId) => {
-  travelList.value = travelList.value.filter((t) => t.id !== travelId);
-  closeModal();
-};
 </script>
 <style scoped>
 .innerBox {
@@ -234,11 +227,6 @@ const handleDelete = (travelId) => {
   background-color: antiquewhite;
   border: 0;
   border-radius: 10px;
-}
-
-.output-image{
-  position: absolute;
-  right: 20px;
 }
 
 .emotion-button img {
