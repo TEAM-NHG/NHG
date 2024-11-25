@@ -87,7 +87,7 @@ function onDeleteArticle() {
           <div class="col-md-8">
             <div class="d-flex align-items-center mb-2">
               <img class="user-icon me-3" :src="article.image ? article.image : defaultUserIcon">
-              <div>{{article.userId}}</div>
+              <div>{{article.nickname}}</div>
             </div>
           </div>
           <div class="col-md-4 align-self-center text-end">댓글 : {{ article.commentCount }}</div>

@@ -13,7 +13,7 @@ defineProps({ article: Object });
         {{ article.subject }} [{{ article.commentCount }}]
       </router-link>
     </td>
-    <td>{{ article.userId }}</td>
+    <td>{{ article.nickname }}</td>
     <td>{{ article.hit }}</td>
     <td>{{ article.registerTime.replace(/T.*/, "") }}</td>
   </tr>

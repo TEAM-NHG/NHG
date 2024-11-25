@@ -22,7 +22,7 @@
             class="article-title link-dark"
           >
             <p class="mb-1">
-              <strong>{{ notification.userId }}</strong>
+              <strong>{{ notification.nickname }}</strong>
               님이 회원님의 게시글에 댓글을 남겼습니다
             </p>
           </router-link>

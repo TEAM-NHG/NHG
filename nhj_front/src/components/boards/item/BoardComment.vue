@@ -9,7 +9,7 @@
         <div class="d-flex align-items-center">
           <img :src="comment.img ? comment.img : 'src/assets/userIcon.png'"
             style="width: 25px; height: 25px; margin-right: 15px; object-fit: cover; border-radius: 50%;">
-          <strong class="pt-2">{{ comment.userId }}</strong>
+          <strong class="pt-2">{{ comment.nickname }}</strong>
           <template v-if="comment.userId === authStore.user.id">
             <div class="btn text-muted btn-sm ms-2" @click="comment.isEditing = true">수정</div>
             <div class="btn text-muted btn-sm" @click="deleteComment(comment.id)">삭제</div>
