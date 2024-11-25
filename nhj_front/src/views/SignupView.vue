@@ -246,14 +246,11 @@ const checkIdDuplicate = async () => {
 };
 
 // 이미지 업로드 처리
+const signupFormData = new FormData();
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
   if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      signupForm.value.img = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    signupFormData.append("images", file);
   }
 };
 
@@ -262,7 +259,10 @@ const handleSignup = async () => {
   if (!isFormValid.value) return;
 
   try {
-    const response = await local.post('/member/join', signupForm.value)
+    signupFormData.append("member", JSON.stringify(signupForm.value));
+    const response = await local.post('/member/join', signupFormData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
     if (response.status == 201) {
       alert('회원가입이 완료되었습니다.');
       router.push({ name: 'login' });
