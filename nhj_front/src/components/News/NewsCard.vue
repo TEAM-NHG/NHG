@@ -44,7 +44,7 @@ const stripHtml = (htmlString) => {
 
 <style scoped>
 .card {
-  background-color: #FAF6F0;
+  background-color: #fdf5e6;
   border: 1px solid rgba(61, 61, 61, 0.356);
   transition: transform 0.2s;
   padding: 3%;
