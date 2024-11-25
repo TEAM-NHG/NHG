@@ -16,6 +16,9 @@ public class JoinRequest {
 	@Schema(description = "아이디")
 	private final String id;
 
+	@Schema(description = "닉네임")
+	private final String nickname;
+
 	@Schema(description = "비밀번호")
 	private final String password;
 
@@ -29,10 +32,10 @@ public class JoinRequest {
 		return Member
 				.builder()
 				.id(this.id)
+				.nickname(this.nickname)
 				.password(this.password)
 				.email(this.email)
 				.phone(this.phone)
-				.nickname(this.id)
 				.build();
 	}
 }
