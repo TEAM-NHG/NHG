@@ -2,11 +2,11 @@
   <div class="home-container" style="height: 100vh;">
     <!-- 배경 이미지 -->
     <transition name="fade">
-      <img 
-        :src="currentImage" 
-        :key="currentImage" 
-        alt="Main Background" 
-        class="w-50 main-image" 
+      <img
+        :src="currentImage"
+        :key="currentImage"
+        alt="Main Background"
+        class="w-50 main-image"
         style="height: 90vh; object-fit: cover;">
     </transition>
 
@@ -54,13 +54,15 @@ const router = useRouter();
 
 // 이미지 배열 및 현재 이미지 상태
 const images = [
-  "src/assets/Main/test.jpg",
-  "src/assets/Main/test2.jpg",
-  "src/assets/Main/test3.jpg",
-  "src/assets/Main/test4.jpg",
-  "src/assets/Main/test5.jpg",
-  "src/assets/Main/test6.jpg",
-  "src/assets/Main/test7.jpg"
+  "src/assets/Main/main1.jpg",
+  "src/assets/Main/main2.jpg",
+  "src/assets/Main/main5.jpg",
+  "src/assets/Main/main6.jpg",
+  "src/assets/Main/main8.jpg",
+  "src/assets/Main/main10.jpg",
+  "src/assets/Main/main12.jpg",
+  "src/assets/Main/main14.jpg",
+  "src/assets/Main/main15.jpg",
 ];
 const currentImage = ref(images[0]); // 현재 보여줄 이미지
 let imageIndex = 0;
@@ -114,9 +116,9 @@ onMounted(() => {
 }
 
 .black {
-  background-color: black; 
+  background-color: black;
   color: black;
-  height: 5vh; 
+  height: 5vh;
 }
 
 .router-link{
