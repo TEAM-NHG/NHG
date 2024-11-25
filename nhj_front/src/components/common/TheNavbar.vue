@@ -118,7 +118,7 @@ const logout = () => {
 }
 
 .router-link-active.planner-active {
-  border-bottom: 2px solid black;
+  border-bottom: 3px solid black;
 }
 
 .nofication {
