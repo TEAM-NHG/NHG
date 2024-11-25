@@ -48,53 +48,46 @@ public class CommentController {
 
 	@PostMapping("/comment")
 	public ResponseEntity<Void> createComment(@RequestBody CreateCommentRequest request, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
-		System.out.println(userDetails.getUsername());
 		commentService.createComment(request, userDetails.getUsername());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/comment/child")
-	public ResponseEntity<Void> createChildComment(@RequestBody CreateChildCommentRequest request, HttpSession session) throws Exception {
-		String userId = (String) session.getAttribute("user");
-		commentService.createComment(request, userId);
+	public ResponseEntity<Void> createChildComment(@RequestBody CreateChildCommentRequest request, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		commentService.createComment(request, userDetails.getUsername());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/comment/{commentId}")
-	public ResponseEntity<CommentDto> getComment(@PathVariable int commentId, HttpSession session) throws Exception {
-		String userId = (String) session.getAttribute("user");
-		return new ResponseEntity<>(commentService.getComment(commentId, userId), HttpStatus.CREATED);
+	public ResponseEntity<CommentDto> getComment(@PathVariable int commentId, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		return new ResponseEntity<>(commentService.getComment(commentId, userDetails.getUsername()), HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/{articleNo}/comment")
-	public ResponseEntity<GetCommentsResponse> getComments(@PathVariable int articleNo, HttpSession session) throws Exception {
-		String userId = "string";
-		System.out.println("userid : " + userId);
-		return new ResponseEntity<>(commentService.getComments(articleNo, userId), HttpStatus.CREATED);
+	public ResponseEntity<GetCommentsResponse> getComments(@PathVariable int articleNo) throws Exception {
+		return new ResponseEntity<>(commentService.getComments(articleNo), HttpStatus.CREATED);
 	}
 
 	@PutMapping("/comment/{commentId}")
-	public ResponseEntity<Void> updateComment(@RequestBody UpdateCommentRequest request, HttpSession session) throws Exception {
+	public ResponseEntity<Void> updateComment(@RequestBody UpdateCommentRequest request, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 		commentService.updateComment(request);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PutMapping("/comment/{commentId}/read")
-	public ResponseEntity<Void> updateCommentRead(@RequestBody UpdateCommentReadRequest request, HttpSession session) throws Exception {
-		commentService.updateCommentRead(request);
+	public ResponseEntity<Void> updateCommentRead(@RequestBody UpdateCommentReadRequest request, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		commentService.updateCommentRead(request, userDetails.getUsername());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/comment/{commentId}")
-	public ResponseEntity<Void> deleteComment(@PathVariable("commentId") int commentId, HttpSession session) throws Exception {
-		String userId = (String) session.getAttribute("user");
+	public ResponseEntity<Void> deleteComment(@PathVariable("commentId") int commentId, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 		commentService.deleteComment(commentId);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/comment/notice")
-	public ResponseEntity<GetCommentNoticeResponse> getCommentNotice(@RequestParam("userId") String userId, HttpSession httpSession) throws Exception {
-//		String userId = (String) httpSession.getAttribute("user");
-		return new ResponseEntity<>(commentService.getCommentNotice(userId), HttpStatus.OK);
+	public ResponseEntity<GetCommentNoticeResponse> getCommentNotice(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		return new ResponseEntity<>(commentService.getCommentNotice(userDetails.getUsername()), HttpStatus.OK);
 	}
 }

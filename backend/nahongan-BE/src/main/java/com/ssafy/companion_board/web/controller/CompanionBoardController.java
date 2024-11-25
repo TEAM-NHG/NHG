@@ -3,6 +3,8 @@ package com.ssafy.companion_board.web.controller;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,27 +48,25 @@ public class CompanionBoardController {
 	}
 
 	@GetMapping("/{articleNo}")
-	public ResponseEntity<GetArticleResponse> getArticle(@PathVariable int articleNo, HttpSession session) throws Exception {
+	public ResponseEntity<GetArticleResponse> getArticle(@PathVariable int articleNo, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 		
 		return new ResponseEntity<GetArticleResponse>(companionBoardService.getArticle(articleNo), HttpStatus.OK);
 	}
 	@PostMapping
-	public ResponseEntity<Void> writeArticle(@RequestBody WriteArticleRequest request) throws Exception {
-		System.out.println(request);
-		companionBoardService.writeArticle(request);
+	public ResponseEntity<Void> writeArticle(@RequestBody WriteArticleRequest request, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		companionBoardService.writeArticle(request, userDetails.getUsername());
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@PutMapping
-	public ResponseEntity<UpdateArticleResponse> updateArticle(@RequestBody UpdateArticleRequest request, HttpSession session) throws Exception {
+	public ResponseEntity<UpdateArticleResponse> updateArticle(@RequestBody UpdateArticleRequest request, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 		System.out.println(request.getArticleNo());
 		return new ResponseEntity<>(companionBoardService.updateArticle(request), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{articleno}")
-	public ResponseEntity<Void> deleteArticle(@PathVariable("articleno") int articleno, HttpSession session) throws Exception {
+	public ResponseEntity<Void> deleteArticle(@PathVariable("articleno") int articleno, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
 		DeleteArticleRequest article = new DeleteArticleRequest(articleno);
-		System.out.println(article);
 		companionBoardService.deleteArticle(article);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

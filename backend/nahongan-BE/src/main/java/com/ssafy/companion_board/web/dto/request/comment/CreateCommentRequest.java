@@ -17,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 public class CreateCommentRequest {
-	private String userId;
 	private int articleNo;
 	private String content;
 }

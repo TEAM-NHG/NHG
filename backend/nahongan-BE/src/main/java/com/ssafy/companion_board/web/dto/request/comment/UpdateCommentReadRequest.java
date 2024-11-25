@@ -15,5 +15,4 @@ import lombok.ToString;
 @ToString
 public class UpdateCommentReadRequest {
 	public int commentId;
-	public String userId;
 }

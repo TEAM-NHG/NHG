@@ -40,7 +40,7 @@ public class CommentService {
 					.articleNo(childRequest.getArticleNo())
 					.parentId(childRequest.getParentCommentId())
 					.content(childRequest.getContent())
-					.userId(childRequest.getUserId())
+					.userId(userId)
 					.build();
 			System.out.println(comment.toString());
 			commentRepository.createComment(comment);
@@ -48,7 +48,7 @@ public class CommentService {
 			comment = Comment.builder()
 					.articleNo(request.getArticleNo())
 					.content(request.getContent())
-					.userId(request.getUserId())
+					.userId(userId)
 					.build();
 			commentRepository.createComment(comment);
 		}
@@ -64,12 +64,12 @@ public class CommentService {
 		commentRepository.updateComment(comment);
 	}
 	
-	public void updateCommentRead(UpdateCommentReadRequest request) throws SQLException {
-		commentRepository.updateArticleOwnerRead(request.getCommentId(), request.getUserId());
-		commentRepository.updateParentCommentOwnerRead(request.getCommentId(), request.getUserId());
+	public void updateCommentRead(UpdateCommentReadRequest request, String userId) throws SQLException {
+		commentRepository.updateArticleOwnerRead(request.getCommentId(), userId);
+		commentRepository.updateParentCommentOwnerRead(request.getCommentId(), userId);
 	}
 
-	public GetCommentsResponse getComments(int articleNo, String userId) throws SQLException {
+	public GetCommentsResponse getComments(int articleNo) throws SQLException {
 		List<ParentCommentDto> commentDtos = commentDtosConverter(commentRepository.findComments(articleNo));
 		return GetCommentsResponse.from(commentDtos, commentRepository.countComment(articleNo));
 

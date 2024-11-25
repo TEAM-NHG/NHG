@@ -69,10 +69,9 @@ public class CompanionBoardService {
 		companionBoardRepository.deleteArticle(request.getArticleNo());
 	}
 	
-	public void writeArticle(WriteArticleRequest request) {
-		System.out.println(request.getUserId());
+	public void writeArticle(WriteArticleRequest request, String id) {
 		CompanionBoard article = CompanionBoard.builder()
-			.userId(request.getUserId())
+			.userId(id)
 			.subject(request.getSubject())
 			.content(request.getContent())
 			.build();

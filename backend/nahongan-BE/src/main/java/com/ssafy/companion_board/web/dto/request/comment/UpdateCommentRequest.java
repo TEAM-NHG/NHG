@@ -18,5 +18,4 @@ import lombok.ToString;
 public class UpdateCommentRequest {
 	public int commentId;
 	public String content;
-	
 }
