@@ -57,9 +57,9 @@ public class MemberController {
 			summary = "회원가입 API", // 요약
 			description = "회원가입 성공 or 오류 방출" // 상세 설명
 	)
-	@PostMapping("/join")
-	public ResponseEntity<Void> join(@RequestBody JoinRequest request) throws Exception {
-		memberService.join(request);
+	@PostMapping(value="/join", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<Void> join(@RequestPart(value="member") JoinRequest request, @RequestPart(required = false, value="images") MultipartFile images) throws Exception {
+		memberService.join(request, images);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 

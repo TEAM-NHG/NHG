@@ -37,13 +37,14 @@ public class MemberService {
     
     private final ImageUploader imageUploader;
     
-    public void join(JoinRequest request) throws Exception {
+    public void join(JoinRequest request, MultipartFile images) throws Exception {
         System.out.println(checkId(request.getId()));
         if (checkId(request.getId())) {
             throw new BaseException("이미 존재하는 아이디",HttpStatus.BAD_REQUEST);
         }
         Member member = request.toEntity();
         member.hashPassword(passwordEncoder);
+        member.updateImage(setMemberImage(images, member.getId()));
         memberRepository.create(member);
     }
 
