@@ -11,7 +11,7 @@
     <div class="info mb-4">
       <div class="mb-4 text-center" style="font-size: 150%;">AI 여행 플래너</div>
       <p class="mb-2">● 나만의 여행코치는 생성형 AI를 활용한 서비스로 계획을 생성 혹은 평가 받을 수 있는 공간입니다.</p>
-      <p >● 여행 일정에 대해 구체적으로 적을 수록 상세한 평가를 받을 수 있으며, 제시된 캐릭터 별로 같은 평가를 다르게 받아 보실 수 있습니다.</p>
+      <p >● 여행 일정에 대해 구체적으로 적을 수록 상세한 평가를 받을 수 있으며, 제시된 캐릭터 별로 다른 평가를 다르게 받아 보실 수 있습니다.</p>
     </div>
     <div class="emotion-buttons d-flex justify-content-center mb-4">
       <template v-for="emotion in emotions" :key="emotion.id">
@@ -69,7 +69,7 @@
       @click="savePromt">
       <img src="@/assets/insideout/구슬.png" alt="">
     </button>
-    
+
 
     <!-- 모달 -->
     <PlannerModal
@@ -106,8 +106,8 @@ const interval = ref(null)
 const emotions = ref([
   { id: 'happy', label: '기쁨', src: "src/assets/insideout/기쁨.png", src2: "src/assets/insideout/기쁨2.png", selected: false, borderColor: "#FDFD71" },
   { id: 'strict', label: '까칠', src: "src/assets/insideout/까칠.png", src2: "src/assets/insideout/까칠2.png", selected: false, borderColor: "#85CA6E" },
-  { id: 'worry', label: '걱정', src: "src/assets/insideout/걱정.png", src2: "src/assets/insideout/걱정2.png", selected: false, borderColor: "#D3B3D4" },
-  { id: 'angry', label: '분노', src: "src/assets/insideout/분노.png", src2: "src/assets/insideout/분노2.png", selected: false, borderColor: "#E62C2B" },
+  { id: 'worry', label: '소심', src: "src/assets/insideout/걱정.png", src2: "src/assets/insideout/걱정2.png", selected: false, borderColor: "#D3B3D4" },
+  { id: 'angry', label: '버럭', src: "src/assets/insideout/분노.png", src2: "src/assets/insideout/분노2.png", selected: false, borderColor: "#E62C2B" },
   { id: 'boring', label: '따분', src: "src/assets/insideout/따분.png", src2: "src/assets/insideout/따분2.png", selected: false, borderColor: "#5756A6" },
 ])
 
@@ -176,9 +176,9 @@ const savePromt = () => {
     sido: "",
     gugun: "",
     image: "",
-    startDate: "",  
+    startDate: "",
     endDate: "",
-    notes: `[입력창] \n${prompt.value}\n\n[출력창]\n${response.value}`,
+    notes: `[나의 계획] \n${prompt.value}\n\n[${selectedEmotion.value.label}이의 평가]\n${response.value}`,
     isCreated: true,
   };
   isModalVisible.value = true;
@@ -210,9 +210,9 @@ const handleDelete = (travelId) => {
 <style scoped>
 .innerBox {
   background-color: rgba(250, 235, 215, 0.3);
-  margin-top: 13vh;
+  margin-top: 8vh;
   border-radius: 20px;
-  padding: 3%;
+  padding: 100px;
   width: 70vw;
 }
 
@@ -221,7 +221,7 @@ const handleDelete = (travelId) => {
 }
 
 .info {
-  font-size: 120%;
+  font-size: 110%;
 }
 
 .card-body {
@@ -288,9 +288,9 @@ const handleDelete = (travelId) => {
 }
 
 .inputText {
-  background: linear-gradient(45deg, #ffff17, rgba(255, 0, 0, 0) 70.71%), 
-              linear-gradient(0deg, #72dc4f, rgba(0, 255, 0, 0) 70.71%), 
-              linear-gradient(245deg, #5756A6, rgba(0, 0, 255, 0) 70.71%), 
+  background: linear-gradient(45deg, #ffff17, rgba(255, 0, 0, 0) 70.71%),
+              linear-gradient(0deg, #72dc4f, rgba(0, 255, 0, 0) 70.71%),
+              linear-gradient(245deg, #5756A6, rgba(0, 0, 255, 0) 70.71%),
               linear-gradient(180deg, #E62C2B, rgba(0, 0, 255, 0) 70.71%);
   color: black;
   border-radius: 10px;
