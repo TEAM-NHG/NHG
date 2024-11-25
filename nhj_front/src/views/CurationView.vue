@@ -106,6 +106,7 @@ const onPageChange = (val) => {
 .innerBox{
   background-color: white;
   color: #191a1c;
+  min-height: 100vh;
   border-radius: 25px;
   margin-top: 8vh;
   padding-top: 4%;

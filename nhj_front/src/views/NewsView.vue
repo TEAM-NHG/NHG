@@ -158,6 +158,7 @@ onUnmounted(() => {
   margin-top: 8vh;
   padding: 5%;
   width: 60vw;
+  min-height: 100vh;
 }
 
 .news-header {
