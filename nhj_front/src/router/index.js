@@ -109,7 +109,7 @@ router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore(); // auth.js 상태 접근
   await authStore.checkLoginStatus()
   if(to.name === 'admin') {
-    if(authStore.user.role === 'admin') return next();
+    if(authStore.user.role === 'ADMIN') return next();
     else return alert('너! 누구야. 이런데 함부로 들어오면 안돼')
   }
 

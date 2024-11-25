@@ -41,8 +41,9 @@
     <video src="@/assets/Main/nhg03-27-50.mp4" autoplay muted
         alt="Main Background"
         class="w-50 main-image"
-        style="height: 90vh; object-fit: cover;"></video>  
+        style="height: 90vh; object-fit: cover;"></video>
     <div class="position-absolute bottom-0 start-0 w-100 black">''</div>
+    <div class="btn easterEgg" @click="easterEgg"></div>
   </div>
 </template>
 
@@ -73,6 +74,10 @@ let imageIndex = 0;
 const routeLogin = () => {
   router.push({ name: 'login' });
 };
+
+const easterEgg = () => {
+  router.push({name:'admin'})
+}
 
 // 이미지 변경 함수
 const changeImage = () => {
@@ -141,5 +146,13 @@ onMounted(() => {
   top: 42vh;
   bottom: auto;
   right: auto;
+}
+
+.easterEgg{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 5vh;
+  width: 1vh;
 }
 </style>
