@@ -8,7 +8,7 @@
         alt="Main Background"
         class="w-50 main-image fade-element"
         style="height: 90vh; object-fit: cover;">
-    </transition>  
+    </transition>
     <div class="position-absolute top-0 start-0 w-100 black">''</div>
 
     <!-- 텍스트 오버레이 -->
@@ -16,14 +16,12 @@
       <div v-if="!authStore.isLoggedIn">
         <div class="Main-text mb-3">지금, 당신만의 특별한 여정을 만들어보세요</div>
         <div class="btn" @click="routeLogin">로그인하고 떠나요
-          <font-awesome-icon :icon="['fas', 'plane-departure']" bounce style="color: #000000;" />
-          <!-- <font-awesome-icon :icon="['fas', 'suitcase']" bounce style="color: #000000;" /> -->
+          <font-awesome-icon :icon="['fas', 'suitcase']" bounce style="color: #000000;" />
         </div>
-        
+
       </div>
       <div v-else class="logined fade-element">
         <div class="mb-4">
-          <!-- <div>안녕하세요 {{ authStore.user.nickname }}님</div> -->
           <div>지금, 당신만의 특별한 여정을 만들어보세요</div>
         </div>
         <div class="d-flex justify-content-center router-link">
@@ -38,6 +36,9 @@
           </div>
           <div class="router-hover">
             <router-link :to="{ name: 'planner' }" class="nav-link px-4">AI 여행 플래너</router-link>
+          </div>
+          <div class="router-hover">
+            <router-link :to="{ name: 'planner' }" class="nav-link px-4">My Page</router-link>
           </div>
         </div>
       </div>
@@ -121,8 +122,8 @@ onMounted(() => {
 
 .logined{
   font-size: 160%;
-  border-bottom: 3px solid black;
-  border-top: 3px solid black;
+  border-bottom: 2.8px solid black;
+  border-top: 2.8px solid black;
   padding-top: 5vh;
   padding-bottom: 5vh;
 }
@@ -134,7 +135,7 @@ onMounted(() => {
 }
 
 .router-link{
-  font-size: 70%;
+  font-size: 60%;
 }
 
 .router-hover:hover{
@@ -144,7 +145,7 @@ onMounted(() => {
 
 .text-position {
   position: absolute;
-  top: 45vh;
+  top: 41vh;
   bottom: auto;
   right: auto;
   left: 50%;
