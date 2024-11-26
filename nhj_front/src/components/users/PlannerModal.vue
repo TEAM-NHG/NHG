@@ -8,18 +8,22 @@
              style="z-index: -1; object-fit: fill"> -->
         <!-- Header -->
         <div class="modal-header">
-          <h5 class="modal-title">
+          <div class="modal-title me-2  ">
             {{ localData.isCreated ? "Create a New Travel Plan" :
                localData.isEditing ? "Edit Your Travel Plan" : ("Your Plan" || "제목이 없습니다.") }}
-          </h5>
+          </div>
+          <font-awesome-icon :icon="['fas', 'plane-departure']" style="color: #000000;" />
           <button type="button" class="btn-close" @click="closeModal"></button>
         </div>
 
         <!-- Body -->
-        <div class="modal-body">
+        <div class="modal-body px-4">
           <div :class="{'info-header' : !localData.isEditing}">
-            <div class="mb-3" style="height: 70px;">
-              <label for="title" class="form-label">제목</label>
+            <div class="mb-2" style="height: 70px;">
+              <mark class="sky" v-if="!localData.isEditing">
+                <label for="title" class="form-label">제목</label>
+              </mark>
+              <label v-else for="title" class="form-label">제목</label>
               <input
                 v-if="localData.isEditing"
                 id="title"
@@ -27,13 +31,16 @@
                 v-model="localData.title"
                 placeholder="제목을 입력해주세요"
               />
-              <p v-else>{{ travelData.title || "제목이 없습니다." }}</p>
+              <div v-else class="ms-2">{{ travelData.title || "제목이 없습니다." }}</div>
             </div>
 
             <!-- 지역 selectbox -->
             <div class="mb-3">
+              <mark class="sky" v-if="!localData.isEditing">
+                  <label class="form-label">여행지</label>
+                </mark>
+              <label v-else class="form-label">여행지</label>
               <div v-if="localData.isEditing">
-                <label class="form-label">여행지</label>
                 <div class="d-flex gap-2">
                   <select class="form-select" v-model="localData.sido" style="width: 15vw">
                     <option value="" disabled selected>시도</option>
@@ -52,8 +59,7 @@
                 </div>
               </div>
               <div v-else>
-                <div class="form-label">여행지</div>
-                <div>{{ `${travelData.sido || "N/A"}, ${travelData.gugun || "N/A"}` }}</div>
+                <div class="ms-2">{{ `${travelData.sido || "N/A"}, ${travelData.gugun || "N/A"}` }}</div>
               </div>
             </div>
 
@@ -68,6 +74,10 @@
               />
             </div>
 
+            <!-- 여행 일자 -->
+            <mark class="sky" v-if="!localData.isEditing">
+              <label class="form-label">여행 일자</label>
+            </mark>
             <template v-if="localData.isEditing">
               <div class="d-flex">
                 <div class="mb-3" style="width: 30%;">
@@ -91,16 +101,14 @@
 
             </template>
 
-            <div v-else class="mb-3">
-              <div class="mb-2 form-label">여행 일자</div>
+            <div v-else class="mb-3 ms-2">
               <span> {{ travelData.startDate || '' }} ~ {{ travelData.endDate || '' }}</span>
             </div>
           </div>
-
-
-
-          <div class="mb-3">
-            <label v-show="localData.isEditing" for="notes" class="form-label">여행 계획</label>
+            <mark class="sky" v-if="!localData.isEditing">
+              <label class="form-label">여행 계획</label>
+            </mark>
+            <label v-else class="form-label">여행 계획</label>
             <textarea
               v-if="localData.isEditing"
               id="notes"
@@ -110,10 +118,9 @@
               placeholder="여행 계획을 작성해주세요."
             ></textarea>
             <div v-else
-                 class="plan-text"
+                 class="plan-text px-2"
                  v-html="travelData.notes.replace(/\n/g, '<br>') || '작성된 여행 계획이 없습니다.'">
             </div>
-          </div>
         </div>
 
         <!-- Footer -->
@@ -163,8 +170,7 @@ localData.value.endDate = localData.value.endDate.replace(/T.*/, "")
 
 //유효성 검사
 const validateForm = () => {
-  const errors = 0;
-  
+
   if (!localData.value.title.trim()) {
     alert('제목을 입력해주세요.');
     return false;
@@ -188,7 +194,7 @@ const validateForm = () => {
   if (new Date(localData.value.endDate) < new Date(localData.value.startDate)) {
     alert(`여행 날짜를 확인해주세요.\n종료 날짜는 시작 날짜보다 앞설 수 없습니다.`);
     return false;
-  } 
+  }
   if (!localData.value.notes.trim()) {
     alert('여행 계획을 입력해주세요.');
     return false;
@@ -276,7 +282,7 @@ const closeModal = () => {
 <style scoped>
 .modal-body {
   font-weight: bold;
-  padding: 3%;
+  height: 100%;
 }
 .img-fluid {
   max-width: 100%;
@@ -287,15 +293,11 @@ const closeModal = () => {
   font-size: 120%;
 }
 .plan-text{
-  height: 300px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
-  padding: 15px;
   overflow: auto;
-}
-.info-header{
-  border: 1px solid black;
+  height: 350px;
+  border-top: 1.5px solid black;
+  border-bottom: 1.5px solid black;
   border-radius: 5px;
-  padding: 15px;
+  padding-top: 1rem;
 }
 </style>
