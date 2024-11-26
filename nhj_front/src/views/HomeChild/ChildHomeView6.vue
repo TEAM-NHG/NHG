@@ -38,7 +38,7 @@
             <router-link :to="{ name: 'planner' }" class="nav-link px-4">AI 여행 플래너</router-link>
           </div>
           <div class="router-hover">
-            <router-link :to="{ name: 'planner' }" class="nav-link px-4">My Page</router-link>
+            <router-link :to="{ name: 'profile' }" class="nav-link px-4">My Page</router-link>
           </div>
         </div>
       </div>

@@ -81,7 +81,7 @@ const MemberDelete = async () => {
     const userId = authStore.user.id;
     const response = await local.delete(`/member/${userId}`);
     if (response.status === 200) {
-      alert("회원 정보가 성공적으로 삭제되었습니다.");
+      alert("회원 정보가 성공적으로 삭제되었습니다.\n그동안 함께해주셔서 감사합니다.");
       authStore.logout();
       router.replace({ name: "home" });
     } else {
