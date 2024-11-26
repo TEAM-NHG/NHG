@@ -62,7 +62,7 @@
     </div>
 
     <button
-      class="tw-fixed tw-bottom-10 tw-right-20"
+      class="tw-fixed tw-bottom-10 tw-right-20 memory-ball"
       style="width: 120px; height: 120px;"
       @click="savePromt">
       <img src="@/assets/insideout/구슬.png" alt="">
@@ -299,5 +299,9 @@ const handleSave = async (saveTravel) => {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.1); /* 검은색 반투명 오버레이 */
   z-index: -1; /* 이미지를 가리지 않게 뒤로 배치 */
+}
+
+.memory-ball:hover{
+  transform: scale(1.15);
 }
 </style>
