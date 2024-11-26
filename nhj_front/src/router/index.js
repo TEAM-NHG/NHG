@@ -109,13 +109,13 @@ router.beforeEach(async (to, from, next) => {
     else return alert('너! 누구야. 이런데 함부로 들어오면 안돼')
   }
 
-  const publicPages = ['home', 'article-list', 'signup', 'login', 'news']; // 로그인 필요 없는 페이지
+  const publicPages = ['home', 'signup', 'login']; // 로그인 필요 없는 페이지
   const authRequired = !publicPages.includes(to.name); // 로그인 필요한 경우
 
   if (authRequired && !authStore.isLoggedIn) {
     // 로그인이 필요한 페이지인데 로그인 안 되어있으면
-    next({ name: 'home' }); //메인 페이지로 리다이렉트
     alert('로그인이 필요한 페이지입니다!')
+    return false;
   } else {
     next(); // 접근 허용
   }
