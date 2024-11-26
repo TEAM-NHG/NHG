@@ -2,13 +2,11 @@ package com.ssafy.member.domain;
 
 import com.ssafy.common.exception.BaseException;
 import com.ssafy.common.util.ImageUploader;
-import com.ssafy.companion_board.persistent.repository.CommentRepository;
 import com.ssafy.member.persistent.entity.Member;
 import com.ssafy.member.persistent.repository.MemberRepository;
 import com.ssafy.member.web.dto.request.FindIdRequest;
 import com.ssafy.member.web.dto.request.FindPasswordRequest;
 import com.ssafy.member.web.dto.request.JoinRequest;
-import com.ssafy.member.web.dto.request.LoginRequest;
 import com.ssafy.member.web.dto.request.ModifyMemberRequest;
 import com.ssafy.member.web.dto.request.ModifyPasswordRequest;
 import com.ssafy.member.web.dto.response.FindIdResponse;
@@ -68,15 +66,18 @@ public class MemberService {
     }
 
     public void findPassword(FindPasswordRequest request) {
-        memberRepository.modifyPassword(request.getId(), request.getEmail());
+        memberRepository.existsByIdAndEmail(request.getId(), request.getEmail());
     }
     
     public FindIdResponse findId(FindIdRequest request) {
         String id = memberRepository.findIdByEmail(request.getEmail());
         return FindIdResponse.builder().id(id).build();
     }
-    public void modifyPassword(ModifyPasswordRequest request, HttpSession httpSession) {
-    	memberRepository.modifyPassword(request.getId(), passwordEncoder.encode(request.getPassword()));
+    public void modifyPassword(ModifyPasswordRequest request) {
+        Member member = memberRepository.findById(request.getId());
+        member.setPassword(request.getPassword());
+        member.hashPassword(passwordEncoder);
+    	memberRepository.modifyPassword(request.getId(), member.getPassword());
     }    
     
     public int modify(MultipartFile images, ModifyMemberRequest member) throws SQLException {

@@ -115,8 +115,14 @@ public class MemberController {
 	}
 	
 	@PutMapping("/password")
-	public ResponseEntity<Void> modifyPassword(@RequestBody ModifyPasswordRequest request, HttpSession session) throws Exception {
-		memberService.modifyPassword(request, session);
+	public ResponseEntity<Void> modifyPassword(@RequestBody ModifyPasswordRequest request) throws Exception {
+		memberService.modifyPassword(request);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<Void> delete(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+		memberService.delete(userDetails.getUsername());
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

@@ -33,7 +33,7 @@
         from members
         where id = #{id} and password = #{password}
     </select>
-    <select id="ExistsByIdAndEmail" resultType="boolean">
+    <select id="existsByIdAndEmail" resultType="boolean">
         SELECT CASE
                    WHEN EXISTS (
                        SELECT 1

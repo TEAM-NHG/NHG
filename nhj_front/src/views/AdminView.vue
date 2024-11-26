@@ -46,36 +46,32 @@
                 </div>
             </div>
         </div>
+        <!-- <div class="dashboard-grid">
+            <div class="table-info-card">
+                <h3>테이블 정보</h3>
+                <div class="info-content">
+                    <table class="table-info-table">
+                        <thead>
+                            <tr>
+                                <th>테이블 이름</th>
+                                <th>총 레코드</th>
+                                <th>테이블 설명</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="info in tableInfos" :key="info.name">
+                                <td>{{ info.TABLE_NAME }}</td>
+                                <td>{{ info.TABLE_ROWS }}</td>
+                                <td>{{ info.TABLE_COMMENT }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> -->
     </div>
 
     <!-- 하단 그리드 -->
-    <div class="dashboard-grid">
-        <div class="table-info-card">
-            <h3>테이블 정보</h3>
-            <div class="info-content">
-                <table class="table-info-table">
-                    <thead>
-                        <tr>
-                            <th>테이블 이름</th>
-                            <th>총 레코드</th>
-                            <th>테이블 설명</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="info in tableInfos" :key="info.name">
-                            <td>{{ info.TABLE_NAME }}</td>
-                            <td>{{ info.TABLE_ROWS }}</td>
-                            <td>{{ info.TABLE_COMMENT }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="user-graph-card">
-            <h3>유저 관련 그래프</h3>
-            <p>유저 관련 그래프가 들어갈 예정</p>
-        </div>
-    </div>
 </section>
   
         <!-- Data Management Section -->
@@ -494,11 +490,11 @@ export default {
 <style scoped>
 /* 기존 스타일 유지 */
 .dashboard-section {
-    padding: 2rem;
+
 }
 .dashboard-header {
     display: flex;
-    justify-content: space-between;
+    justify-content:space-between;
     align-items: top;
     margin-bottom: 50px;
 }
@@ -506,7 +502,7 @@ export default {
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 0.5fr));
-    gap: 2rem;
+    gap: 1rem;
     margin-top: 1rem;
 }
 
@@ -518,15 +514,19 @@ export default {
 }
 
 .api-status-card {
+    
     width: 20rem;
     padding:0.5rem 2rem;
     margin-right:50px;
+    margin-left:50px;
+    height:130px;
 }
 
 
 
 .table-info-card {
-    width: 500px;
+    width: 600px;
+    height:600px;
 }
 
 .table-info-table {
@@ -697,6 +697,7 @@ export default {
   
   .section-title {
     color: #00ff00;
+    font-size: 50px;
     margin-bottom: 0.5rem;
   }
   

@@ -60,7 +60,7 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests((auth) -> auth
                 .requestMatchers("/api/member/join","/api/member/login","api/member/join/id-check"
-                        ,"/api/member/find-password","/api/member/find-id").permitAll()
+                        ,"/api/member/find-password","/api/member/find-id","/api/member/password").permitAll()
                 .requestMatchers("/api/admin").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST).authenticated()
                 .requestMatchers(HttpMethod.PUT).authenticated()
