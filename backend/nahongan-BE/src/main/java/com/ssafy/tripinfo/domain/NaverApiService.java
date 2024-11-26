@@ -39,7 +39,7 @@ public class NaverApiService {
     public List<BlogArticle> searchBlog(String query, int display, int start, String sort) {
         URI uri = UriComponentsBuilder
                 .fromUriString("https://openapi.naver.com/v1/search/blog.json")
-                .queryParam("query", query)
+                .queryParam("query", query + " 혼자 여행")
                 .queryParam("display", display)
                 .queryParam("start", start)
                 .queryParam("sort", sort)
