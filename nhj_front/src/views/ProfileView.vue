@@ -9,13 +9,15 @@
               <img :src="authStore.user.img ? authStore.user.img : defaultUserIcon" class="user-img rounded-circle">
             </div>
             <div class="col">
-              <div class="d-flex align-items-center mb-2">
+              <div class="mb-2 d-flex align-items-center justify-content-between">
                 <div class="me-3" style="font-size: 125%;">{{ authStore.user.nickname }}</div>
-                <button type="button" class="btn btn-outline-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                  수정
-                </button>
-                <ProfileEditModal />
-                <button type="button" class="btn btn-outline-danger btn-sm me-2" @click="MemberDelete">탈퇴</button>
+                <div class="me-3">
+                  <button type="button" class="btn btn-outline-success btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                    수정
+                  </button>
+                  <ProfileEditModal />
+                  <button type="button" class="btn btn-outline-danger btn-sm me-2" @click="MemberDelete">탈퇴</button>
+                </div>
               </div>
               <p class="text-muted mb-1">{{ authStore.user.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3") }}</p>
               <p class="text-muted mb-0">{{ authStore.user.email }}</p>
@@ -71,7 +73,6 @@ const router = useRouter();
 const local = localAxios();
 
 const btnvisible = ref(true)
-const openCreateModal = ref(false)
 
 const MemberDelete = async () => {
   const confirmDelete = confirm("정말 회원 정보를 삭제하시겠습니까?");
