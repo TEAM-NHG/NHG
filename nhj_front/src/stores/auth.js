@@ -4,11 +4,9 @@ const local = localAxios();
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
-    if (sessionStorage.getItem('user') === null) {
-      return {
-        isLoggedIn: false, // 로그인 여부 초기화
-        user: null,
-      };
+    return {
+      isLoggedIn: false,
+      user: null
     }
   },
   actions: {
@@ -39,8 +37,6 @@ export const useAuthStore = defineStore('auth', {
       //이미지 처리
       this.user.img = "http://localhost" + this.user.img
 
-      console.log(this.user)
-
       this.isLoggedIn = true
     },
     logout() {
@@ -61,8 +57,8 @@ export const useAuthStore = defineStore('auth', {
         this.user = response.data
         this.user.img = this.user.img ? "http://localhost" + this.user.img : ''
         sessionStorage.setItem('user', JSON.stringify(response.data))
-      }catch{
-        console.log('error 발생')
+      }catch(error){
+        console.log('error 발생',error)
       }
     }
   },
