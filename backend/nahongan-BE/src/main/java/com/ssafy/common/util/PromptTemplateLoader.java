@@ -26,6 +26,9 @@ public class PromptTemplateLoader {
     @Value("classpath:prompts/strict-system-prompt.st")
     private Resource strictPromptResource;
 
+	@Value("classpath:prompts/boring-system-prompt.st")
+	private Resource boringPromptResource;
+
     public String loadSystemPrompt(String type) {
     	Resource resource;
     	switch (type) {
@@ -41,6 +44,9 @@ public class PromptTemplateLoader {
     		case "happy": 
     			resource = happyPromptResource;
     			break;
+			case "boring":
+				resource = boringPromptResource;
+				break;
     		default: 
     			resource = happyPromptResource;
     			break;
