@@ -30,33 +30,15 @@
           </button>
         </div>
 
-        <!-- 로그인 유지 체크박스 -->
-        <div class="mb-3 form-check">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            id="keepLogin"
-            v-model="keepLogin">
-          <label class="form-check-label" for="keepLogin">로그인 유지</label>
-        </div>
-
         <!-- 로그인 버튼 -->
         <button type="submit" class="btn btn-primary w-100 mb-3">로그인</button>
 
-        <!-- 소셜 로그인 -->
-        <div class="social-login mb-3">
-          <button type="button" class="btn btn-success w-100 mb-2" @click="naverLogin">
-            <i class="bi bi-n"></i> 네이버로 로그인
-          </button>
-          <button type="button" class="btn btn-warning w-100" @click="kakaoLogin">
-            <i class="bi bi-chat-fill"></i> 카카오로 로그인
-          </button>
-        </div>
-
         <!-- 아이디/비밀번호 찾기 -->
         <div class="text-center">
+          <button type="button" class="btn btn-link" @click="goSignUp">회원 가입</button>
+          <span>|</span>
           <button type="button" class="btn btn-link" @click="showUserFindIdModal">아이디 찾기</button>
-          <span class="mx-2">|</span>
+          <span>|</span>
           <button type="button" class="btn btn-link" @click="showFindPasswordModal">비밀번호 찾기</button>
         </div>
       </form>
@@ -86,7 +68,6 @@ const authStore = useAuthStore();
 
 const router = useRouter();
 const showPassword = ref(false);
-const keepLogin = ref(false);
 const showIdModal = ref(false);
 const showPasswordModal = ref(false);
 
@@ -111,15 +92,6 @@ const handleLogin = async () => {
   }
 };
 
-// 소셜 로그인 처리
-const naverLogin = () => {
-  // 네이버 로그인 구현
-};
-
-const kakaoLogin = () => {
-  // 카카오 로그인 구현
-};
-
 // 아이디/비밀번호 찾기 모달 표시
 const showUserFindIdModal = () => {
   showIdModal.value = true;
@@ -128,6 +100,10 @@ const showUserFindIdModal = () => {
 const showFindPasswordModal = () => {
   showPasswordModal.value = true;
 };
+
+const goSignUp = () => {
+  router.push({name:'signup'})
+}
 </script>
 
 <style scoped>
@@ -160,6 +136,7 @@ const showFindPasswordModal = () => {
 }
 
 .btn-link {
+  font-size: 90%;
   color: #6c757d;
   text-decoration: none;
 }
