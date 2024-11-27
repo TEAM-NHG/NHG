@@ -116,6 +116,7 @@
               rows="10"
               v-model="localData.notes"
               placeholder="여행 계획을 작성해주세요."
+              style="resize: none;"
             ></textarea>
             <div v-else
                  class="plan-text px-2"

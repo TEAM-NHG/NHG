@@ -126,7 +126,7 @@ const updateContent = (event) => {
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">내용 : </label>
-      <textarea class="form-control"  rows="18" @input="updateContent">{{ article.content.replace(/<br\s*\/?>/g, '\n') }}</textarea>
+      <textarea class="form-control"  rows="18" @input="updateContent" style="resize: none;">{{ article.content.replace(/<br\s*\/?>/g, '\n') }}</textarea>
     </div>
     <div class="col-auto text-center">
       <button type="submit" class="btn btn-outline-primary mb-3" v-if="type === 'regist'">
