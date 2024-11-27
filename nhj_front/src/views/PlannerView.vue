@@ -36,6 +36,7 @@
               <button class="btn btn-light mb-1" @click="handleEmotionClick(selectedEmotion)">생성</button>
             </div>
             <textarea v-model="prompt" class="form-control" rows="8" placeholder="여행 계획을 입력해주세요..."
+                      style="resize: none;"
               />
           </div>
         </div>
@@ -175,7 +176,7 @@ const savePromt = () => {
     image: "",
     startDate: "",
     endDate: "",
-    notes: `[나의 계획] \n${prompt.value}\n\n[${selectedEmotion.value.label}이의 평가]\n${response.value}`,
+    notes: `[나의 계획] \n${prompt.value}\n\n[${selectedEmotion.value.label}이의 평가]\n${displayText.value}`,
     isCreated: true,
   };
   isModalVisible.value = true;
