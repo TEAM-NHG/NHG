@@ -3,7 +3,7 @@
 혼행인들을 위한 서비스 나혼자간다입니다
 
 # 시연 영상
-
+<img src="https://github.com/user-attachments/assets/57c81681-8a7a-41a3-ad8c-9cd55b7ed1e9"/>
 
 
 ## Commit Convention
